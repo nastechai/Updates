@@ -1,0 +1,405 @@
+{
+  "branding_score": 98.2948256779192,
+  "test_score": 100,
+  "total_score": 99.14741283895961,
+  "violations": [
+    {
+      "file": "STAGE_REPORT.md",
+      "pattern": "hermes-agent",
+      "count": 4
+    },
+    {
+      "file": "STAGE_REPORT.md",
+      "pattern": "@nous-research",
+      "count": 6
+    },
+    {
+      "file": "STAGE_REPORT.md",
+      "pattern": "nousresearch",
+      "count": 2
+    },
+    {
+      "file": "STAGE_REPORT.md",
+      "pattern": "HERMES_",
+      "count": 3
+    },
+    {
+      "file": "STAGE_REPORT.md",
+      "pattern": "hermes",
+      "count": 45
+    },
+    {
+      "file": ".github/workflows/stage-2-verify.yml",
+      "pattern": "hermes",
+      "count": 3
+    },
+    {
+      "file": ".github/workflows/stage-5-production-pr.yml",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/test-branding-system.sh",
+      "pattern": "@nous-research",
+      "count": 4
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "nousresearch",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "hermes",
+      "count": 2
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "Hermes",
+      "count": 2
+    },
+    {
+      "file": ".github/scripts/rebrand.sh",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/validate-npm-branding.js",
+      "pattern": "@nous-research",
+      "count": 10
+    },
+    {
+      "file": ".github/scripts/verify-branding.sh",
+      "pattern": "@nous-research",
+      "count": 5
+    },
+    {
+      "file": ".github/scripts/branding_engine.py",
+      "pattern": "@nous-research",
+      "count": 3
+    },
+    {
+      "file": ".github/scripts/validate-config-branding.py",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/validate-ecosystem-branding.py",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": "plugins/nastech-achievements/dashboard/manifest.json",
+      "pattern": "hermes",
+      "count": 1
+    },
+    {
+      "file": "plugins/nastech-achievements/dashboard/manifest.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "apps/bootstrap-installer/src-tauri/tauri.conf.json",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": "apps/bootstrap-installer/src-tauri/tauri.conf.json",
+      "pattern": "nousresearch",
+      "count": 1
+    },
+    {
+      "file": "apps/bootstrap-installer/src-tauri/tauri.conf.json",
+      "pattern": "hermes",
+      "count": 1
+    },
+    {
+      "file": "apps/bootstrap-installer/src-tauri/tauri.conf.json",
+      "pattern": "Hermes",
+      "count": 4
+    },
+    {
+      "file": "apps/bootstrap-installer/src-tauri/capabilities/default.json",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": "apps/bootstrap-installer/src-tauri/capabilities/default.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "hermes",
+      "count": 9
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "Hermes",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/whatsapp.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/whatsapp.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/whatsapp.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/conformance/vectors/slack.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/slack.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/slack.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/conformance/vectors/discord.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/discord.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/discord.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/conformance/vectors/telegram.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/telegram.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/telegram.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/nastech_cli/test_dashboard_browser_safe_imports.py",
+      "pattern": "@nous-research",
+      "count": 3
+    },
+    {
+      "file": "website/static/api/model-catalog.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "website/static/api/model-catalog.json",
+      "pattern": "nousresearch",
+      "count": 1
+    },
+    {
+      "file": "website/static/api/model-catalog.json",
+      "pattern": "hermes",
+      "count": 2
+    },
+    {
+      "file": "website/static/api/model-catalog.json",
+      "pattern": "Hermes",
+      "count": 2
+    },
+    {
+      "file": "website/src/data/userStories.json",
+      "pattern": "hermes-agent",
+      "count": 94
+    },
+    {
+      "file": "website/src/data/userStories.json",
+      "pattern": "Hermes Agent",
+      "count": 51
+    },
+    {
+      "file": "website/src/data/userStories.json",
+      "pattern": "nousresearch",
+      "count": 3
+    },
+    {
+      "file": "website/src/data/userStories.json",
+      "pattern": "NousResearch",
+      "count": 42
+    },
+    {
+      "file": "website/src/data/userStories.json",
+      "pattern": "hermes",
+      "count": 196
+    },
+    {
+      "file": "website/src/data/userStories.json",
+      "pattern": "Hermes",
+      "count": 390
+    },
+    {
+      "file": "website/docs/getting-started/_category_.json",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": "website/docs/getting-started/_category_.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "website/docs/user-guide/_category_.json",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": "website/docs/user-guide/_category_.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "website/docs/user-guide/features/_category_.json",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": "website/docs/user-guide/features/_category_.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "website/docs/developer-guide/_category_.json",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": "website/docs/developer-guide/_category_.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "web/vite.config.ts",
+      "pattern": "@nous-research",
+      "count": 2
+    },
+    {
+      "file": "web/src/plugins/registry.ts",
+      "pattern": "@nous-research",
+      "count": 9
+    },
+    {
+      "file": "web/src/plugins/sdk.d.ts",
+      "pattern": "@nous-research",
+      "count": 2
+    },
+    {
+      "file": "ui-tui/tsconfig.build.json",
+      "pattern": "hermes",
+      "count": 1
+    },
+    {
+      "file": "optional-skills/security/web-pentest/templates/exploitation-queue.json",
+      "pattern": "hermes",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v2.schema.json",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v2.schema.json",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v2.schema.json",
+      "pattern": "hermes",
+      "count": 12
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v2.schema.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v1.schema.json",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v1.schema.json",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v1.schema.json",
+      "pattern": "hermes",
+      "count": 6
+    },
+    {
+      "file": "nastech_cli/observability/schemas/nastech.shared_metrics.v1.schema.json",
+      "pattern": "Hermes",
+      "count": 1
+    },
+    {
+      "file": "nastech_cli/dashboard_auth/login_page.py",
+      "pattern": "@nous-research",
+      "count": 2
+    }
+  ],
+  "passed_tests": 0,
+  "failed_tests": 0,
+  "status": "PASS"
+}
