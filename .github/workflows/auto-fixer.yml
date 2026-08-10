@@ -3,6 +3,7 @@ name: "Auto System Fixer Bot"
 on:
   workflow_run:
     workflows:
+      - "Stage Pipeline: ordered push + verify (main = HEAD)"
       - "Stage 1: Hermes Automation → Verify (PR)"
       - "Stage 2: Verify → Semi-Stage (PR)"
       - "Stage 3: Semi-Stage → Final (PR)"

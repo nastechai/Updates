@@ -1,0 +1,110 @@
+name: "Stage promote + verify"
+description: >
+  Ordered-pipeline building block. Verifies the source branch, promotes it into
+  the next pipeline branch (push), then waits for that branch's checks to pass.
+  Used by stage-pipeline.yml; jobs chain with `needs:` so stages run strictly
+  in order — never in parallel.
+
+inputs:
+  source:
+    description: "Branch to promote FROM"
+    required: true
+  target:
+    description: "Branch to promote INTO (next branch in the pipeline)"
+    required: true
+  stage_name:
+    description: "Human-readable stage label, e.g. 'Stage 2: Verify → Semi-Stage'"
+    required: true
+  token:
+    description: "GitHub token with contents:write, pull-requests:write, checks:read"
+    required: true
+  run_orchestrator:
+    description: "'true' to run the branding orchestrator on the source branch before promoting"
+    required: false
+    default: "false"
+  orchestrator_arg:
+    description: "Stage argument passed to branding-orchestrator.sh (verify|semi-stage|final) when run_orchestrator=true"
+    required: false
+    default: ""
+  verify_timeout_ms:
+    description: "Max time to wait for the target branch's checks before failing"
+    required: false
+    default: "900000"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout source branch
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.source }}
+        fetch-depth: 0
+        token: ${{ inputs.token }}
+
+    - name: Configure git
+      shell: bash
+      run: |
+        git config user.name "NasTech Sync Bot"
+        git config user.email "sync@nastechai.dev"
+
+    - name: Announce stage
+      shell: bash
+      run: |
+        echo "::group::⛓ ${{ inputs.stage_name }}  |  ${{ inputs.source }} → ${{ inputs.target }}"
+        echo "Pipeline: hermes-automation → verify → semi-stage → final → main (HEAD)"
+
+    - name: Run branding orchestrator
+      if: ${{ inputs.run_orchestrator == 'true' }}
+      shell: bash
+      run: |
+        chmod +x .github/scripts/*.sh .github/scripts/*.py .github/scripts/*.js 2>/dev/null || true
+        ./.github/scripts/branding-orchestrator.sh . "${{ inputs.orchestrator_arg }}" || exit 1
+
+    - name: Commit stage artifacts on source
+      if: ${{ inputs.run_orchestrator == 'true' }}
+      shell: bash
+      run: |
+        git add -A
+        git commit -m "chore(pipeline): ${{ inputs.stage_name }} artifacts [auto]" || echo "No new artifacts"
+
+    - name: Promote — push ${{ inputs.source }} → ${{ inputs.target }}
+      shell: bash
+      run: |
+        git fetch origin
+        if git ls-remote --exit-code origin "${{ inputs.target }}"; then
+          git checkout -B "${{ inputs.target }}" "origin/${{ inputs.target }}"
+        else
+          git checkout -B "${{ inputs.target }}"
+        fi
+        git merge --no-ff "origin/${{ inputs.source }}" \
+          -m "chore(pipeline): ${{ inputs.source }} → ${{ inputs.target }} [auto]" || true
+        git push origin "${{ inputs.target }}" --force-with-lease || git push origin "${{ inputs.target }}"
+        echo "Pushed ${{ inputs.source }} → ${{ inputs.target }}"
+
+    - name: Verify — wait for ${{ inputs.target }} checks
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const { owner, repo } = context.repo;
+          const target = '${{ inputs.target }}';
+          const timeoutMs = Number('${{ inputs.verify_timeout_ms }}');
+          const { data: ref } = await github.rest.git.getRef({ owner, repo, ref: `heads/${target}` });
+          const sha = ref.object.sha;
+          const start = Date.now();
+          console.log(`[verify] waiting for checks on ${target}@${sha.slice(0, 12)} ...`);
+          while (Date.now() - start < timeoutMs) {
+            const { data } = await github.rest.checks.listForRef({ owner, repo, ref: sha });
+            const runs = data.check_runs || [];
+            if (runs.length > 0 && runs.every((r) => r.status === 'completed')) {
+              const failed = runs.filter((r) => !['success', 'neutral', 'skipped'].includes(r.conclusion));
+              if (failed.length === 0) {
+                console.log(`[verify] ${target} checks PASSED (${runs.length} checks)`);
+                return;
+              }
+              core.setFailed(`[verify] ${target} checks FAILED: ${failed.map((r) => `${r.name}=${r.conclusion}`).join(', ')}`);
+              return;
+            }
+            await new Promise((r) => setTimeout(r, 30000));
+          }
+          core.setFailed(`[verify] timed out waiting for ${target} checks after ${timeoutMs}ms`);

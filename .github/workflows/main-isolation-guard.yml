@@ -1,9 +1,10 @@
 name: "Main Branch Isolation Guard"
 
-# This workflow runs on every PR targeting main.
-# It BLOCKS merges from any pipeline branch (hermes-automation, verify,
-# semi-stage, final, sync/*, nastech, setup-automation).
-# Only direct system/admin commits are allowed on main.
+# main is the HEAD of the pipeline. It only ever receives the final stage
+# (final → main) via the ordered stage-pipeline workflow. This guard BLOCKS
+# PRs from any intermediate pipeline branch (hermes-automation, verify,
+# semi-stage, sync/*, nastech, setup-automation) from merging into main.
+# `final` is the ONE branch allowed to promote into main (Stage 4).
 
 on:
   pull_request:
@@ -24,13 +25,20 @@ jobs:
           SOURCE="${{ github.head_ref }}"
           echo "Source branch: $SOURCE"
 
-          # Block all pipeline and sync branches from merging into main
-          BLOCKED_PATTERNS=("hermes-automation" "verify" "semi-stage" "final" "nastech" "setup-automation" "sync/")
+          # Only `final` may promote into main (Stage 4). Everything else is blocked.
+          if [[ "$SOURCE" == "final" ]]; then
+            echo "BLOCKED=false" >> $GITHUB_OUTPUT
+            echo "REASON=final is the Stage 4 head promotion branch." >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Block all other pipeline and sync branches from merging into main
+          BLOCKED_PATTERNS=("hermes-automation" "verify" "semi-stage" "nastech" "setup-automation" "sync/")
 
           for pattern in "${BLOCKED_PATTERNS[@]}"; do
             if [[ "$SOURCE" == *"$pattern"* ]]; then
               echo "BLOCKED=true" >> $GITHUB_OUTPUT
-              echo "REASON=Branch '$SOURCE' is a pipeline branch and must never merge into main." >> $GITHUB_OUTPUT
+              echo "REASON=Branch '$SOURCE' is an intermediate pipeline branch and must never merge into main directly." >> $GITHUB_OUTPUT
               exit 0
             fi
           done
@@ -46,7 +54,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## 🚫 Main Branch Isolation Guard\n\n**This PR is blocked.**\n\n\`main\` is a system-only branch and must never receive merges from pipeline branches (\`hermes-automation\`, \`verify\`, \`semi-stage\`, \`final\`, \`nastech\`, \`sync/*\`).\n\nThe pipeline flow is:\n\`\`\`\nhermes-automation → verify → semi-stage → final → nastechai/nastech-agent\n\`\`\`\n\n\`main\` in this repository is never part of that flow. Please close this PR.`
+              body: `## 🚫 Main Branch Isolation Guard\n\n**This PR is blocked.**\n\n\`main\` is the HEAD of the pipeline and only receives the final stage. Only \`final\` may promote into main (Stage 4).\n\nThe ordered pipeline flow is:\n\`\`\`\nhermes-automation →(S1)→ verify →(S2)→ semi-stage →(S3)→ final →(S4)→ main (HEAD)\n\`\`\`\n\nPromote code through the ordered stage pipeline instead. Please close this PR.`
             });
 
       - name: Fail the check
@@ -57,4 +65,4 @@ jobs:
 
       - name: Pass for legitimate system PRs
         if: steps.check.outputs.BLOCKED == 'false'
-        run: echo "Source branch is not a pipeline branch. Proceeding."
+        run: echo "Source branch is not an intermediate pipeline branch. Proceeding."

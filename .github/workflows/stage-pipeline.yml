@@ -1,0 +1,100 @@
+name: "Stage Pipeline: ordered push + verify (main = HEAD)"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# THE ordered pipeline. Every stage is a job chained with `needs:`, so stages
+# run strictly one after another — NOT all at once. Each stage:
+#   1. BRAND:  runs the branding orchestrator on its branch (verify/semi/final)
+#   2. PUSH:   promotes the branch into the NEXT branch
+#   3. VERIFY: waits for the next branch's checks to pass before continuing
+#
+#   hermes-automation →(S1)→ verify →(S2)→ semi-stage →(S3)→ final →(S4)→ main
+#
+# main is the HEAD — the final destination of the pipeline.
+#
+# Hermes tests/sync are NOT part of main: they live on the `hermes-automation`
+# branch and trigger there (see hermes-sync.yml on that branch). Nothing
+# hermes-specific runs on main.
+#
+# Scaling: to add stages, append more jobs below, each with
+#   needs: <previous job>
+# and the correct source/target branches — the chain stays in order.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Start the full ordered pipeline (yes)"
+        default: "yes"
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/stage-pipeline.yml'
+      - '.github/actions/stage/action.yml'
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+  actions: read
+
+jobs:
+  # ── Stage 1: Hermes Automation → Verify ───────────────────────────────────
+  stage-1-hermes-to-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stage 1 (push + verify)
+        uses: ./.github/actions/stage
+        with:
+          source: hermes-automation
+          target: verify
+          stage_name: "Stage 1: Hermes Automation → Verify"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          run_orchestrator: "false"
+          orchestrator_arg: ""
+
+  # ── Stage 2: Verify → Semi-Stage ──────────────────────────────────────────
+  stage-2-verify-to-semi-stage:
+    needs: stage-1-hermes-to-verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stage 2 (brand → push → verify)
+        uses: ./.github/actions/stage
+        with:
+          source: verify
+          target: semi-stage
+          stage_name: "Stage 2: Verify → Semi-Stage"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          run_orchestrator: "true"
+          orchestrator_arg: "verify"
+
+  # ── Stage 3: Semi-Stage → Final ───────────────────────────────────────────
+  stage-3-semi-stage-to-final:
+    needs: stage-2-verify-to-semi-stage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stage 3 (brand → push → verify)
+        uses: ./.github/actions/stage
+        with:
+          source: semi-stage
+          target: final
+          stage_name: "Stage 3: Semi-Stage → Final"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          run_orchestrator: "true"
+          orchestrator_arg: "semi-stage"
+
+  # ── Stage 4: Final → main (HEAD) ──────────────────────────────────────────
+  stage-4-final-to-main:
+    needs: stage-3-semi-stage-to-final
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stage 4 (brand → push → verify) — main is HEAD
+        uses: ./.github/actions/stage
+        with:
+          source: final
+          target: main
+          stage_name: "Stage 4: Final → Main (HEAD)"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          run_orchestrator: "true"
+          orchestrator_arg: "final"
