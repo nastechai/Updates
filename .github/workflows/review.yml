@@ -1,0 +1,61 @@
+name: agentic-review
+
+# PR review by the Agentic Coder Fixer (ensemble of 10 Ollama Cloud APIs).
+# Posts inline review comments + an `agentic-review` check run used as a merge gate.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+
+concurrency:
+  group: agentic-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run agentic review (ensemble)
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          NAS_TOKEN: ${{ secrets.NAS_TOKEN }}
+          OLLAMA_API_KEY_1: ${{ secrets.OLLAMA_API_KEY_1 }}
+          OLLAMA_API_KEY_2: ${{ secrets.OLLAMA_API_KEY_2 }}
+          OLLAMA_API_KEY_3: ${{ secrets.OLLAMA_API_KEY_3 }}
+          OLLAMA_API_KEY_4: ${{ secrets.OLLAMA_API_KEY_4 }}
+          OLLAMA_API_KEY_5: ${{ secrets.OLLAMA_API_KEY_5 }}
+          OLLAMA_API_KEY_6: ${{ secrets.OLLAMA_API_KEY_6 }}
+          OLLAMA_API_KEY_7: ${{ secrets.OLLAMA_API_KEY_7 }}
+          OLLAMA_API_KEY_8: ${{ secrets.OLLAMA_API_KEY_8 }}
+          OLLAMA_API_KEY_9: ${{ secrets.OLLAMA_API_KEY_9 }}
+          OLLAMA_API_KEY_10: ${{ secrets.OLLAMA_API_KEY_10 }}
+        run: python .github/scripts/review_agent.py --pr "$PR_NUMBER" --repo "$GITHUB_REPOSITORY"
+
+      - name: BrandGuard diff scan (hard gate)
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: python .github/scripts/brand_scan.py "$BASE"

@@ -1,0 +1,72 @@
+name: agentic-security-scan
+
+# Hard security + brand gates on every push/PR:
+#   1. gitleaks secret scan
+#   2. BrandGuard diff scan (never misbrand dependencies)
+#   3. npm / docker brand validators
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  secrets-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  brand-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: BrandGuard diff scan
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+        run: |
+          BASE="$BASE_SHA"
+          if [ -z "$BASE" ]; then
+            if git rev-parse origin/HEAD >/dev/null 2>&1; then BASE=origin/HEAD
+            else BASE=$(git rev-parse HEAD~1 2>/dev/null || echo HEAD); fi
+          fi
+          echo "BrandGuard base: $BASE"
+          python .github/scripts/brand_scan.py "$BASE" || \
+            { echo "::error::BrandGuard: dependency rename detected in diff"; exit 1; }
+
+  brand-validators:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate npm branding
+        if: hashFiles('**/package.json') != ''
+        run: node .github/scripts/validate-npm-branding.js --repo .
+
+      - name: Validate docker branding
+        if: hashFiles('Dockerfile*', '**/Dockerfile*', 'docker-compose*') != ''
+        run: bash .github/scripts/validate-docker-branding.sh . false

@@ -1,0 +1,83 @@
+{
+  "providers": {
+    "ollama": {
+      "base_url": "https://ollama.com/v1",
+      "api_key_env": [
+        "OLLAMA_API_KEY_1",
+        "OLLAMA_API_KEY_2",
+        "OLLAMA_API_KEY_3",
+        "OLLAMA_API_KEY_4",
+        "OLLAMA_API_KEY_5",
+        "OLLAMA_API_KEY_6",
+        "OLLAMA_API_KEY_7",
+        "OLLAMA_API_KEY_8",
+        "OLLAMA_API_KEY_9",
+        "OLLAMA_API_KEY_10"
+      ],
+      "models": ["gemma4:31b", "kimi-k2.7-code", "deepseek-v4-pro", "mistral-large-3:675b"],
+      "endpoints": [
+        {"base_url": "https://ollama.com/v1", "api_key_env": ["OLLAMA_API_KEY_1", "OLLAMA_API_KEY_2"]},
+        {"base_url": "https://ollama.com/v1", "api_key_env": ["OLLAMA_API_KEY_3", "OLLAMA_API_KEY_4"]},
+        {"base_url": "https://ollama.com/v1", "api_key_env": ["OLLAMA_API_KEY_5", "OLLAMA_API_KEY_6"]},
+        {"base_url": "https://ollama.com/v1", "api_key_env": ["OLLAMA_API_KEY_7", "OLLAMA_API_KEY_8"]},
+        {"base_url": "https://ollama.com/v1", "api_key_env": ["OLLAMA_API_KEY_9", "OLLAMA_API_KEY_10"]},
+        {"base_url": "http://localhost:11434/v1", "api_key_env": []}
+      ],
+      "timeout_seconds": 120,
+      "max_tokens": 4096,
+      "temperature": 0.1
+    }
+  },
+  "ensemble": {
+    "enabled": true,
+    "top_k": 3,
+    "min_agreement": 2,
+    "high_confidence": 0.85
+  },
+  "repo": {
+    "owner": "nastechai",
+    "name": "Updates",
+    "default_branch": "main"
+  },
+  "review": {
+    "enabled": true,
+    "severity_threshold": "critical",
+    "max_findings": 30,
+    "min_confidence": 0.6,
+    "skip_authors": ["dependabot[bot]", "renovate[bot]", "github-actions[bot]"],
+    "review_drafts": false,
+    "check_name": "agentic-review",
+    "categories": ["bug", "security", "performance", "maintainability", "style", "docs", "test"]
+  },
+  "fix": {
+    "enabled": true,
+    "automerge": true,
+    "automerge_only_bot_prs": true,
+    "max_iterations": 3,
+    "run_tests": true,
+    "test_command": "python3 -m pytest tests -x -q --timeout=60",
+    "require_checks": ["agentic-review"],
+    "bot_marker": "<!-- agentic-fixer -->",
+    "labels": {
+      "trigger": "autofix",
+      "in_progress": "autofix-in-progress"
+    }
+  },
+  "security": {
+    "denylist_substrings": [".env", ".git/", ".ssh", ".aws", "/etc/", "credentials", "secret", "password", "token", "*.pem", "*.key", "id_rsa", "node_modules", ".venv", "dist", "build"],
+    "max_scan_bytes": 1048576,
+    "injection_fail_closed": true,
+    "injection_phrases": ["ignore previous", "ignore all previous", "disregard your instructions", "system prompt", "you are now", "end of file marker", "unauthorized_instruction"]
+  },
+  "brand_guard": {
+    "enabled": true,
+    "protect_docker_images": true,
+    "allow_remove_identifiers": [],
+    "extra_manifests": ["yarn.lock"],
+    "guard_file_patterns": [".npmrc", "*.npmrc", "docker-compose*.yml", "docker-compose*.yaml"]
+  },
+  "skills": {
+    "dir": ".github/skills",
+    "always_load": ["security", "npm-brand-validator", "docker-brand-validator"]
+  }
+}
