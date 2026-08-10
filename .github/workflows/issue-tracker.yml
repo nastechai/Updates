@@ -2,7 +2,7 @@ name: Sync Status Tracker
 
 on:
   workflow_run:
-    workflows: ["Auto Sync, Test, Rebrand & Create PR"]
+    workflows: ["Auto Sync Test Rebrand PR"]
     types: [completed]
 
 permissions:
@@ -16,140 +16,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
-      - name: Get workflow run details
-        id: workflow-info
+      - name: Create issue
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const runId = ${{ github.event.workflow_run.id }};
-            const workflowName = '${{ github.event.workflow_run.name }}';
             const conclusion = '${{ github.event.workflow_run.conclusion }}';
-            const headBranch = '${{ github.event.workflow_run.head_branch }}';
-            
-            const { data: run } = await github.rest.actions.getWorkflowRun({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: runId
-            });
-            
-            core.setOutput('conclusion', conclusion);
-            core.setOutput('run_id', runId);
-            core.setOutput('run_number', run.run_number);
-            core.setOutput('head_sha', run.head_sha);
-            core.setOutput('head_branch', headBranch);
-
-      - name: Create success issue
-        if: steps.workflow-info.outputs.conclusion == 'success'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const runId = '${{ steps.workflow-info.outputs.run_id }}';
-            const runNumber = '${{ steps.workflow-info.outputs.run_number }}';
-            const headSha = '${{ steps.workflow-info.outputs.head_sha }}';
-            const shortSha = headSha.substring(0, 8);
+            const runId = ${{ github.event.workflow_run.id }};
             
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: \`✅ Sync Completed: \${shortSha}\`,
-              body: \`## Sync Status: SUCCESS
-
-**Run:** [\`#\${runNumber}\`](https://github.com/${{ github.repository }}/actions/runs/\${runId})
-**Commit:** \`\${shortSha}\`
-**Time:** \${new Date().toISOString()}
-
-### Summary
-- ✓ Upstream synced successfully
-- ✓ Branding transformations applied
-- ✓ All verification checks passed
-- ✓ PR created to nastech-agent
-
-**Next Step:** Review and merge the PR in nastech-agent repository.
-\`,
-              labels: ['sync', 'success', 'automated']
-            });
-
-      - name: Create failure issue
-        if: steps.workflow-info.outputs.conclusion == 'failure'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const runId = '${{ steps.workflow-info.outputs.run_id }}';
-            const runNumber = '${{ steps.workflow-info.outputs.run_number }}';
-            const headSha = '${{ steps.workflow-info.outputs.head_sha }}';
-            const shortSha = headSha.substring(0, 8);
-            
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: \`❌ Sync Failed: \${shortSha}\`,
-              body: \`## Sync Status: FAILED
-
-**Run:** [\`#\${runNumber}\`](https://github.com/${{ github.repository }}/actions/runs/\${runId})
-**Commit:** \`\${shortSha}\`
-**Time:** \${new Date().toISOString()}
-
-### Action Required
-The sync workflow failed. Please review the [workflow logs](https://github.com/${{ github.repository }}/actions/runs/\${runId}) to diagnose the issue.
-
-### Common Issues
-1. **Branding Transformation Failed**
-   - Check rebrand.sh logs
-   - Verify file permissions
-   - Check for special characters in filenames
-
-2. **Verification Failed**
-   - Hermes references still present
-   - @nous-research not fully replaced
-   - File/folder names not updated
-
-3. **PR Creation Failed**
-   - Check GitHub token permissions
-   - Verify nastech-agent repository access
-   - Check branch protection rules
-
-4. **Network Issues**
-   - Upstream repository unreachable
-   - GitHub API rate limit exceeded
-   - Network timeout
-
-### Debugging Steps
-1. Check the full workflow logs
-2. Review the rebrand.sh output
-3. Review the verify-branding.sh output
-4. Check git status and diff
-5. Verify file/folder names were updated
-
-**Status:** Requires manual investigation
-\`,
-              labels: ['sync', 'error', 'automated', 'needs-review']
-            });
-
-      - name: Create skipped issue
-        if: steps.workflow-info.outputs.conclusion == 'skipped'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const runId = '${{ steps.workflow-info.outputs.run_id }}';
-            const runNumber = '${{ steps.workflow-info.outputs.run_number }}';
-            
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: \`⏭️ Sync Skipped: Already Synced\`,
-              body: \`## Sync Status: SKIPPED
-
-**Run:** [\`#\${runNumber}\`](https://github.com/${{ github.repository }}/actions/runs/\${runId})
-**Time:** \${new Date().toISOString()}
-
-### Summary
-The upstream repository is already synced with the current version. No new changes available.
-
-**Next Sync:** Scheduled for next cycle or on manual trigger.
-\`,
-              labels: ['sync', 'skipped', 'automated']
+              title: `Sync Status: ${conclusion.toUpperCase()}`,
+              body: `The sync workflow finished with status: ${conclusion}. Run details: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`
             });
