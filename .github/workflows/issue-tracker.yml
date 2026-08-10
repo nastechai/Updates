@@ -1,32 +1,105 @@
 name: Sync Status Tracker
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Trigger: fires whenever the main sync workflow completes
+# ─────────────────────────────────────────────────────────────────────────────
 on:
   workflow_run:
     workflows: ["Auto Sync Test Rebrand PR"]
     types: [completed]
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Permissions: only needs to read repo metadata and write issues
+# ─────────────────────────────────────────────────────────────────────────────
 permissions:
   issues: write
   contents: read
 
 jobs:
   track-status:
+    name: Update sync status issue
     runs-on: ubuntu-latest
+    # No checkout needed — this job only calls the GitHub API
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-
-      - name: Create issue
+      - name: Upsert sync-status tracking issue
+        # actions/github-script v7.0.1 (pinned SHA)
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const conclusion = '${{ github.event.workflow_run.conclusion }}';
-            const runId = ${{ github.event.workflow_run.id }};
-            
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Sync Status: ${conclusion.toUpperCase()}`,
-              body: `The sync workflow finished with status: ${conclusion}. Run details: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`
+            // ── Read conclusion safely from the environment, not from an
+            //    inline template expression, to prevent script injection.
+            const conclusion = process.env.WORKFLOW_CONCLUSION ?? 'unknown';
+            const runId      = Number(process.env.WORKFLOW_RUN_ID ?? 0);
+            const owner      = context.repo.owner;
+            const repo       = context.repo.repo;
+
+            const statusEmoji = conclusion === 'success' ? '✅' : '❌';
+            const runUrl      = `https://github.com/${owner}/${repo}/actions/runs/${runId}`;
+            const timestamp   = new Date().toISOString();
+
+            const issueTitle  = '📊 Sync Status Tracker';
+            const issueBody   = [
+              '## NasTech Sync Status',
+              '',
+              '> This issue is automatically maintained by the Sync Status Tracker workflow.',
+              '> Do **not** close it manually.',
+              '',
+              '| Field       | Value |',
+              '|-------------|-------|',
+              `| Status      | ${statusEmoji} \`${conclusion.toUpperCase()}\` |`,
+              `| Run         | [View logs](${runUrl}) |`,
+              `| Last update | ${timestamp} |`,
+            ].join('\n');
+
+            // Search for an existing tracking issue to update instead of
+            // creating a new one on every run (avoids issue-tracker spam).
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state:    'open',
+              labels:   'sync-tracker',
+              per_page: 1,
             });
+
+            if (existingIssues.length > 0) {
+              // Update the existing tracking issue
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existingIssues[0].number,
+                body: issueBody,
+              });
+              // Add a lightweight comment so the timeline reflects each run
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existingIssues[0].number,
+                body: `${statusEmoji} Run [#${runId}](${runUrl}) completed with \`${conclusion.toUpperCase()}\` at ${timestamp}`,
+              });
+            } else {
+              // First run: create the tracking issue with the sync-tracker label
+              // (create the label if it doesn't exist yet)
+              try {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name:  'sync-tracker',
+                  color: '0075ca',
+                  description: 'Automated sync status tracking issue',
+                });
+              } catch (_) {
+                // Label already exists — ignore
+              }
+
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title:  issueTitle,
+                body:   issueBody,
+                labels: ['sync-tracker'],
+              });
+            }
+        env:
+          WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          WORKFLOW_RUN_ID:     ${{ github.event.workflow_run.id }}

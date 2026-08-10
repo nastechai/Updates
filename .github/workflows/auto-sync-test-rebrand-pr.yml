@@ -1,144 +1,217 @@
 name: Auto Sync Test Rebrand PR
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Triggers
+# ─────────────────────────────────────────────────────────────────────────────
 on:
-  workflow_dispatch:
+  workflow_dispatch:          # Manual trigger from the Actions UI
+
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * *'       # Daily at 02:00 UTC
+
   repository_dispatch:
-    types: [upstream-update]
+    types: [upstream-update]  # Webhook trigger from upstream monitor
+
   push:
     branches:
       - main
     paths:
-      - '.github/scripts/**'
+      - '.github/scripts/**'  # Re-run when branding scripts change
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Concurrency: prevent duplicate runs racing to create the same PR
+# ─────────────────────────────────────────────────────────────────────────────
+concurrency:
+  group: sync-rebrand-${{ github.ref }}
+  cancel-in-progress: false   # Let the current run finish; queue the next
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Permissions
+# ─────────────────────────────────────────────────────────────────────────────
 permissions:
   contents: write
   pull-requests: write
   issues: write
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Jobs
+# ─────────────────────────────────────────────────────────────────────────────
 jobs:
   sync-test-rebrand-pr:
+    name: Sync → Rebrand → Verify → PR
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 20        # Generous but not runaway; was 120
+
     steps:
+      # ── Checkout ────────────────────────────────────────────────────────────
       - name: Checkout Updates repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        # actions/checkout v4.2.2 (pinned SHA)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
 
-      - name: Configure git
+      # ── Git identity ────────────────────────────────────────────────────────
+      - name: Configure git identity
         run: |
-          git config user.name "NasTech Sync Bot"
+          git config user.name  "NasTech Sync Bot"
           git config user.email "sync@nastechai.dev"
 
-      - name: Add upstream remote
+      # ── Remotes ─────────────────────────────────────────────────────────────
+      - name: Add upstream remote (NousResearch/hermes-agent)
         run: |
           git remote add upstream https://github.com/NousResearch/hermes-agent.git || true
           git fetch upstream --depth=50
 
-      - name: Add target remote
+      - name: Add target remote (nastechai/nastech-agent)
         env:
           NAS_TOKEN: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          # Use NAS_TOKEN if available, otherwise fallback to GITHUB_TOKEN
-          git remote add target https://nastechai:${NAS_TOKEN}@github.com/nastechai/nastech-agent.git || true
+          git remote add target \
+            "https://nastechai:${NAS_TOKEN}@github.com/nastechai/nastech-agent.git" || true
           git fetch target --depth=50
 
-      - name: Get upstream HEAD
+      # ── Upstream metadata ───────────────────────────────────────────────────
+      - name: Capture upstream HEAD info
         id: upstream-info
         run: |
           UPSTREAM_SHA=$(git rev-parse upstream/main)
-          SHORT_SHA=${UPSTREAM_SHA:0:8}
-          UPSTREAM_MSG=$(git log upstream/main -1 --pretty=format:"%s" | tr -d '"' | tr -d "'")
-          echo "sha=$UPSTREAM_SHA" >> $GITHUB_OUTPUT
-          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
-          echo "message=$UPSTREAM_MSG" >> $GITHUB_OUTPUT
+          SHORT_SHA="${UPSTREAM_SHA:0:8}"
+          # Strip quotes/apostrophes to prevent YAML / JS injection
+          UPSTREAM_MSG=$(
+            git log upstream/main -1 --pretty=format:"%s" \
+            | tr -d '"' | tr -d "'" | cut -c1-120
+          )
+          echo "sha=$UPSTREAM_SHA"       >> "$GITHUB_OUTPUT"
+          echo "short_sha=$SHORT_SHA"    >> "$GITHUB_OUTPUT"
+          echo "message=$UPSTREAM_MSG"   >> "$GITHUB_OUTPUT"
 
-      - name: Check if already synced
+      # ── Idempotency check ───────────────────────────────────────────────────
+      - name: Check if this upstream commit was already synced
         id: check-sync
         run: |
-          if git log --oneline | grep -q "${{ steps.upstream-info.outputs.short_sha }}"; then
-            echo "already_synced=true" >> $GITHUB_OUTPUT
+          SHORT_SHA="${{ steps.upstream-info.outputs.short_sha }}"
+          if git log --oneline | grep -qF "$SHORT_SHA"; then
+            echo "already_synced=true"  >> "$GITHUB_OUTPUT"
           else
-            echo "already_synced=false" >> $GITHUB_OUTPUT
+            echo "already_synced=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # ── Sync branch ─────────────────────────────────────────────────────────
       - name: Create sync branch
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
           BRANCH_NAME="sync/$(date +%Y%m%d-%H%M%S)-${{ steps.upstream-info.outputs.short_sha }}"
           git checkout -b "$BRANCH_NAME"
-          echo "SYNC_BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "SYNC_BRANCH=$BRANCH_NAME" >> "$GITHUB_ENV"
 
+      # ── Merge ───────────────────────────────────────────────────────────────
       - name: Merge upstream changes
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
-          git merge upstream/main --no-commit --no-ff || true
-          # Preserve our own workflows
+          # Attempt merge; fail loudly on conflict instead of silently continuing
+          if ! git merge upstream/main --no-commit --no-ff; then
+            echo "::error::Merge conflict detected — manual resolution required."
+            git merge --abort || true
+            exit 1
+          fi
+          # Always preserve our own workflow files
           git checkout HEAD -- .github/workflows/
 
+      # ── Rebrand ─────────────────────────────────────────────────────────────
       - name: Apply branding transformations
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
           chmod +x .github/scripts/rebrand.sh
           .github/scripts/rebrand.sh . false
 
+      # ── Verify ──────────────────────────────────────────────────────────────
       - name: Verify branding compliance
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
           chmod +x .github/scripts/verify-branding.sh
           .github/scripts/verify-branding.sh .
 
-      - name: Commit changes
+      # ── Commit ──────────────────────────────────────────────────────────────
+      - name: Commit rebrand changes
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
           git add -A
           git commit -m "chore: sync and rebrand from Hermes
 
-          Upstream: main@${{ steps.upstream-info.outputs.short_sha }}
-          Message: ${{ steps.upstream-info.outputs.message }}
-          
+          Upstream : main@${{ steps.upstream-info.outputs.short_sha }}
+          Message  : ${{ steps.upstream-info.outputs.message }}
+
           Automated by: NasTech Sync Bot"
 
-      - name: Push sync branch to target repo
+      # ── Push ────────────────────────────────────────────────────────────────
+      - name: Push sync branch to nastechai/nastech-agent
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
-          # Push to the target repository (nastech-agent)
-          git push target "${{ env.SYNC_BRANCH }}" --force
+          # --force-with-lease is safe: fails if the remote was updated concurrently
+          git push target "${{ env.SYNC_BRANCH }}" --force-with-lease
 
-      - name: Create PR in nastech-agent
+      # ── Open PR ─────────────────────────────────────────────────────────────
+      - name: Create PR in nastechai/nastech-agent
         if: steps.check-sync.outputs.already_synced == 'false'
+        # actions/github-script v7.0.1 (pinned SHA)
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
           github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
-            const syncBranch = '${{ env.SYNC_BRANCH }}';
-            const shortSha = '${{ steps.upstream-info.outputs.short_sha }}';
-            
+            const syncBranch = process.env.SYNC_BRANCH;
+            const shortSha   = '${{ steps.upstream-info.outputs.short_sha }}';
+            const message    = '${{ steps.upstream-info.outputs.message }}';
+
+            const body = [
+              '## Sync and Rebrand from Hermes',
+              '',
+              `**Upstream commit:** \`main@${shortSha}\``,
+              `**Upstream message:** ${message}`,
+              '',
+              '### What this PR contains',
+              '- Merged latest commits from `NousResearch/hermes-agent`',
+              '- Applied NasTech branding transformations via `rebrand.sh`',
+              '- Passed all branding compliance checks via `verify-branding.sh`',
+              '',
+              '_This PR was automatically generated and verified by the NasTech Sync Bot._',
+            ].join('\n');
+
             await github.rest.pulls.create({
               owner: 'nastechai',
-              repo: 'nastech-agent',
+              repo:  'nastech-agent',
               title: `chore: sync and rebrand from Hermes (${shortSha})`,
-              head: syncBranch,
-              base: 'main',
-              body: `## Sync and Rebrand from Hermes\n\n**Upstream:** \`main@${shortSha}\`\n\nThis PR was automatically generated and verified by the NasTech Sync Bot from the Updates repository.`
+              head:  syncBranch,
+              base:  'main',
+              body,
             });
+        env:
+          SYNC_BRANCH: ${{ env.SYNC_BRANCH }}
 
+  # ── Failure handler ──────────────────────────────────────────────────────────
   handle-failure:
+    name: Report workflow failure
     if: failure()
     runs-on: ubuntu-latest
     needs: [sync-test-rebrand-pr]
     steps:
-      - name: Create failure issue
+      - name: Open failure issue
+        # actions/github-script v7.0.1 (pinned SHA)
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
           github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.create({
+            await github.rest.issues.create({
               owner: context.repo.owner,
-              repo: context.repo.repo,
+              repo:  context.repo.repo,
               title: '🚨 Auto Sync Workflow Failed',
-              body: 'The sync and rebrand workflow failed. Please check the workflow logs in the Updates repository.'
+              body: [
+                '## Sync Workflow Failure',
+                '',
+                `**Run:** [View logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+                '',
+                'The automated sync and rebrand workflow failed.',
+                'Please review the logs above and resolve any merge conflicts or branding violations.',
+              ].join('\n'),
+              labels: ['bug', 'automation'],
             });
