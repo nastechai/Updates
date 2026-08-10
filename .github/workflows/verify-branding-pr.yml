@@ -1,0 +1,84 @@
+name: Verify Branding (PR)
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - '**/*.json'
+      - '**/*.py'
+      - '**/*.js'
+      - '**/*.ts'
+      - '**/*.md'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  verify-branding:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+
+      - name: Check for Hermes references
+        id: check-hermes
+        continue-on-error: true
+        run: |
+          HERMES_COUNT=$(find . -type f \( -name "*.json" -o -name "*.py" -o -name "*.js" -o -name "*.ts" \) \
+            -not -path "./.git/*" -not -path "./node_modules/*" \
+            -exec grep -l "hermes-agent\|Hermes" {} \; 2>/dev/null | wc -l)
+          if [ "$HERMES_COUNT" -gt 0 ]; then
+            echo "hermes_found=true" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Check for @nous-research
+        id: check-nous
+        continue-on-error: true
+        run: |
+          NOUS_COUNT=$(find . -type f -name "package.json" \
+            -not -path "./.git/*" -not -path "./node_modules/*" \
+            -exec grep -l "@nous-research" {} \; 2>/dev/null | wc -l)
+          if [ "$NOUS_COUNT" -gt 0 ]; then
+            echo "nous_found=true" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const hermesPassed = '${{ steps.check-hermes.outcome }}' === 'success';
+            const nousPassed = '${{ steps.check-nous.outcome }}' === 'success';
+            const passed = (hermesPassed ? 1 : 0) + (nousPassed ? 1 : 0);
+            
+            let comment = `## 🔍 Branding Verification\n\n`;
+            comment += `| Check | Status |\n`;
+            comment += `|-------|--------|\n`;
+            comment += `| Hermes references | ${hermesPassed ? '✓ PASS' : '✗ FAIL'} |\n`;
+            comment += `| @nous-research | ${nousPassed ? '✓ PASS' : '✗ FAIL'} |\n`;
+            
+            if (passed === 2) {
+              comment += `\n✅ All checks passed!`;
+            } else {
+              comment += `\n❌ Some checks failed.`;
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Fail if checks failed
+        if: |
+          steps.check-hermes.outcome == 'failure' ||
+          steps.check-nous.outcome == 'failure'
+        run: exit 1

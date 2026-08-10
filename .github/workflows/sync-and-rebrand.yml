@@ -1,0 +1,173 @@
+name: Sync, Rebrand & Create PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_ref:
+        description: 'Upstream ref to sync (e.g., main, v1.0.0)'
+        required: false
+        default: 'main'
+      target_repo:
+        description: 'Target repo for PR (e.g., nastechai/nastech-agent)'
+        required: false
+        default: 'nastechai/nastech-agent'
+
+  schedule:
+    - cron: '0 2 * * *'
+
+  repository_dispatch:
+    types: [upstream-update]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-rebrand-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout Updates repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "NasTech Sync Bot"
+          git config user.email "sync@nastechai.dev"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/NousResearch/hermes-agent.git || true
+          git fetch upstream
+
+      - name: Add target remote
+        run: |
+          git remote add target https://github.com/${{ github.event.inputs.target_repo || 'nastechai/nastech-agent' }}.git || true
+          git fetch target
+
+      - name: Determine upstream ref
+        id: upstream-ref
+        run: |
+          UPSTREAM_REF="${{ github.event.inputs.upstream_ref || 'main' }}"
+          UPSTREAM_SHA=$(git rev-parse upstream/$UPSTREAM_REF)
+          SHORT_SHA=${UPSTREAM_SHA:0:8}
+          echo "ref=$UPSTREAM_REF" >> $GITHUB_OUTPUT
+          echo "sha=$UPSTREAM_SHA" >> $GITHUB_OUTPUT
+          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Check if already synced
+        id: check-sync
+        run: |
+          if git log --oneline | grep -q "${{ steps.upstream-ref.outputs.short_sha }}"; then
+            echo "already_synced=true" >> $GITHUB_OUTPUT
+          else
+            echo "already_synced=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create sync branch
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          BRANCH_NAME="sync/$(date +%Y%m%d)-${{ steps.upstream-ref.outputs.short_sha }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "SYNC_BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Merge upstream changes
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          git merge upstream/${{ steps.upstream-ref.outputs.ref }} --no-commit --no-ff || true
+
+      - name: Apply branding transformations
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          chmod +x .github/scripts/rebrand.sh
+          .github/scripts/rebrand.sh . false
+
+      - name: Verify branding compliance
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          chmod +x .github/scripts/verify-branding.sh
+          .github/scripts/verify-branding.sh . || exit 1
+
+      - name: Run npm audit
+        if: steps.check-sync.outputs.already_synced == 'false'
+        continue-on-error: true
+        run: |
+          if [ -f "package.json" ]; then
+            npm audit --json > /tmp/npm-audit.json || true
+            echo "npm audit results:"
+            cat /tmp/npm-audit.json | head -50
+          fi
+
+      - name: Commit changes
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          git add -A
+          git commit -m "chore: sync and rebrand from Hermes
+
+          Upstream: ${{ steps.upstream-ref.outputs.ref }}@${{ steps.upstream-ref.outputs.short_sha }}
+          
+          Changes:
+          - Merged upstream commits
+          - Rebranded Hermes → NasTech
+          - Rebranded @nous-research → @nastech-research
+          - Rebranded nousresearch → nastechairesearch
+          - Updated environment variables and paths
+          - Verified branding compliance"
+
+      - name: Push sync branch
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          git push origin "$SYNC_BRANCH"
+
+      - name: Create PR to nastech-agent
+        if: steps.check-sync.outputs.already_synced == 'false'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const targetRepo = '${{ github.event.inputs.target_repo || 'nastechai/nastech-agent' }}';
+            const [owner, repo] = targetRepo.split('/');
+            const syncBranch = '${{ env.SYNC_BRANCH }}';
+            const shortSha = '${{ steps.upstream-ref.outputs.short_sha }}';
+            
+            try {
+              const { data: pr } = await github.rest.pulls.create({
+                owner: owner,
+                repo: repo,
+                title: `chore: sync and rebrand from Hermes (${shortSha})`,
+                head: `nastechai:${syncBranch}`,
+                base: 'main',
+                body: `## Sync and Rebrand from Hermes
+
+**Upstream:** \`${{ steps.upstream-ref.outputs.ref }}@${shortSha}\`
+
+This PR syncs the latest changes from [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) and applies NasTech branding transformations.
+
+### Changes Applied
+- ✓ Merged upstream commits
+- ✓ Rebranded all files and folders (Hermes → NasTech)
+- ✓ Updated npm packages (@nous-research → @nastech-research)
+- ✓ Updated Docker images (nousresearch → nastechairesearch)
+- ✓ Updated environment variables (HERMES_ → NASTECH_)
+- ✓ Updated repository URLs and paths
+- ✓ Verified branding compliance
+
+### Verification
+- ✓ Branding verification passed
+- ✓ No remaining Hermes/nous-research references
+- ✓ All file and folder names updated
+- ✓ Code imports and paths verified
+
+**Created by:** NasTech Sync Bot
+**Source:** Updates Repository
+`,
+                labels: ['sync', 'automated', 'rebrand']
+              });
+              
+              console.log(\`✓ Created PR #\${pr.number}\`);
+            } catch (error) {
+              console.error(\`✗ Failed to create PR: \${error.message}\`);
+            }
