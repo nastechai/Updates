@@ -41,9 +41,21 @@ log_section() { echo -e "\n${CYAN}${BOLD}═════════════
 
 run_verify() {
     log_section "STAGE: VERIFY"
-    log_info "Running initial validation on raw sync..."
-    python3 "$SCRIPT_DIR/branding_engine.py" --repo "$REPO_ROOT" --mode validate > "${LOGS_DIR}/verify.log" 2>&1 || true
-    log_ok "Verification stage complete. Results in verify.log"
+    log_info "Running NasTech Verification Bot (Threshold: 80%)..."
+    
+    # Ensure dependencies for testing are present (simplified for sandbox)
+    pip3 install pytest pytest-json-report --quiet || true
+    
+    # Run the bot
+    if python3 "$SCRIPT_DIR/verification_bot.py" 80 > "${LOGS_DIR}/verify.log" 2>&1; then
+        log_ok "Verification stage passed with >= 80% compliance."
+    else
+        log_fail "Verification stage FAILED! Compliance score below 80%."
+        log_info "Check VERIFICATION_REPORT.json for details."
+        # Generate failure report
+        python3 "$SCRIPT_DIR/generate-report.py" "VERIFY_FAILURE" "fail" "$LOGS_DIR" "${REPO_ROOT}/FAILURE_REPORT.md"
+        exit 1
+    fi
 }
 
 run_semi_stage() {

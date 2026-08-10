@@ -4,7 +4,7 @@
 
 - **Total Lines of Code**: 3,306+
 - **Total Size**: 192 KB
-- **Scripts**: 10 executable files
+- **Scripts**: 11 executable files
 - **Documentation**: 2 comprehensive guides
 - **Supported Ecosystems**: 40+
 - **File Types Supported**: 150+
@@ -29,6 +29,20 @@
   - Automated timestamping
   - Status tracking
   - Log inclusion and formatting
+
+### 1.2 Verification Bot
+**File**: `.github/scripts/verification_bot.py`
+- **Purpose**: Enforces branding compliance and test results.
+- **Features**:
+  - 80% Compliance Threshold enforcement.
+  - Deep branding violation analysis.
+  - Integration with branded test suite.
+  - Automated failure reporting.
+
+### 1.3 Branded Test Suite
+**Directory**: `tests/`
+- **File**: `tests/test_nastech_branding.py`
+- **Purpose**: Branded unit/integration tests to verify system integrity.
 
 ### 2. Python Branding Engine
 **File**: `.github/scripts/branding_engine.py`
