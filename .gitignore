@@ -1,3 +1,14 @@
 __pycache__/
 *.pyc
 .venv/
+
+# generated pipeline reports
+RELEASE_REPORT.md
+NPM_MISMATCHES.md
+BRANDING_REPORT.md
+BRAND_VERIFICATION.md
+STAGE_REPORT.md
+INCOMING_REPORT.md
+MANIFEST_NEEDS.md
+PUBLISH_RESULT.md
+OPEN_QUESTIONS.md

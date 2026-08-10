@@ -54,6 +54,7 @@ jobs:
           stage_name: "Stage 1: Hermes Upstream → Hermes Analyser"
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           run_brand_analysis: "true"
+          run_release_request: "true"
           notify_telegram: "true"
           telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}

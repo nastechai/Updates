@@ -69,7 +69,29 @@ The mapping is enforced by `.github/scripts/brand-verifier.py` in the
 Every repo and every file type must be checked: source code, npm manifests,
 pyproject/setup, Docker labels, CI YAML, docs, and package scopes.
 
-## 4. Verification focus (what is FATAL vs NOT fatal)
+## 4. Release request — the branding master config
+
+`RELEASE_REQUEST.md` at the repo root is the **source of truth** for branding.
+When the owner edits it, `release-request-watch.yml` re-reads it and:
+
+- Lists **every brand in its category** (Product, Organization/GitHub, npm
+  scope, Docker org, Domains, Packages) and validates the old → new pairs.
+- Runs the **npm parity check**: for every package alias
+  (`hermes-parser → nastech-parser`, `hermes-agent → nastech-agent`, …) it
+  compares the npm registry versions. If the nastech package is missing or
+  BEHIND its hermes counterpart, it opens a Discussion with the exact update
+  and publish steps.
+- Confirms the nastech packages are declared as dependencies and actually
+  imported/required in code.
+
+Agent rules for RELEASE_REQUEST.md:
+- Keep every brand in its category; never invent a brand outside the file.
+- Do not change a mapping unless the owner edits RELEASE_REQUEST.md.
+- `hermes-parser` → `nastech-parser` must exist as a dependency and be used.
+- To publish npm updates: owner sets `npm publish: yes` in RELEASE_REQUEST.md
+  and adds the `NPM_TOKEN` secret, then runs `Publish npm updates`.
+
+## 5. Verification focus (what is FATAL vs NOT fatal)
 
 - **FATAL (stage stops):** missing CI workflow, missing tests, missing npm
   manifest / `@nastech-research` scope, missing Python package metadata,
@@ -80,7 +102,7 @@ pyproject/setup, Docker labels, CI YAML, docs, and package scopes.
   stage STOPS and posts a fill-the-blank question list to a **GitHub
   Discussion**; the owner answers there.
 
-## 5. Owner approval via GitHub Discussions
+## 6. Owner approval via GitHub Discussions
 
 - Branding proposals must be approved by the **owner** before `brand-verifier`.
 - Approval channel: a GitHub **Discussion** titled with `brand-ideas`.
@@ -91,7 +113,7 @@ pyproject/setup, Docker labels, CI YAML, docs, and package scopes.
 - Answers to fill-the-blank questions are recorded to `brand-answers.md`.
 - Only the repo owner's comments/edits count. Bots never self-approve.
 
-## 6. Sync & the sync-stream bot
+## 7. Sync & the sync-stream bot
 
 - `hermes-upstream` is pulled from `NousResearch/hermes-agent` every 4h by
   `hermes-sync.yml`. It is the single source of fixes for all downstream bots.
@@ -100,7 +122,7 @@ pyproject/setup, Docker labels, CI YAML, docs, and package scopes.
   sends ONE Telegram notification per batch of new commits.
 - **Never** send notifications when nothing changed.
 
-## 7. Notifications (professional, spam-free)
+## 8. Notifications (professional, spam-free)
 
 Only meaningful lifecycle events are reported to Telegram:
 - New commits on `hermes-upstream` / pipeline branches (batched, with
@@ -113,7 +135,7 @@ Only meaningful lifecycle events are reported to Telegram:
 No heartbeat, no "still running", no noise. When a token-limited check fails
 (Docker etc.) do NOT fail the run or notify as a pipeline failure.
 
-## 8. Bot identity
+## 9. Bot identity
 
 All automated commits use:
 ```
@@ -122,7 +144,7 @@ email: sync@nastechai.dev
 ```
 Automated PRs from the pipeline are titled `chore(...): ... [auto]`.
 
-## 9. AGENTS acting in this repo must
+## 10. AGENTS acting in this repo must
 
 1. Read this file first.
 2. Never touch `main` directly unless the promotion is from `final` (Stage 8)

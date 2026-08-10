@@ -1,0 +1,65 @@
+name: "Check Ollama API keys (bot health)"
+
+# Verifies the OLLAMA_API_KEY_* secrets actually work against the Ollama Cloud
+# endpoint (https://ollama.com/v1). Reports PASS/FAIL per key. GitHub never
+# returns secret values, so this check must run inside Actions.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-ollama-keys:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test OLLAMA keys against Ollama Cloud
+        env:
+          K1: ${{ secrets.OLLAMA_API_KEY_1 }}
+          K2: ${{ secrets.OLLAMA_API_KEY_2 }}
+          K3: ${{ secrets.OLLAMA_API_KEY_3 }}
+          K4: ${{ secrets.OLLAMA_API_KEY_4 }}
+          K5: ${{ secrets.OLLAMA_API_KEY_5 }}
+          K6: ${{ secrets.OLLAMA_API_KEY_6 }}
+          K7: ${{ secrets.OLLAMA_API_KEY_7 }}
+          K8: ${{ secrets.OLLAMA_API_KEY_8 }}
+          K9: ${{ secrets.OLLAMA_API_KEY_9 }}
+          K10: ${{ secrets.OLLAMA_API_KEY_10 }}
+        run: |
+          python3 - <<'PY'
+          import os, json, urllib.request
+
+          ENDPOINT = "https://ollama.com/v1/models"
+          ok = 0
+          fail = 0
+          for i in range(1, 11):
+              key = os.environ.get(f"K{i}")
+              if not key:
+                  continue
+              req = urllib.request.Request(ENDPOINT, headers={"Authorization": f"Bearer {key}"})
+              try:
+                  with urllib.request.urlopen(req, timeout=25) as r:
+                      body = json.loads(r.read())
+                      models = [m.get("id") for m in body.get("data", [])][:5]
+                      print(f"KEY {i}: PASS (HTTP {r.status}) models={models}")
+                      ok += 1
+              except Exception as e:
+                  print(f"KEY {i}: FAIL ({e})")
+                  fail += 1
+
+          print(f"\nSUMMARY: {ok} keys OK, {fail} keys FAILED")
+          if ok == 0:
+              raise SystemExit(1)
+          PY
+
+      - name: Telegram — ollama keys health
+        shell: bash
+        run: |
+          python3 .github/scripts/telegram_notify.py \
+            --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
+            --chat "${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --event llm-keys \
+            --title "🤖 Ollama API keys checked" \
+            --level "info" \
+            --body "Run finished — see workflow log for per-key PASS/FAIL." || true

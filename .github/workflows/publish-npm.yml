@@ -1,0 +1,83 @@
+name: "Publish npm updates"
+
+# Publishes the nastech npm packages that are BEHIND their hermes parity
+# versions. Gated on:
+#   1. RELEASE_REQUEST.md contains `npm publish: yes` (owner approval).
+#   2. `NPM_TOKEN` repo secret exists.
+# The nastech package source is located inside nastechai/nastech-agent.
+# Packages whose source cannot be found are reported with the manual command.
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Publish only this package (empty = all behind)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  discussions: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Updates (main)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Verify approval + NPM_TOKEN
+        run: |
+          if ! grep -qi "npm publish: *yes" RELEASE_REQUEST.md; then
+            echo "::error::Not approved. Set 'npm publish: yes' in RELEASE_REQUEST.md first."
+            exit 1
+          fi
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "::error::NPM_TOKEN secret is missing. Add it to repo secrets to publish."
+            exit 1
+          fi
+
+      - name: Checkout nastech-agent (package sources)
+        uses: actions/checkout@v4
+        with:
+          repository: nastechai/nastech-agent
+          ref: main
+          path: nastech-agent
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure npm registry auth
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+          npm config set @nastech-research:registry https://registry.npmjs.org/
+
+      - name: Run npm publish bot
+        env:
+          OLLAMA_API_KEY_1: ${{ secrets.OLLAMA_API_KEY_1 }}
+        run: |
+          pip install requests -q
+          python3 .github/scripts/npm-publish-bot.py \
+            --repo . \
+            --agent-dir nastech-agent \
+            ${{ inputs.only && format('--only {0}', inputs.only) }} || true
+          cat PUBLISH_RESULT.md
+
+      - name: Telegram — publish result
+        shell: bash
+        run: |
+          python3 .github/scripts/telegram_notify.py \
+            --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
+            --chat "${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --event npm-publish \
+            --title "📦 npm publish run finished" \
+            --level "info" \
+            --body "See PUBLISH_RESULT.md / discussion for details." \
+            --file PUBLISH_RESULT.md || true

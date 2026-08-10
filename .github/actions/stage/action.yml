@@ -46,6 +46,10 @@ inputs:
     description: "'true' to run manifest-check.py (CI/tests/npm/pypi); stops + posts fill-the-blank if missing"
     required: false
     default: "false"
+  run_release_request:
+    description: "'true' to run release-request-analyzer.py (reads RELEASE_REQUEST.md brand plan + npm parity)"
+    required: false
+    default: "false"
   notify_telegram:
     description: "'true' to send a Telegram notification for this stage's result"
     required: false
@@ -102,6 +106,18 @@ runs:
       run: |
         python3 .github/scripts/brand-analysis.py . --out . || exit 1
         git add BRANDING_REPORT.md OPEN_QUESTIONS.md
+
+    - name: Release request — brand plan + npm parity
+      if: ${{ inputs.run_release_request == 'true' }}
+      shell: bash
+      run: |
+        if [ -f RELEASE_REQUEST.md ]; then
+          python3 .github/scripts/release-request-analyzer.py . || true
+          git add RELEASE_REQUEST.md RELEASE_REPORT.md NPM_MISMATCHES.md 2>/dev/null || true
+          echo "Release request brand plan applied (see RELEASE_REPORT.md)."
+        else
+          echo "No RELEASE_REQUEST.md in this tree — using default brand rules."
+        fi
 
     - name: "Brand verifier (mode: ${{ inputs.brand_verifier_mode }})"
       if: ${{ inputs.run_brand_verifier == 'true' }}

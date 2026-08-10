@@ -1,0 +1,195 @@
+{
+  "branding_score": 99.60724043715847,
+  "test_score": 0,
+  "total_score": 49.80362021857923,
+  "violations": [
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "hermes",
+      "count": 9
+    },
+    {
+      "file": "tests/test_nastech_branding.py",
+      "pattern": "Hermes",
+      "count": 2
+    },
+    {
+      "file": "tests/nastech_cli/test_dashboard_browser_safe_imports.py",
+      "pattern": "@nous-research",
+      "count": 3
+    },
+    {
+      "file": "tests/conformance/vectors/telegram.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/telegram.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/telegram.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/conformance/vectors/slack.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/slack.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/slack.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/conformance/vectors/discord.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/discord.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/discord.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": "tests/conformance/vectors/whatsapp.json",
+      "pattern": "hermes-agent",
+      "count": 2
+    },
+    {
+      "file": "tests/conformance/vectors/whatsapp.json",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": "tests/conformance/vectors/whatsapp.json",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": ".github/scripts/verify-branding.sh",
+      "pattern": "@nous-research",
+      "count": 5
+    },
+    {
+      "file": ".github/scripts/branding_engine.py",
+      "pattern": "@nous-research",
+      "count": 3
+    },
+    {
+      "file": ".github/scripts/test-branding-system.sh",
+      "pattern": "@nous-research",
+      "count": 4
+    },
+    {
+      "file": ".github/scripts/auto_fixer_bot.py",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/auto_fixer_bot.py",
+      "pattern": "hermes",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/auto_fixer_bot.py",
+      "pattern": "Hermes",
+      "count": 6
+    },
+    {
+      "file": ".github/scripts/validate-config-branding.py",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/validate-npm-branding.js",
+      "pattern": "@nous-research",
+      "count": 10
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "hermes-agent",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "Hermes Agent",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "nousresearch",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "NousResearch",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "HERMES_",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "hermes",
+      "count": 2
+    },
+    {
+      "file": ".github/scripts/verification_bot.py",
+      "pattern": "Hermes",
+      "count": 2
+    },
+    {
+      "file": ".github/scripts/rebrand.sh",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/scripts/validate-ecosystem-branding.py",
+      "pattern": "@nous-research",
+      "count": 1
+    },
+    {
+      "file": ".github/workflows/main-isolation-guard.yml",
+      "pattern": "hermes",
+      "count": 4
+    },
+    {
+      "file": ".github/workflows/auto-fixer.yml",
+      "pattern": "Hermes",
+      "count": 1
+    }
+  ],
+  "passed_tests": 0,
+  "failed_tests": 0,
+  "status": "FAIL"
+}
