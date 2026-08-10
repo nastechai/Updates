@@ -37,7 +37,7 @@
     "shortDescription": "Hermes",
     "longDescription": "Installs Hermes Agent on your machine. Drives scripts/install.ps1 (Windows) and scripts/install.sh (macOS/Linux).",
     "publisher": "Nous Research",
-    "copyright": "Copyright © 2026 Nous Research",
+    "copyright": "Copyright \u00a9 2026 Nous Research",
     "targets": [
       "app",
       "dmg",

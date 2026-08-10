@@ -15,8 +15,6 @@
     "check": "npm run typecheck && npm run test && npm run lint"
   },
   "dependencies": {
-    "@hermes/shared": "file:../apps/shared",
-    "@nous-research/ui": "0.18.2",
     "@observablehq/plot": "0.6.17",
     "@react-three/fiber": "9.6.1",
     "@tailwindcss/vite": "4.3.3",
@@ -37,7 +35,9 @@
     "react-router": "8.3.0",
     "tailwind-merge": "3.6.0",
     "tailwindcss": "4.3.3",
-    "unicode-animations": "1.0.3"
+    "unicode-animations": "1.0.3",
+    "@nastech/shared": "file:../apps/shared",
+    "@nastech-research/ui": "0.18.2"
   },
   "devDependencies": {
     "@types/node": "22.20.1",

@@ -26,7 +26,7 @@ jobs:
 
       - name: Add Upstream
         run: |
-          git remote add upstream https://github.com/NousResearch/hermes-agent.git
+          git remote add upstream https://github.com/nastechai/nastech-agent.git
           git fetch upstream main
 
       - name: Sync to Verify Branch
@@ -35,7 +35,7 @@ jobs:
           git merge upstream/main --no-commit --no-ff || true
           # Keep our own workflows
           git checkout HEAD -- .github/workflows/
-          git commit -m "chore: sync from upstream hermes-agent" || echo "No changes to commit"
+          git commit -m "chore: sync from upstream nastech-agent" || echo "No changes to commit"
           git push origin verify --force
 
       - name: Run Orchestrator (Verify Stage)

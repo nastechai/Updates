@@ -4,8 +4,20 @@
     "url": "https://i.imgflip.com/wxica.jpg",
     "best_for": "chaos, denial, pretending things are okay",
     "fields": [
-      {"name": "top", "x_pct": 0.5, "y_pct": 0.08, "w_pct": 0.95, "align": "center"},
-      {"name": "bottom", "x_pct": 0.5, "y_pct": 0.92, "w_pct": 0.95, "align": "center"}
+      {
+        "name": "top",
+        "x_pct": 0.5,
+        "y_pct": 0.08,
+        "w_pct": 0.95,
+        "align": "center"
+      },
+      {
+        "name": "bottom",
+        "x_pct": 0.5,
+        "y_pct": 0.92,
+        "w_pct": 0.95,
+        "align": "center"
+      }
     ]
   },
   "drake": {
@@ -13,8 +25,20 @@
     "url": "https://i.imgflip.com/30b1gx.jpg",
     "best_for": "rejecting one thing, preferring another",
     "fields": [
-      {"name": "reject", "x_pct": 0.73, "y_pct": 0.25, "w_pct": 0.45, "align": "center"},
-      {"name": "approve", "x_pct": 0.73, "y_pct": 0.75, "w_pct": 0.45, "align": "center"}
+      {
+        "name": "reject",
+        "x_pct": 0.73,
+        "y_pct": 0.25,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "approve",
+        "x_pct": 0.73,
+        "y_pct": 0.75,
+        "w_pct": 0.45,
+        "align": "center"
+      }
     ]
   },
   "distracted-boyfriend": {
@@ -22,9 +46,27 @@
     "url": "https://i.imgflip.com/1ur9b0.jpg",
     "best_for": "distraction, shifting priorities, temptation",
     "fields": [
-      {"name": "distraction", "x_pct": 0.18, "y_pct": 0.90, "w_pct": 0.30, "align": "center"},
-      {"name": "current", "x_pct": 0.55, "y_pct": 0.90, "w_pct": 0.30, "align": "center"},
-      {"name": "person", "x_pct": 0.82, "y_pct": 0.90, "w_pct": 0.30, "align": "center"}
+      {
+        "name": "distraction",
+        "x_pct": 0.18,
+        "y_pct": 0.9,
+        "w_pct": 0.3,
+        "align": "center"
+      },
+      {
+        "name": "current",
+        "x_pct": 0.55,
+        "y_pct": 0.9,
+        "w_pct": 0.3,
+        "align": "center"
+      },
+      {
+        "name": "person",
+        "x_pct": 0.82,
+        "y_pct": 0.9,
+        "w_pct": 0.3,
+        "align": "center"
+      }
     ]
   },
   "two-buttons": {
@@ -32,9 +74,27 @@
     "url": "https://i.imgflip.com/1g8my4.jpg",
     "best_for": "impossible choice, dilemma between two options",
     "fields": [
-      {"name": "left_button", "x_pct": 0.30, "y_pct": 0.20, "w_pct": 0.28, "align": "center"},
-      {"name": "right_button", "x_pct": 0.62, "y_pct": 0.12, "w_pct": 0.28, "align": "center"},
-      {"name": "person", "x_pct": 0.5, "y_pct": 0.85, "w_pct": 0.90, "align": "center"}
+      {
+        "name": "left_button",
+        "x_pct": 0.3,
+        "y_pct": 0.2,
+        "w_pct": 0.28,
+        "align": "center"
+      },
+      {
+        "name": "right_button",
+        "x_pct": 0.62,
+        "y_pct": 0.12,
+        "w_pct": 0.28,
+        "align": "center"
+      },
+      {
+        "name": "person",
+        "x_pct": 0.5,
+        "y_pct": 0.85,
+        "w_pct": 0.9,
+        "align": "center"
+      }
     ]
   },
   "expanding-brain": {
@@ -42,10 +102,34 @@
     "url": "https://i.imgflip.com/1jwhww.jpg",
     "best_for": "escalating irony, increasingly absurd ideas",
     "fields": [
-      {"name": "level1", "x_pct": 0.25, "y_pct": 0.12, "w_pct": 0.45, "align": "center"},
-      {"name": "level2", "x_pct": 0.25, "y_pct": 0.38, "w_pct": 0.45, "align": "center"},
-      {"name": "level3", "x_pct": 0.25, "y_pct": 0.63, "w_pct": 0.45, "align": "center"},
-      {"name": "level4", "x_pct": 0.25, "y_pct": 0.88, "w_pct": 0.45, "align": "center"}
+      {
+        "name": "level1",
+        "x_pct": 0.25,
+        "y_pct": 0.12,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "level2",
+        "x_pct": 0.25,
+        "y_pct": 0.38,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "level3",
+        "x_pct": 0.25,
+        "y_pct": 0.63,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "level4",
+        "x_pct": 0.25,
+        "y_pct": 0.88,
+        "w_pct": 0.45,
+        "align": "center"
+      }
     ]
   },
   "change-my-mind": {
@@ -53,7 +137,13 @@
     "url": "https://i.imgflip.com/24y43o.jpg",
     "best_for": "strong or ironic opinion, controversial take",
     "fields": [
-      {"name": "statement", "x_pct": 0.58, "y_pct": 0.78, "w_pct": 0.35, "align": "center"}
+      {
+        "name": "statement",
+        "x_pct": 0.58,
+        "y_pct": 0.78,
+        "w_pct": 0.35,
+        "align": "center"
+      }
     ]
   },
   "woman-yelling-at-cat": {
@@ -61,8 +151,20 @@
     "url": "https://i.imgflip.com/345v97.jpg",
     "best_for": "argument, blame, misunderstanding",
     "fields": [
-      {"name": "woman", "x_pct": 0.27, "y_pct": 0.10, "w_pct": 0.50, "align": "center"},
-      {"name": "cat", "x_pct": 0.76, "y_pct": 0.10, "w_pct": 0.44, "align": "center"}
+      {
+        "name": "woman",
+        "x_pct": 0.27,
+        "y_pct": 0.1,
+        "w_pct": 0.5,
+        "align": "center"
+      },
+      {
+        "name": "cat",
+        "x_pct": 0.76,
+        "y_pct": 0.1,
+        "w_pct": 0.44,
+        "align": "center"
+      }
     ]
   },
   "one-does-not-simply": {
@@ -70,8 +172,20 @@
     "url": "https://i.imgflip.com/1bij.jpg",
     "best_for": "something that sounds easy but is actually hard",
     "fields": [
-      {"name": "top", "x_pct": 0.5, "y_pct": 0.08, "w_pct": 0.95, "align": "center"},
-      {"name": "bottom", "x_pct": 0.5, "y_pct": 0.92, "w_pct": 0.95, "align": "center"}
+      {
+        "name": "top",
+        "x_pct": 0.5,
+        "y_pct": 0.08,
+        "w_pct": 0.95,
+        "align": "center"
+      },
+      {
+        "name": "bottom",
+        "x_pct": 0.5,
+        "y_pct": 0.92,
+        "w_pct": 0.95,
+        "align": "center"
+      }
     ]
   },
   "grus-plan": {
@@ -79,10 +193,34 @@
     "url": "https://i.imgflip.com/26jxvs.jpg",
     "best_for": "a plan that backfires, unexpected consequence",
     "fields": [
-      {"name": "step1", "x_pct": 0.5, "y_pct": 0.05, "w_pct": 0.45, "align": "center"},
-      {"name": "step2", "x_pct": 0.5, "y_pct": 0.30, "w_pct": 0.45, "align": "center"},
-      {"name": "step3", "x_pct": 0.5, "y_pct": 0.55, "w_pct": 0.45, "align": "center"},
-      {"name": "realization", "x_pct": 0.5, "y_pct": 0.80, "w_pct": 0.45, "align": "center"}
+      {
+        "name": "step1",
+        "x_pct": 0.5,
+        "y_pct": 0.05,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "step2",
+        "x_pct": 0.5,
+        "y_pct": 0.3,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "step3",
+        "x_pct": 0.5,
+        "y_pct": 0.55,
+        "w_pct": 0.45,
+        "align": "center"
+      },
+      {
+        "name": "realization",
+        "x_pct": 0.5,
+        "y_pct": 0.8,
+        "w_pct": 0.45,
+        "align": "center"
+      }
     ]
   },
   "batman-slapping-robin": {
@@ -90,8 +228,20 @@
     "url": "https://i.imgflip.com/9ehk.jpg",
     "best_for": "shutting down a bad idea, correcting someone",
     "fields": [
-      {"name": "robin", "x_pct": 0.28, "y_pct": 0.08, "w_pct": 0.50, "align": "center"},
-      {"name": "batman", "x_pct": 0.72, "y_pct": 0.08, "w_pct": 0.50, "align": "center"}
+      {
+        "name": "robin",
+        "x_pct": 0.28,
+        "y_pct": 0.08,
+        "w_pct": 0.5,
+        "align": "center"
+      },
+      {
+        "name": "batman",
+        "x_pct": 0.72,
+        "y_pct": 0.08,
+        "w_pct": 0.5,
+        "align": "center"
+      }
     ]
   }
 }

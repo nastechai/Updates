@@ -15,6 +15,10 @@
     "declaration": true,
     "outDir": "build/electron-types"
   },
-  "include": ["electron"],
-  "exclude": ["src"]
+  "include": [
+    "electron"
+  ],
+  "exclude": [
+    "src"
+  ]
 }

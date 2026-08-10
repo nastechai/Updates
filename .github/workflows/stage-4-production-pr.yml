@@ -46,7 +46,7 @@ jobs:
               const pr = await github.rest.pulls.create({
                 owner: targetOwner,
                 repo: targetRepo,
-                title: `chore: sync and rebrand from Hermes (${new Date().toISOString().split('T')[0]})`,
+                title: `chore: sync and rebrand from NasTech (${new Date().toISOString().split('T')[0]})`,
                 head: `${owner}:final`,
                 base: 'main',
                 body: reportBody

@@ -1,5 +1,5 @@
 {
-  "$comment": "GENERATED — do not hand-edit. Regenerate with hermes-agent scripts/generate_conformance_vectors.py; the native renderers are the oracle (executable spec).",
+  "$comment": "GENERATED \u2014 do not hand-edit. Regenerate with hermes-agent scripts/generate_conformance_vectors.py; the native renderers are the oracle (executable spec).",
   "oracle": {
     "repo": "NousResearch/hermes-agent",
     "commit": "40eebc7d70f3d8e95c429c8aa482f31ba6c867f6",
@@ -139,22 +139,22 @@
       "category": "grid",
       "expect": "divergent",
       "input": "| name | value |\n|------|-------|\n| a    | 1     |\n| b    | 2     |",
-      "native_output": "*a*\n• value: 1\n\n*b*\n• value: 2",
-      "note": "native wraps tables into row groups; connector renders <pre> — content preserved, layout differs"
+      "native_output": "*a*\n\u2022 value: 1\n\n*b*\n\u2022 value: 2",
+      "note": "native wraps tables into row groups; connector renders <pre> \u2014 content preserved, layout differs"
     },
     {
       "id": "emoji",
       "category": "grid",
       "expect": "semantic",
-      "input": "Done ✅ with 🎉 emoji 👀 test.",
-      "native_output": "Done ✅ with 🎉 emoji 👀 test\\."
+      "input": "Done \u2705 with \ud83c\udf89 emoji \ud83d\udc40 test.",
+      "native_output": "Done \u2705 with \ud83c\udf89 emoji \ud83d\udc40 test\\."
     },
     {
       "id": "cjk",
       "category": "grid",
       "expect": "semantic",
-      "input": "中文测试：**粗体** 和 `代码` 混排。",
-      "native_output": "中文测试：*粗体* 和 `代码` 混排。"
+      "input": "\u4e2d\u6587\u6d4b\u8bd5\uff1a**\u7c97\u4f53** \u548c `\u4ee3\u7801` \u6df7\u6392\u3002",
+      "native_output": "\u4e2d\u6587\u6d4b\u8bd5\uff1a*\u7c97\u4f53* \u548c `\u4ee3\u7801` \u6df7\u6392\u3002"
     },
     {
       "id": "bare-url",
@@ -174,8 +174,8 @@
       "id": "mdv2-reserved-chars",
       "category": "scar",
       "expect": "semantic",
-      "input": "Price is 3.50 (was 4.00) — save ~12%! #deal +tax = win.",
-      "native_output": "Price is 3\\.50 \\(was 4\\.00\\) — save \\~12%\\! \\#deal \\+tax \\= win\\."
+      "input": "Price is 3.50 (was 4.00) \u2014 save ~12%! #deal +tax = win.",
+      "native_output": "Price is 3\\.50 \\(was 4\\.00\\) \u2014 save \\~12%\\! \\#deal \\+tax \\= win\\."
     },
     {
       "id": "mdv2-underscores",
@@ -244,8 +244,8 @@
       "id": "table-cjk",
       "category": "scar",
       "expect": "divergent",
-      "input": "| 名前 | 値 |\n|------|----|\n| 中文 | 42 |\n| b    | 2  |",
-      "native_output": "*中文*\n• 値: 42\n\n*b*\n• 値: 2",
+      "input": "| \u540d\u524d | \u5024 |\n|------|----|\n| \u4e2d\u6587 | 42 |\n| b    | 2  |",
+      "native_output": "*\u4e2d\u6587*\n\u2022 \u5024: 42\n\n*b*\n\u2022 \u5024: 2",
       "note": "same as table-simple (CJK width alignment is native-only)"
     },
     {
@@ -268,7 +268,7 @@
       "expect": "divergent",
       "input": "```python\nprint('never closed')",
       "native_output": "\\`\\`\\`python\nprint\\('never closed'\\)",
-      "note": "unterminated fence: native escapes as prose, connector HTML may close the block — degraded either way, never a 400"
+      "note": "unterminated fence: native escapes as prose, connector HTML may close the block \u2014 degraded either way, never a 400"
     },
     {
       "id": "pathological-nesting",
@@ -305,7 +305,7 @@
       "expect": "divergent",
       "input": "   \n\t\n   ",
       "native_output": "   \n\t\n   ",
-      "note": "native collapses to empty-ish prose, connector HTML preserves — cosmetic"
+      "note": "native collapses to empty-ish prose, connector HTML preserves \u2014 cosmetic"
     },
     {
       "id": "long-line",

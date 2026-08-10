@@ -1,7 +1,7 @@
 """Nous Portal ``anthropic/*`` models route on the native Messages wire.
 
 Portal serves its ``anthropic/*`` catalog at
-``https://inference-api.nousresearch.com/v1/messages`` alongside the
+``https://inference-api.nastechairesearch.com/v1/messages`` alongside the
 OpenAI-compatible ``/v1/chat/completions`` used by everything else it proxies.
 These tests pin the contracts that make that routing correct:
 
@@ -20,10 +20,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from hermes_cli import runtime_provider as rp
-from hermes_cli.providers import nous_api_mode
+from nastech_cli import runtime_provider as rp
+from nastech_cli.providers import nous_api_mode
 
-PORTAL_URL = "https://inference-api.nousresearch.com/v1"
+PORTAL_URL = "https://inference-api.nastechairesearch.com/v1"
 # Staging / preview hosts used via NOUS_INFERENCE_BASE_URL — not the prod
 # hostname, so Portal behaviour must key off provider=nous.
 STAGING_URL = "https://ai.wildebeest-newton.ts.net/v1"
@@ -55,9 +55,9 @@ class TestApiModeRouting:
 
     def test_determine_api_mode_honors_the_model_for_nous(self):
         """Callers that skip resolve_runtime_provider (fallback, switch_model
-        empty-mode path) must still land Claude on Messages — the Hermes
+        empty-mode path) must still land Claude on Messages — the NasTech
         overlay alone advertises openai_chat for every Nous model."""
-        from hermes_cli.providers import determine_api_mode
+        from nastech_cli.providers import determine_api_mode
 
         assert (
             determine_api_mode(
@@ -68,7 +68,7 @@ class TestApiModeRouting:
             == "anthropic_messages"
         )
         assert (
-            determine_api_mode("nous", PORTAL_URL, model="hermes-4-405b")
+            determine_api_mode("nous", PORTAL_URL, model="nastech-4-405b")
             == "chat_completions"
         )
         # No model → historical OpenAI-wire default (safer than guessing).
@@ -117,7 +117,7 @@ class TestRuntimeResolution:
         monkeypatch.setattr(
             rp,
             "_get_model_config",
-            lambda: {"provider": "nous", "default": "hermes-4-405b"},
+            lambda: {"provider": "nous", "default": "nastech-4-405b"},
         )
 
         resolved = rp.resolve_runtime_provider(
@@ -177,7 +177,7 @@ class TestClientShape:
             _requires_bearer_auth,
         )
 
-        spoofed = "https://inference-api.nousresearch.com.attacker.test/v1"
+        spoofed = "https://inference-api.nastechairesearch.com.attacker.test/v1"
         assert not _is_nous_portal_endpoint(spoofed)
         assert not _requires_bearer_auth(spoofed)
 
@@ -197,7 +197,7 @@ class TestClientShape:
         self, monkeypatch
     ):
         """The Anthropic SDK fills api_key from ANTHROPIC_API_KEY when the
-        constructor omits it. Hermes loads that env from ~/.hermes/.env, so
+        constructor omits it. NasTech loads that env from ~/.nastech/.env, so
         without an explicit clear every Portal request would dual-auth as
         X-Api-Key: sk-ant-… + Authorization: Bearer portal.jwt."""
         from agent.anthropic_adapter import build_anthropic_client
@@ -289,12 +289,12 @@ class TestPortalBodyFields:
         return build_api_kwargs(agent, [{"role": "user", "content": "hi"}])
 
     def test_portal_tags_reach_the_messages_request(self):
-        from agent.portal_tags import hermes_client_tag
+        from agent.portal_tags import nastech_client_tag
 
         tags = self._build()["extra_body"]["tags"]
 
-        assert "product=hermes-agent" in tags
-        assert hermes_client_tag() in tags
+        assert "product=nastech-agent" in tags
+        assert nastech_client_tag() in tags
         assert all(isinstance(tag, str) for tag in tags), (
             "Portal skips non-string tag entries unpredictably"
         )
@@ -439,16 +439,16 @@ class TestAuxiliaryDualWire:
         with (
             patch(
                 "agent.auxiliary_client._try_nous",
-                return_value=(plain, "hermes-4-405b"),
+                return_value=(plain, "nastech-4-405b"),
             ),
             patch(
                 "agent.anthropic_adapter.build_anthropic_client",
                 side_effect=AssertionError("must not build Anthropic client"),
             ),
         ):
-            client, model = resolve_provider_client("nous", "hermes-4-405b")
+            client, model = resolve_provider_client("nous", "nastech-4-405b")
 
-        assert model == "hermes-4-405b"
+        assert model == "nastech-4-405b"
         assert client is plain
         assert not isinstance(client, AnthropicAuxiliaryClient)
 

@@ -1,5 +1,5 @@
 {
-  "$comment": "GENERATED — do not hand-edit. Regenerate with hermes-agent scripts/generate_conformance_vectors.py; the native renderers are the oracle (executable spec).",
+  "$comment": "GENERATED \u2014 do not hand-edit. Regenerate with hermes-agent scripts/generate_conformance_vectors.py; the native renderers are the oracle (executable spec).",
   "oracle": {
     "repo": "NousResearch/hermes-agent",
     "commit": "40eebc7d70f3d8e95c429c8aa482f31ba6c867f6",
@@ -145,15 +145,15 @@
       "id": "emoji",
       "category": "grid",
       "expect": "parity",
-      "input": "Done ✅ with 🎉 emoji 👀 test.",
-      "native_output": "Done ✅ with 🎉 emoji 👀 test."
+      "input": "Done \u2705 with \ud83c\udf89 emoji \ud83d\udc40 test.",
+      "native_output": "Done \u2705 with \ud83c\udf89 emoji \ud83d\udc40 test."
     },
     {
       "id": "cjk",
       "category": "grid",
       "expect": "parity",
-      "input": "中文测试：**粗体** 和 `代码` 混排。",
-      "native_output": "中文测试：*粗体* 和 `代码` 混排。"
+      "input": "\u4e2d\u6587\u6d4b\u8bd5\uff1a**\u7c97\u4f53** \u548c `\u4ee3\u7801` \u6df7\u6392\u3002",
+      "native_output": "\u4e2d\u6587\u6d4b\u8bd5\uff1a*\u7c97\u4f53* \u548c `\u4ee3\u7801` \u6df7\u6392\u3002"
     },
     {
       "id": "bare-url",
@@ -173,8 +173,8 @@
       "id": "mdv2-reserved-chars",
       "category": "scar",
       "expect": "parity",
-      "input": "Price is 3.50 (was 4.00) — save ~12%! #deal +tax = win.",
-      "native_output": "Price is 3.50 (was 4.00) — save ~12%! #deal +tax = win."
+      "input": "Price is 3.50 (was 4.00) \u2014 save ~12%! #deal +tax = win.",
+      "native_output": "Price is 3.50 (was 4.00) \u2014 save ~12%! #deal +tax = win."
     },
     {
       "id": "mdv2-underscores",
@@ -243,8 +243,8 @@
       "id": "table-cjk",
       "category": "scar",
       "expect": "parity",
-      "input": "| 名前 | 値 |\n|------|----|\n| 中文 | 42 |\n| b    | 2  |",
-      "native_output": "```\n| 名前 | 値  |\n| ---- | --- |\n| 中文 | 42  |\n| b    | 2   |\n```"
+      "input": "| \u540d\u524d | \u5024 |\n|------|----|\n| \u4e2d\u6587 | 42 |\n| b    | 2  |",
+      "native_output": "```\n| \u540d\u524d | \u5024  |\n| ---- | --- |\n| \u4e2d\u6587 | 42  |\n| b    | 2   |\n```"
     },
     {
       "id": "link-display-escapes",

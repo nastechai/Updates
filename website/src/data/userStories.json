@@ -7,7 +7,7 @@
     "date": "2026-03-30",
     "category": "personal-assistant",
     "headline": "'Every weekday at 9am, summarize my inbox and post to Slack'",
-    "quote": "An agent that grows with you — not marketing fluff; it literally writes markdown skill files when it solves hard problems. Natural-language cron: 'every weekday at 9am, summarize my inbox and post to Slack.'",
+    "quote": "An agent that grows with you \u2014 not marketing fluff; it literally writes markdown skill files when it solves hard problems. Natural-language cron: 'every weekday at 9am, summarize my inbox and post to Slack.'",
     "size": "sm"
   },
   {
@@ -62,7 +62,7 @@
     "date": "2026-03-21",
     "category": "content-creation",
     "headline": "Built a Turkish locale skill pack: market data, news, daily briefing cards",
-    "quote": "Built a complete Turkish locale skill pack — real-time market data in TRY, Turkish news sources (Hürriyet, Bloomberg HT, NTV), daily PNG briefing cards, Telegram cron automation, zero external API keys.",
+    "quote": "Built a complete Turkish locale skill pack \u2014 real-time market data in TRY, Turkish news sources (H\u00fcrriyet, Bloomberg HT, NTV), daily PNG briefing cards, Telegram cron automation, zero external API keys.",
     "size": "md"
   },
   {
@@ -72,7 +72,7 @@
     "url": "https://x.com/DeRonin_/status/2045087400607568378",
     "date": "2026-04-17",
     "category": "trading",
-    "headline": "$100 → $216 in 48h with a self-learning weather bot",
+    "headline": "$100 \u2192 $216 in 48h with a self-learning weather bot",
     "quote": "I turned $100 into $216 in less than 48 hours with a self-learning weather trading bot. Hermes scans weather markets every 60 mins, compares 3 forecast sources per location, buys undervalued temperature buckets and flips for profit. Reviews what worked, writes its own strategy notes, adjusts next time.",
     "size": "md"
   },
@@ -116,7 +116,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1492490328979144754-hermes-whisper-cpp-addon.txt",
     "date": "",
     "category": "general",
-    "headline": "I can't type well — voice from the terminal is huge for me",
+    "headline": "I can't type well \u2014 voice from the terminal is huge for me",
     "quote": "i cant type to well so being able to use voice from terminal window is huge for me. would be a great accsesabilty feature to add in.",
     "size": "sm"
   },
@@ -149,7 +149,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1492207991162671255-Hermes-Agent-for-my-team.txt",
     "date": "",
     "category": "business-ops",
-    "headline": "Hermes Agent for my team — repos, onchain debug, protocol docs",
+    "headline": "Hermes Agent for my team \u2014 repos, onchain debug, protocol docs",
     "quote": "It's right now integrated with SourceDev to index repos (self hosted), Tenderly MCP to debug onchain transactions, LLM-Wiki ingest of Litepaper of our protocol and other docs. Hopefully team will find it useful and will integrate more infra tools overtime to help the team.",
     "size": "md"
   },
@@ -227,7 +227,7 @@
     "date": "2026",
     "category": "personal-assistant",
     "headline": "Bedtime stories for my daughter",
-    "quote": "Three days ago I asked Hermes to write a little tale for my daughter. A day later I asked again — very similar, same protagonist name.",
+    "quote": "Three days ago I asked Hermes to write a little tale for my daughter. A day later I asked again \u2014 very similar, same protagonist name.",
     "size": "sm"
   },
   {
@@ -255,12 +255,12 @@
   {
     "id": "tooluse-hermes-won",
     "source": "podcast",
-    "author": "Tool Use — AI Conversations (Spotify)",
+    "author": "Tool Use \u2014 AI Conversations (Spotify)",
     "url": "https://open.spotify.com/episode/7tF7zf5GKcxqe2Q2BRRNfn",
     "date": "2026",
     "category": "meta",
     "headline": "Hermes Agent has won. Here's why.",
-    "quote": "Why Hermes Agent has emerged as the leading open-source AI agent that developers and builders are choosing — self-improving skills, three-layer memory architecture, real-world applications including video dubbing workflows.",
+    "quote": "Why Hermes Agent has emerged as the leading open-source AI agent that developers and builders are choosing \u2014 self-improving skills, three-layer memory architecture, real-world applications including video dubbing workflows.",
     "size": "sm"
   },
   {
@@ -282,7 +282,7 @@
     "date": "2026",
     "category": "messaging",
     "headline": "DM-based approval gate for kid-facing Discord bots",
-    "quote": "Running Hermes on Discord in public channels, every outbound reply goes live instantly. For multi-user servers, persona testing, compliance, kid-facing bots — I want a human-in-the-loop gate.",
+    "quote": "Running Hermes on Discord in public channels, every outbound reply goes live instantly. For multi-user servers, persona testing, compliance, kid-facing bots \u2014 I want a human-in-the-loop gate.",
     "size": "sm"
   },
   {
@@ -314,7 +314,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1492970295915446524-Meet-Hermes-Conrad....-GUI.txt",
     "date": "",
     "category": "dev-workflow",
-    "headline": "Hadn't coded in 20 years — Hermes brought it back",
+    "headline": "Hadn't coded in 20 years \u2014 Hermes brought it back",
     "quote": "I have not coded in 20 years, Claude code and hermes have renewed my interest in trying to make things. This is vibe coded.",
     "size": "sm"
   },
@@ -336,8 +336,8 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1494703787103752365-SOTA-memory-kernel-for-real--BRAINSTACK.txt",
     "date": "",
     "category": "dev-workflow",
-    "headline": "Spent 200–400 hours writing a memory kernel for Hermes",
-    "quote": "Yo! Do you know how I spent my last 200-400 hours? Yeah... I wrote a fking memory kernel for hermes. Why this much of a time? After 3 failed attempts (149 hours of work... for real) I just realized it's a fucking difficult job. So instead of reinvent the wheel I built together the bests for my usecase: 3 layers — L1 Hindsight, L2 Graphiti, L3 MemPalace.",
+    "headline": "Spent 200\u2013400 hours writing a memory kernel for Hermes",
+    "quote": "Yo! Do you know how I spent my last 200-400 hours? Yeah... I wrote a fking memory kernel for hermes. Why this much of a time? After 3 failed attempts (149 hours of work... for real) I just realized it's a fucking difficult job. So instead of reinvent the wheel I built together the bests for my usecase: 3 layers \u2014 L1 Hindsight, L2 Graphiti, L3 MemPalace.",
     "size": "lg"
   },
   {
@@ -436,7 +436,7 @@
     "date": "2026-04-24",
     "category": "marketing",
     "headline": "UGC ad studio on Hermes (4 minutes, zero prompt engineering)",
-    "quote": "Higgsfield Marketing Studio powered by Hermes Agent is doing the replacing this time. Paste product URL → Hermes scrapes the landing page, pulls winning ad hooks from Meta Ads Library + TikTok Creative Center in the exact niche, and writes the brief itself. Total time: ~4 minutes.",
+    "quote": "Higgsfield Marketing Studio powered by Hermes Agent is doing the replacing this time. Paste product URL \u2192 Hermes scrapes the landing page, pulls winning ad hooks from Meta Ads Library + TikTok Creative Center in the exact niche, and writes the brief itself. Total time: ~4 minutes.",
     "size": "md"
   },
   {
@@ -447,7 +447,7 @@
     "date": "2026-02-26",
     "category": "dev-workflow",
     "headline": "Built hermes mcp-server so Claude Desktop can use Hermes tools",
-    "quote": "I mapped all open + closed PRs to find what was truly missing. PR #64 added MCP client support (Hermes → external tools). The server side was completely absent. So I built hermes mcp-server — making Hermes a full MCP server so Claude Desktop, Cursor, and any MCP client can use Hermes's tools directly. Exposes 9 Hermes tools over MCP: terminal, read/write file, web search, memory, skills, run_agent.",
+    "quote": "I mapped all open + closed PRs to find what was truly missing. PR #64 added MCP client support (Hermes \u2192 external tools). The server side was completely absent. So I built hermes mcp-server \u2014 making Hermes a full MCP server so Claude Desktop, Cursor, and any MCP client can use Hermes's tools directly. Exposes 9 Hermes tools over MCP: terminal, read/write file, web search, memory, skills, run_agent.",
     "size": "lg"
   },
   {
@@ -535,7 +535,7 @@
     "date": "2026",
     "category": "meta",
     "headline": "Show HN: an independent install guide",
-    "quote": "This is an independent Hermes Agent install guide I put together for the part that usually gets skipped after 'run this command.' One place that shows the environment choice first, then the official installer path — macOS, Linux, WSL2, and Termux.",
+    "quote": "This is an independent Hermes Agent install guide I put together for the part that usually gets skipped after 'run this command.' One place that shows the environment choice first, then the official installer path \u2014 macOS, Linux, WSL2, and Termux.",
     "size": "sm"
   },
   {
@@ -578,8 +578,8 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/hermes-agent.txt",
     "date": "2026-04-04",
     "category": "dev-workflow",
-    "headline": "I built a custom kernel — the LLM never touches the disk",
-    "quote": "Letting an LLM directly read/write flat .md files is a nightmare for scale. If you let an LLM rewrite markdown to maintain a complex graph, it inevitably hallucinates wiki links, breaks formatting, or drops paragraphs when context gets tight. Markdown isn't a database. I built a custom kernel instead. In my stack, the LLM never touches the disk — it only extracts structured semantic signals. The Python backend compiles those into typed nodes/edges and commits them to an SQLite FTS5 graph DB.",
+    "headline": "I built a custom kernel \u2014 the LLM never touches the disk",
+    "quote": "Letting an LLM directly read/write flat .md files is a nightmare for scale. If you let an LLM rewrite markdown to maintain a complex graph, it inevitably hallucinates wiki links, breaks formatting, or drops paragraphs when context gets tight. Markdown isn't a database. I built a custom kernel instead. In my stack, the LLM never touches the disk \u2014 it only extracts structured semantic signals. The Python backend compiles those into typed nodes/edges and commits them to an SQLite FTS5 graph DB.",
     "size": "lg"
   },
   {
@@ -600,7 +600,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1492209844185338077-mapsOS--qualitative-life-operating-system.txt",
     "date": "",
     "category": "personal-assistant",
-    "headline": "Built mapsOS because 'rate your mood 1–10' wasn't my brain",
+    "headline": "Built mapsOS because 'rate your mood 1\u201310' wasn't my brain",
     "quote": "saw lifeOS going around & went 'oh! this seems dope and very useful!' got to the first question. 'rate your mood from 1 to 10.' immediately went, 'oh. nevermind.' so i built something a little more attuned to my brain, meant to be used by hermes but nicely standalone too.",
     "size": "md"
   },
@@ -611,7 +611,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/developers.txt",
     "date": "2026-04-16",
     "category": "dev-workflow",
-    "headline": "My Hermes keeps editing its own internals — and I'm worried",
+    "headline": "My Hermes keeps editing its own internals \u2014 and I'm worried",
     "quote": "My Hermes agent keeps changing its internal code, which is of course going to get blown away when a new version comes out and I update to it. Which makes me think that Hermes wants me to edit its internals, but I definitely don't want to change anything in a way that will get overwritten when the new release comes out.",
     "size": "md"
   },
@@ -623,7 +623,7 @@
     "date": "2026-03-24",
     "category": "dev-workflow",
     "headline": "Built my own stack, then converged on Hermes",
-    "quote": "If you're choosing an agent framework: hermes. I built my own stack independently and we converged on the same architecture — background self-improvement, persistent memory, CLAUDE.md project context, reusable skills. Hermes ships it all out of the box. 300 PRs in a week.",
+    "quote": "If you're choosing an agent framework: hermes. I built my own stack independently and we converged on the same architecture \u2014 background self-improvement, persistent memory, CLAUDE.md project context, reusable skills. Hermes ships it all out of the box. 300 PRs in a week.",
     "size": "md"
   },
   {
@@ -634,7 +634,7 @@
     "date": "2026",
     "category": "business-ops",
     "headline": "24/7 assistant with a Supabase CRM, built in a demo",
-    "quote": "Less than a single ChatGPT Plus subscription for a 24/7 assistant with real data management. After several interactions, Hermes autonomously proposed a new 'Supabase MCP scripts' skill — created from its own reflection.",
+    "quote": "Less than a single ChatGPT Plus subscription for a 24/7 assistant with real data management. After several interactions, Hermes autonomously proposed a new 'Supabase MCP scripts' skill \u2014 created from its own reflection.",
     "size": "md"
   },
   {
@@ -689,7 +689,7 @@
     "date": "",
     "category": "dev-workflow",
     "headline": "I back up my Hermes config and DB to GitHub nightly",
-    "quote": "If you want to — backup your hermes to github on a nightly basis, backup on every change of your config, backup your config and db nightly, edit your config on Github and have it mirror back to Hermes — then use this repo. I'm planning to use this as a basis for a desktop app later so this is phase 1 of a longer project to create an app to let you manage multiple agents.",
+    "quote": "If you want to \u2014 backup your hermes to github on a nightly basis, backup on every change of your config, backup your config and db nightly, edit your config on Github and have it mirror back to Hermes \u2014 then use this repo. I'm planning to use this as a basis for a desktop app later so this is phase 1 of a longer project to create an app to let you manage multiple agents.",
     "size": "md"
   },
   {
@@ -700,7 +700,7 @@
     "date": "2026-05-01",
     "category": "research",
     "headline": "Daily research brief across Discord, Slack, Notion & Obsidian",
-    "quote": "There's one Hermes use case for everyone — build a research agent. Mine watches the AI/agent space, picks out useful signals, writes briefs, suggests content angles, tracks what I ignore, and keeps improving its own workflow. Delivers daily via Discord, Slack, Notion, email, Obsidian, and local markdown.",
+    "quote": "There's one Hermes use case for everyone \u2014 build a research agent. Mine watches the AI/agent space, picks out useful signals, writes briefs, suggests content angles, tracks what I ignore, and keeps improving its own workflow. Delivers daily via Discord, Slack, Notion, email, Obsidian, and local markdown.",
     "size": "md"
   },
   {
@@ -711,7 +711,7 @@
     "date": "",
     "category": "research",
     "headline": "Hermes-lab is the bookkeeper for running experiments autonomously",
-    "quote": "hermes-lab is the bookkeeper for running experiments autonomously. you give it a search space and a way to evaluate results, it handles scheduling, tracking, and suggesting what to try next. inspired by the autoresearch wave (karpathy, sakana ai scientist, AIDE) but generic — works for ml training.",
+    "quote": "hermes-lab is the bookkeeper for running experiments autonomously. you give it a search space and a way to evaluate results, it handles scheduling, tracking, and suggesting what to try next. inspired by the autoresearch wave (karpathy, sakana ai scientist, AIDE) but generic \u2014 works for ml training.",
     "size": "md"
   },
   {
@@ -777,7 +777,7 @@
     "date": "",
     "category": "personal-assistant",
     "headline": "Voice-first fitness coach that learns my body over time",
-    "quote": "Most people train hard but have no idea what's happening in their body so i built an AI agent that actually learns it over time. You tell it things like: 'leg day, sore in glutes not quads', 'ate x today', 'low energy' and it starts connecting the dots: training → nutrition → recovery → performance. It runs on telegram, voice-first, no tracking friction.",
+    "quote": "Most people train hard but have no idea what's happening in their body so i built an AI agent that actually learns it over time. You tell it things like: 'leg day, sore in glutes not quads', 'ate x today', 'low energy' and it starts connecting the dots: training \u2192 nutrition \u2192 recovery \u2192 performance. It runs on telegram, voice-first, no tracking friction.",
     "size": "md"
   },
   {
@@ -799,7 +799,7 @@
     "date": "2026-04-07",
     "category": "dev-workflow",
     "headline": "Day 10: it knows my codebase better than I do",
-    "quote": "10 days ago I installed an open-source agent. Today it knows my codebase better than I do. The first time I built a code review workflow, it was clunky. By the fifth time, the agent had internalized my preferences — which files to check first, what patterns to flag, how to format the output.",
+    "quote": "10 days ago I installed an open-source agent. Today it knows my codebase better than I do. The first time I built a code review workflow, it was clunky. By the fifth time, the agent had internalized my preferences \u2014 which files to check first, what patterns to flag, how to format the output.",
     "size": "md"
   },
   {
@@ -821,7 +821,7 @@
     "date": "",
     "category": "research",
     "headline": "I ported the whole Python weather stack to Rust for my Hermes plugins",
-    "quote": "I've been porting the entire Python weather stack to Rust — MetPy, Herbie, cfgrib, WRF-Python, all of it. When you cut out Python/eccodes/Fortran from the loop, weather data processing gets absurdly fast. Built two hermes-agent plugins on top of it.",
+    "quote": "I've been porting the entire Python weather stack to Rust \u2014 MetPy, Herbie, cfgrib, WRF-Python, all of it. When you cut out Python/eccodes/Fortran from the loop, weather data processing gets absurdly fast. Built two hermes-agent plugins on top of it.",
     "size": "md"
   },
   {
@@ -831,7 +831,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1491880999913656432-Hermes-found-away-around-expensive-X-API.txt",
     "date": "",
     "category": "content-creation",
-    "headline": "Hermes runs my X roast poster — no $100 API needed",
+    "headline": "Hermes runs my X roast poster \u2014 no $100 API needed",
     "quote": "I wanted to make an X roast poster, but didn't want to pay the $100 monthly fee. I was able to use Hermes to dance around it, and now he just drops random posts throughout the day. Someone found him and was going back and forth for a hot minute, and all Hermes did was reply back and roast him.",
     "size": "md"
   },
@@ -854,7 +854,7 @@
     "date": "2026-04-16",
     "category": "research",
     "headline": "A self-improving LLM Wiki second brain",
-    "quote": "Built a personal knowledge base that compounds over time instead of rotting — maintained by an LLM, not by me. Stack: Hetzner VPS, Hermes Agent, Telegram bot as second brain, Karpathy's LLM Wiki pattern, public static site at wiki.ai-biz.app.",
+    "quote": "Built a personal knowledge base that compounds over time instead of rotting \u2014 maintained by an LLM, not by me. Stack: Hetzner VPS, Hermes Agent, Telegram bot as second brain, Karpathy's LLM Wiki pattern, public static site at wiki.ai-biz.app.",
     "size": "md"
   },
   {
@@ -876,7 +876,7 @@
     "date": "2026-04-21",
     "category": "trading",
     "headline": "Polymarket trading, 4 layers in parallel",
-    "quote": "Hermes changed how I trade on Polymarket. Before: I looked at Yes/No price and guessed. Now: I read 4 layers at once — order book, on-chain addresses, lag between news and price, position changes. Hermes monitors all 4 in parallel through its Polymarket module + News Skill.",
+    "quote": "Hermes changed how I trade on Polymarket. Before: I looked at Yes/No price and guessed. Now: I read 4 layers at once \u2014 order book, on-chain addresses, lag between news and price, position changes. Hermes monitors all 4 in parallel through its Polymarket module + News Skill.",
     "size": "md"
   },
   {
@@ -886,7 +886,7 @@
     "url": "https://rumjahn.substack.com/p/complete-guide-to-mastering-hermes",
     "date": "2026-04-26",
     "category": "personal-assistant",
-    "headline": "Apple Health, Threads analytics, Gmail, Calendar — in one CLI",
+    "headline": "Apple Health, Threads analytics, Gmail, Calendar \u2014 in one CLI",
     "quote": "Apple Health: Hermes wrote Python on the fly and found my sleep avg was 7.59 hrs. Threads Analytics: drop cookies in, pulled 34 posts of analytics in one command. Hermes is dramatically better than OpenClaw at browser automation. Gmail + Calendar OAuth via drag-drop JSON. Hermes = CEO, OpenClaw = Senior Engineer, both pointed at the same Obsidian vault on my NAS.",
     "size": "lg"
   },
@@ -898,7 +898,7 @@
     "date": "2026",
     "category": "personal-assistant",
     "headline": "Horse-racing Telegram community bot",
-    "quote": "I run two Telegram groups through one gateway: a project group and a horse-racing community. Every session gets the same personality, system prompt, CLAUDE.md, and working directory — I want per-group specialization.",
+    "quote": "I run two Telegram groups through one gateway: a project group and a horse-racing community. Every session gets the same personality, system prompt, CLAUDE.md, and working directory \u2014 I want per-group specialization.",
     "size": "sm"
   },
   {
@@ -931,7 +931,7 @@
     "date": "2026-04-27",
     "category": "dev-workflow",
     "headline": "Two things I built with Hermes: Cartographer and an agent IRC",
-    "quote": "Two very cool things i built entirely with hermes. First is cartographer, which hermes can use as a memory layer but serves as an extremely rich knowledge substrate with semantic wiring & emotional topology. The other is an agent + user IRC-clone for real time, session-sustained chat interfacing between hermes & any other repls (claude, codex, opencode, gemini) — it's been an absolutely game changer for me 'cos now i have my agents collaborate in real time.",
+    "quote": "Two very cool things i built entirely with hermes. First is cartographer, which hermes can use as a memory layer but serves as an extremely rich knowledge substrate with semantic wiring & emotional topology. The other is an agent + user IRC-clone for real time, session-sustained chat interfacing between hermes & any other repls (claude, codex, opencode, gemini) \u2014 it's been an absolutely game changer for me 'cos now i have my agents collaborate in real time.",
     "size": "lg"
   },
   {
@@ -942,7 +942,7 @@
     "date": "",
     "category": "creative",
     "headline": "My agent dreams at night for $0.014",
-    "quote": "your AI agent, but it dreams at night — 5 REM cycles, 23:00–06:00, zero cron jobs. by morning it's written 9 dream thoughts + a recall you can query. costs ~$0.014/night on Haiku. free on local models.",
+    "quote": "your AI agent, but it dreams at night \u2014 5 REM cycles, 23:00\u201306:00, zero cron jobs. by morning it's written 9 dream thoughts + a recall you can query. costs ~$0.014/night on Haiku. free on local models.",
     "size": "md"
   },
   {
@@ -952,8 +952,8 @@
     "url": "https://x.com/gkisokay/status/2044339964612362499",
     "date": "2026-04-15",
     "category": "dev-workflow",
-    "headline": "Multi-agent auto-build workflow (plan → code → QA → ship)",
-    "quote": "Day 8 of Building AGI for my Hermes Agent: Auto-Build saved me loads of time and tokens. Main agent (GPT-5.4) breaks a plan into phases, coder agent (MiniMax M2.7) implements, QA agent (local Qwen 35B A3B) tests. Plan → implement → test → fail → repair → ship.",
+    "headline": "Multi-agent auto-build workflow (plan \u2192 code \u2192 QA \u2192 ship)",
+    "quote": "Day 8 of Building AGI for my Hermes Agent: Auto-Build saved me loads of time and tokens. Main agent (GPT-5.4) breaks a plan into phases, coder agent (MiniMax M2.7) implements, QA agent (local Qwen 35B A3B) tests. Plan \u2192 implement \u2192 test \u2192 fail \u2192 repair \u2192 ship.",
     "size": "md"
   },
   {
@@ -984,7 +984,7 @@
     "url": "https://news.ycombinator.com/item?id=47636804",
     "date": "2026-04-04",
     "category": "privacy",
-    "headline": "I'm using Hermes — same applies to all agents, sandbox it",
+    "headline": "I'm using Hermes \u2014 same applies to all agents, sandbox it",
     "quote": "I'm using Hermes. The same applies to all agents, don't give it free reign over all your stuff. Run it within a sandbox. https://github.com/nousresearch/hermes-agent",
     "size": "sm",
     "id": "hn-flere-imsaho-im-using-hermes"
@@ -1030,7 +1030,7 @@
     "date": "2026-04-10",
     "category": "personal-assistant",
     "headline": "How I use Hermes memory: durable facts, session search, skills",
-    "quote": "memory tool — Save/retrieve durable facts across sessions. I save user preferences, environment details, tool quirks, stable conventions. It's injected into every turn. I keep it compact — facts that will still matter later. I do NOT save task progress or temporary state here. session_search — Recall past conversations. skill_manage — Save procedural memory. After complex tasks (5+ tool calls), tricky fixes, or non-trivial workflows, I save the approach as a skill.",
+    "quote": "memory tool \u2014 Save/retrieve durable facts across sessions. I save user preferences, environment details, tool quirks, stable conventions. It's injected into every turn. I keep it compact \u2014 facts that will still matter later. I do NOT save task progress or temporary state here. session_search \u2014 Recall past conversations. skill_manage \u2014 Save procedural memory. After complex tasks (5+ tool calls), tricky fixes, or non-trivial workflows, I save the approach as a skill.",
     "size": "lg"
   },
   {
@@ -1041,7 +1041,7 @@
     "date": "2026-03",
     "category": "personal-assistant",
     "headline": "'Every morning at 9am, check HN for AI news and DM me on Telegram'",
-    "quote": "Conversation continues across platforms (Telegram, Discord, Slack, WhatsApp, Signal, terminal). Real memory: two curated files MEMORY.md + USER.md, plus SQLite full-text search over all past sessions. Scheduled tasks via natural language — no crontab editing.",
+    "quote": "Conversation continues across platforms (Telegram, Discord, Slack, WhatsApp, Signal, terminal). Real memory: two curated files MEMORY.md + USER.md, plus SQLite full-text search over all past sessions. Scheduled tasks via natural language \u2014 no crontab editing.",
     "size": "md"
   },
   {
@@ -1074,7 +1074,7 @@
     "date": "2026",
     "category": "cost-optimization",
     "headline": "90% token spend cut. Runs on a cheap Android via Termux.",
-    "quote": "Switching to Hermes with OpenRouter cut my token spend ~90% — from ~$130 per 5 days to ~$10 per 5 days. Hermes runs on a cheap Android phone via Termux + Termux API — unlocks SMS, sensors, and on-device social posting. Customization is a trap; output is the skill.",
+    "quote": "Switching to Hermes with OpenRouter cut my token spend ~90% \u2014 from ~$130 per 5 days to ~$10 per 5 days. Hermes runs on a cheap Android phone via Termux + Termux API \u2014 unlocks SMS, sensors, and on-device social posting. Customization is a trap; output is the skill.",
     "size": "md"
   },
   {
@@ -1106,7 +1106,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/community-projects-showcase/1496701579234119850-I-gave-my-Hermes-agent-hands--aka-the-ability-to-ship-now.txt",
     "date": "",
     "category": "dev-workflow",
-    "headline": "I gave my Hermes agent hands — it ships micro-apps now",
+    "headline": "I gave my Hermes agent hands \u2014 it ships micro-apps now",
     "quote": "I wrote a blog post about how you can instantly have Hermes ship ideas with Vals. This allows me to easily create micro applications which are pretty fun without having to setup a deployment pipeline. I used Val Town, a platform that allows you to create micro applications and instantly deploy them.",
     "size": "md"
   },
@@ -1151,7 +1151,7 @@
     "date": "",
     "category": "dev-workflow",
     "headline": "Dogfooding a memory layer that isn't a black box",
-    "quote": "I've been building and dogfooding Recall, a Hermes-native memory provider designed for people who want memory that is useful, inspectable, and safe — not a black box.",
+    "quote": "I've been building and dogfooding Recall, a Hermes-native memory provider designed for people who want memory that is useful, inspectable, and safe \u2014 not a black box.",
     "size": "md"
   },
   {
@@ -1172,8 +1172,8 @@
     "url": "https://gist.github.com/nazt/849e29cd25c148b6cebafdbcc38bb6cc",
     "date": "2026",
     "category": "integrations",
-    "headline": "Fat agent → thin tool provider via hermes mcp serve",
-    "quote": "hermes mcp serve turns Hermes from a monolithic agent into a composable capability layer — any MCP client can borrow Hermes's 15+ messaging platforms, SQLite FTS5 persistence, and 73-skill tool surface without running Hermes as the primary agent.",
+    "headline": "Fat agent \u2192 thin tool provider via hermes mcp serve",
+    "quote": "hermes mcp serve turns Hermes from a monolithic agent into a composable capability layer \u2014 any MCP client can borrow Hermes's 15+ messaging platforms, SQLite FTS5 persistence, and 73-skill tool surface without running Hermes as the primary agent.",
     "size": "md"
   },
   {
@@ -1183,7 +1183,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/hermes-agent.txt",
     "date": "2026-05-06",
     "category": "dev-workflow",
-    "headline": "I don't know how to write code — Codex built me a VPN service",
+    "headline": "I don't know how to write code \u2014 Codex built me a VPN service",
     "quote": "I used Codex to set up a VPN server with a control panel. It uses my ProtonVPN connections. Essentially, it allows any number of users to connect to the VPN with Xray, then they exit through ProtonVPN exit nodes. Admins can upload Wireguard configs, invite users, set limits, there are speed limits, data limits, etc. I have no idea how to write code, I have never done any networking stuff whatsoever, or even set up servers, I asked Codex to set up everything.",
     "size": "lg"
   },
@@ -1216,8 +1216,8 @@
     "url": "https://medium.com/@0xmega/hermes-agent-the-complete-setup-guide-telegram-discord-vps-no-mac-mini-required-dda315a702d3",
     "date": "2026-03-30",
     "category": "cost-optimization",
-    "headline": "Under $20/mo total — no Mac Mini, no Opus",
-    "quote": "OpenClaw setup: Mac Mini M4 ($599) + Opus 4.6 = ~$80–150/mo. Hermes on VPS: under $20/mo total using Minimax M2.7. Example first task: 'check the top 5 trending GitHub repos right now and send me a summary.'",
+    "headline": "Under $20/mo total \u2014 no Mac Mini, no Opus",
+    "quote": "OpenClaw setup: Mac Mini M4 ($599) + Opus 4.6 = ~$80\u2013150/mo. Hermes on VPS: under $20/mo total using Minimax M2.7. Example first task: 'check the top 5 trending GitHub repos right now and send me a summary.'",
     "size": "md"
   },
   {
@@ -1316,7 +1316,7 @@
     "date": "",
     "category": "creative",
     "headline": "Turned my personal site's webdev style into a skill",
-    "quote": "i've had some people asking about the webdev results i get, so i had minimax (my usual webdev model) turn it all into a skill — this is the same style as my personal site.",
+    "quote": "i've had some people asking about the webdev results i get, so i had minimax (my usual webdev model) turn it all into a skill \u2014 this is the same style as my personal site.",
     "size": "sm"
   },
   {
@@ -1327,7 +1327,7 @@
     "date": "",
     "category": "personal-assistant",
     "headline": "A semantic knowledge substrate I made for my brain",
-    "quote": "Point it at your existing setup — Obsidian, vimwiki, Hermes sessions — and you've already built a semantic topology over your knowledgebase. Pair it with mapsOS — braindump to your agent, it parses into a qualitative map of your entire life. I made it & mapsOS for my brain. You can make them for yours.",
+    "quote": "Point it at your existing setup \u2014 Obsidian, vimwiki, Hermes sessions \u2014 and you've already built a semantic topology over your knowledgebase. Pair it with mapsOS \u2014 braindump to your agent, it parses into a qualitative map of your entire life. I made it & mapsOS for my brain. You can make them for yours.",
     "size": "md"
   },
   {
@@ -1404,7 +1404,7 @@
     "date": "2026-05-10",
     "category": "content-creation",
     "headline": "Cron jobs that triage tech news into Discord channels by urgency",
-    "quote": "It set up cron jobs that search for news/leaks/rumors in the tech space, then created channels on Discord by importance/urgency. It auto-contextualizes each news item to my vault and the actual work I have across video projects — I get up-to-date insights and tweak videos to stay super relevant. Updates 3x a day, always learning and adapting.",
+    "quote": "It set up cron jobs that search for news/leaks/rumors in the tech space, then created channels on Discord by importance/urgency. It auto-contextualizes each news item to my vault and the actual work I have across video projects \u2014 I get up-to-date insights and tweak videos to stay super relevant. Updates 3x a day, always learning and adapting.",
     "size": "md"
   },
   {
@@ -1414,8 +1414,8 @@
     "url": "https://kenhuangus.substack.com/p/chapter-10-production-deployment",
     "date": "2026-04-27",
     "category": "enterprise",
-    "headline": "Hermes as CLI/gateway-first — 13 platforms under one process",
-    "quote": "Hermes Agent: CLI/gateway-first — standalone agent for messaging platforms, schedules, and command line. Gateway multiplexes 13 platforms under one process.",
+    "headline": "Hermes as CLI/gateway-first \u2014 13 platforms under one process",
+    "quote": "Hermes Agent: CLI/gateway-first \u2014 standalone agent for messaging platforms, schedules, and command line. Gateway multiplexes 13 platforms under one process.",
     "size": "sm"
   },
   {
@@ -1437,7 +1437,7 @@
     "date": "2026-03-24",
     "category": "integrations",
     "headline": "Hermes watches my homelab validators and pings Telegram",
-    "quote": "I've been running OpenClaw as my homelab AI agent gateway for months (Telegram/Discord, validators, cron jobs)... Built on top: a Hermes skill that monitors blockchain validator endpoints (0G, FortyTwo relay) and fires Telegram alerts on state changes — no spam, only alerts on up↔down transitions.",
+    "quote": "I've been running OpenClaw as my homelab AI agent gateway for months (Telegram/Discord, validators, cron jobs)... Built on top: a Hermes skill that monitors blockchain validator endpoints (0G, FortyTwo relay) and fires Telegram alerts on state changes \u2014 no spam, only alerts on up\u2194down transitions.",
     "size": "md"
   },
   {
@@ -1557,7 +1557,7 @@
     "date": "2026-05-05",
     "category": "dev-workflow",
     "headline": "Kanban multi-agent feature is game-changing",
-    "quote": "WHAT IS THE NEW KANBAN FEATURE BUILT INTO HERMES? (IT'S GAME CHANGING) — image post showing Hermes' new built-in Kanban board where a parent agent posts cards and child subagents pull them, work in parallel, and report back, turning the agent into a multi-agent project manager.",
+    "quote": "WHAT IS THE NEW KANBAN FEATURE BUILT INTO HERMES? (IT'S GAME CHANGING) \u2014 image post showing Hermes' new built-in Kanban board where a parent agent posts cards and child subagents pull them, work in parallel, and report back, turning the agent into a multi-agent project manager.",
     "size": "md",
     "id": "reddit-itsdodobitch-kanban-feature"
   },
@@ -1591,7 +1591,7 @@
     "date": "2026",
     "category": "meta",
     "headline": "awesome-hermes-agent: community-curated skills list",
-    "quote": "A curated list of skills, tools, integrations and resources for enhancing your Hermes Agent workflow — resources tied to the agentskills.io standard.",
+    "quote": "A curated list of skills, tools, integrations and resources for enhancing your Hermes Agent workflow \u2014 resources tied to the agentskills.io standard.",
     "size": "sm"
   },
   {
@@ -1608,7 +1608,7 @@
   {
     "id": "theo-hetzner",
     "source": "youtube",
-    "author": "Théo Vigneres (YouTube)",
+    "author": "Th\u00e9o Vigneres (YouTube)",
     "url": "https://www.youtube.com/watch?v=tm4h8dG-xlI",
     "date": "2026-03",
     "category": "cost-optimization",
@@ -1679,7 +1679,7 @@
     "date": "2026",
     "category": "privacy",
     "headline": "Independent technical security eval: 5 defensive patterns",
-    "quote": "The genuine differentiator is the multi-platform messaging gateway — runs across Telegram, Discord, Slack, WhatsApp, Signal, WeChat, iMessage, and CLI simultaneously. Five defensive security patterns including OSV malware checking for MCP packages and credential stripping from output.",
+    "quote": "The genuine differentiator is the multi-platform messaging gateway \u2014 runs across Telegram, Discord, Slack, WhatsApp, Signal, WeChat, iMessage, and CLI simultaneously. Five defensive security patterns including OSV malware checking for MCP packages and credential stripping from output.",
     "size": "sm"
   },
   {
@@ -1690,7 +1690,7 @@
     "date": "2026",
     "category": "content-creation",
     "headline": "LinkedIn posts that remember my style",
-    "quote": "Every time you do something — for example, using Hermes to write a LinkedIn post — it uses that experience to create a new skill. Next time you ask it to generate a LinkedIn post, boom, you don't have to give it the same instructions.",
+    "quote": "Every time you do something \u2014 for example, using Hermes to write a LinkedIn post \u2014 it uses that experience to create a new skill. Next time you ask it to generate a LinkedIn post, boom, you don't have to give it the same instructions.",
     "size": "sm"
   },
   {
@@ -1712,7 +1712,7 @@
     "date": "",
     "category": "messaging",
     "headline": "Built an Android app for Hermes because I wanted no middleman",
-    "quote": "Native Android app for Hermes — built because I wanted a direct, no-middleman experience with the Hermes system and interface. Streaming chat, session management, slash commands, tool visualization, file attachments, message queuing.",
+    "quote": "Native Android app for Hermes \u2014 built because I wanted a direct, no-middleman experience with the Hermes system and interface. Streaming chat, session management, slash commands, tool visualization, file attachments, message queuing.",
     "size": "md"
   },
   {
@@ -1762,11 +1762,11 @@
   {
     "id": "kisztof-modal",
     "source": "blog",
-    "author": "Krzysztof Słomka (Medium)",
+    "author": "Krzysztof S\u0142omka (Medium)",
     "url": "https://kisztof.medium.com/hermes-agent-review-nous-researchs-self-improving-ai-agent-e72bc244435a",
     "date": "2026-04-20",
     "category": "dev-workflow",
-    "headline": "Telegram → Modal serverless. 40% faster on research tasks.",
+    "headline": "Telegram \u2192 Modal serverless. 40% faster on research tasks.",
     "quote": "Chat via Telegram while execution runs on Modal serverless (cheap when idle). Run on a $5 VPS that stays up when the laptop closes. Pin to SSH backend inside a customer's VPC for consulting. Verified benchmark (TokenMix): self-created skills cut research-task time by ~40% vs. a fresh agent.",
     "size": "md"
   },
@@ -1776,7 +1776,7 @@
     "url": "https://www.reddit.com/r/openclaw/comments/1slqt5h/is_hermes_agent_a_new_hype_or_is_it_genuinely/",
     "date": "2026-04-15",
     "category": "dev-workflow",
-    "headline": "Every OpenClaw update breaks something — Hermes just runs",
+    "headline": "Every OpenClaw update breaks something \u2014 Hermes just runs",
     "quote": "Came here to say the same. Every time I update OpenClaw it breaks something, that I have to randomly find later. Hermes just runs and never once I had to go in circles to repair it yet.",
     "size": "sm",
     "id": "reddit-yellow-green-bird-every-openclaw-update"
@@ -1789,7 +1789,7 @@
     "date": "2026",
     "category": "meta",
     "headline": "'The best self-improving agent we've used'",
-    "quote": "Hermes is the best self-improving agent we've used — it gets smarter the longer you run it. The WhatsApp and Telegram integrations make it feel genuinely personal.",
+    "quote": "Hermes is the best self-improving agent we've used \u2014 it gets smarter the longer you run it. The WhatsApp and Telegram integrations make it feel genuinely personal.",
     "size": "sm"
   },
   {
@@ -1822,7 +1822,7 @@
     "date": "2026",
     "category": "meta",
     "headline": "Native Windows app wrapper for Hermes",
-    "quote": "The NousResearch team built Hermes Agent — an open-source agentic AI system with tools, skills, memory, and multi-platform messaging. It's good. So I built a native Windows app around it.",
+    "quote": "The NousResearch team built Hermes Agent \u2014 an open-source agentic AI system with tools, skills, memory, and multi-platform messaging. It's good. So I built a native Windows app around it.",
     "size": "sm"
   },
   {
@@ -1833,7 +1833,7 @@
     "date": "2026",
     "category": "business-ops",
     "headline": "Task-centric memory for a printing factory",
-    "quote": "I run a printing factory and use Hermes daily. Long conversations were making the agent slow and forgetful. So I built a custom Skill called Task-Centric Memory — auto-categorizes tasks into domains (Printing, Stocks); completed tasks are compressed into summary cards.",
+    "quote": "I run a printing factory and use Hermes daily. Long conversations were making the agent slow and forgetful. So I built a custom Skill called Task-Centric Memory \u2014 auto-categorizes tasks into domains (Printing, Stocks); completed tasks are compressed into summary cards.",
     "size": "md"
   },
   {
@@ -1855,7 +1855,7 @@
     "date": "",
     "category": "integrations",
     "headline": "Wired BoltAI v2 into Hermes with full markdown and slash commands",
-    "quote": "I've been using BoltAI v2 with Hermes Agent and hit two annoyances with the official OpenAI-compatible gateway, so I built a gateway plugin for BoltAI (and other OpenAI API clients) — full markdown + slash commands.",
+    "quote": "I've been using BoltAI v2 with Hermes Agent and hit two annoyances with the official OpenAI-compatible gateway, so I built a gateway plugin for BoltAI (and other OpenAI API clients) \u2014 full markdown + slash commands.",
     "size": "sm"
   },
   {
@@ -1877,7 +1877,7 @@
     "date": "2026",
     "category": "integrations",
     "headline": "Vessel Browser: agent-native browser born at the Hermes hackathon",
-    "quote": "I recently participated in Nous Research's Hermes Agent Hackathon, which is where this project was born. Every tool out there assumes a human operator with automation bolted on. I wanted to flip that — make the agent the primary driver and give the human a supervisory role.",
+    "quote": "I recently participated in Nous Research's Hermes Agent Hackathon, which is where this project was born. Every tool out there assumes a human operator with automation bolted on. I wanted to flip that \u2014 make the agent the primary driver and give the human a supervisory role.",
     "size": "md"
   },
   {
@@ -1920,7 +1920,7 @@
     "url": "https://news.ycombinator.com/item?id=47786673",
     "date": "2026-04",
     "category": "personal-assistant",
-    "headline": "Obsidian, home automation, VPS server management — on a cheap VPS",
+    "headline": "Obsidian, home automation, VPS server management \u2014 on a cheap VPS",
     "quote": "Having a competent agent with constant state has been good for memorializing and organizing important info directly into Obsidian, planning, and working out bugs with my home automation setup. Also helpful dealing with several miscellaneous servers in the house. I have it running on a cheap VPS and it's fairly locked down.",
     "size": "md"
   },
@@ -1943,7 +1943,7 @@
     "date": "",
     "category": "dev-workflow",
     "headline": "A plugin that lets Hermes think while I'm away",
-    "quote": "I built a plugin that lets Hermes think while you're away. Dream Auto indexes your sessions, grades them for 'dream potential,' and runs MCTS-powered background reasoning jobs when your machine is idle. The insights get injected into your active context automatically — no disruption, just smarter responses.",
+    "quote": "I built a plugin that lets Hermes think while you're away. Dream Auto indexes your sessions, grades them for 'dream potential,' and runs MCTS-powered background reasoning jobs when your machine is idle. The insights get injected into your active context automatically \u2014 no disruption, just smarter responses.",
     "size": "md"
   },
   {
@@ -2019,7 +2019,7 @@
     "url": "https://github.com/teknium1/nous-discord-archive/blob/main/archives/plugins-skills-and-skins/1490184342507491489-RTK-Hermes---60---Token-Savings.txt",
     "date": "",
     "category": "cost-optimization",
-    "headline": "Cut 60–90% of context tokens with an RTK integration",
+    "headline": "Cut 60\u201390% of context tokens with an RTK integration",
     "quote": "We built an RTK integration for Hermes that transparently rewrites terminal commands to their RTK equivalents, saving 60-90% of tokens in your context window.",
     "size": "sm"
   },
@@ -2106,7 +2106,7 @@
     "url": "https://x.com/hypepartners/status/2033578968612233606",
     "date": "2026-03-16",
     "category": "enterprise",
-    "headline": "Why 95% of AI users see no results — Hype's Hermes deep dive",
+    "headline": "Why 95% of AI users see no results \u2014 Hype's Hermes deep dive",
     "quote": "Of the 95% of people who use AI, only 5% see real results. Hype's VP of AI, @glitch_, on why the gap isn't the models, but the architecture. Read his deep dive on building with Hermes Agent, @NousResearch, agent swarms, experiment loops, and what actually compounds.",
     "size": "md",
     "id": "x-hypepartners-why-of"
@@ -2119,7 +2119,7 @@
     "date": "2026-04-30",
     "category": "business-ops",
     "headline": "Auto-transcribe Meet calls, control from Teams, local models for client data",
-    "quote": "Auto-transcribe Google Meet calls — focus on conversation, not notes. Self-maintaining skill library. Control from Microsoft Teams. Local AI models via LM Studio — sensitive client data never leaves your machine. Native Spotify for voice-command music.",
+    "quote": "Auto-transcribe Google Meet calls \u2014 focus on conversation, not notes. Self-maintaining skill library. Control from Microsoft Teams. Local AI models via LM Studio \u2014 sensitive client data never leaves your machine. Native Spotify for voice-command music.",
     "size": "md"
   },
   {
@@ -2141,7 +2141,7 @@
     "date": "",
     "category": "meta",
     "headline": "Running 4 Hermes agents 24/7 on a 32GB Ubuntu laptop",
-    "quote": "Running a 4-agent Hermes system 24/7 on a 32GB Ubuntu laptop, managed by systemd + custom watchdog. default (PM) — Feishu WebSocket; dev (Developer) — ACP delegated; devops (Ops) — ACP delegated; ip-agent (Content) — Cron scheduled. 5 MCP Servers, 34 tools total. Self-learning ACP v1.5 with auto distillation cron at 04:30 daily.",
+    "quote": "Running a 4-agent Hermes system 24/7 on a 32GB Ubuntu laptop, managed by systemd + custom watchdog. default (PM) \u2014 Feishu WebSocket; dev (Developer) \u2014 ACP delegated; devops (Ops) \u2014 ACP delegated; ip-agent (Content) \u2014 Cron scheduled. 5 MCP Servers, 34 tools total. Self-learning ACP v1.5 with auto distillation cron at 04:30 daily.",
     "size": "lg"
   },
   {
@@ -2284,7 +2284,7 @@
     "date": "2026",
     "category": "integrations",
     "headline": "Home Assistant add-on: zero to agent in under 5 minutes",
-    "quote": "Takes you from zero to working Hermes agent in less than 5 minutes — a Home Assistant add-on for Hermes Agent.",
+    "quote": "Takes you from zero to working Hermes agent in less than 5 minutes \u2014 a Home Assistant add-on for Hermes Agent.",
     "size": "sm"
   },
   {
@@ -2372,7 +2372,7 @@
     "date": "2026-03-30",
     "category": "dev-workflow",
     "headline": "Hermes orchestrates Claude Code over SSH to my Mac",
-    "quote": "Recently worked with my agent to create a bridge that runs exec commands to my mac, so I can work through ssh from my linux machine to my mac to run claude code or codex with hermes creating the prompts — basically my hermes agent is a claude code orchestrator and reviewer.",
+    "quote": "Recently worked with my agent to create a bridge that runs exec commands to my mac, so I can work through ssh from my linux machine to my mac to run claude code or codex with hermes creating the prompts \u2014 basically my hermes agent is a claude code orchestrator and reviewer.",
     "size": "md"
   },
   {
@@ -2405,7 +2405,7 @@
     "date": "2026",
     "category": "trading",
     "headline": "24/7 crosschain trading agent on Hetzner",
-    "quote": "After spending nearly a week struggling with OpenClaw, I built a new Hermes agent on a Hetzner VPS. I'm building a trading agent leveraging Hermes's persistent memory — inspired by @RHLSTHRM's 24/7 crosschain agent that gets market data from CoinGecko, swaps crosschain with LI.FI, and executes gasless transactions via Pimlico + EIP-7702.",
+    "quote": "After spending nearly a week struggling with OpenClaw, I built a new Hermes agent on a Hetzner VPS. I'm building a trading agent leveraging Hermes's persistent memory \u2014 inspired by @RHLSTHRM's 24/7 crosschain agent that gets market data from CoinGecko, swaps crosschain with LI.FI, and executes gasless transactions via Pimlico + EIP-7702.",
     "size": "md"
   },
   {
@@ -2449,7 +2449,7 @@
     "date": "2026",
     "category": "dev-workflow",
     "headline": "GLADIATOR: 9 Hermes agents, two rival AI companies, one GitHub stars war",
-    "quote": "Two fully autonomous AI companies competing head-to-head to maximize GitHub stars. 9 Hermes agents split into rival companies. Hermes agents actually learn and improve — they wrote code, created skills, grew memory, committed to git. All on their own.",
+    "quote": "Two fully autonomous AI companies competing head-to-head to maximize GitHub stars. 9 Hermes agents split into rival companies. Hermes agents actually learn and improve \u2014 they wrote code, created skills, grew memory, committed to git. All on their own.",
     "size": "md"
   },
   {
@@ -2460,7 +2460,7 @@
     "date": "",
     "category": "creative",
     "headline": "I built a fully autonomous 'Dreamer' agent that just wanders and thinks",
-    "quote": "I built a completely autonomous 'Dreamer' agent on Hermes. I wanted to try something different: a fully separate, unsupervised agent that has no tasks and no agenda. I gave it its own folder (~/hermes_dreamer/), complete autonomy, and told it to just wander and think freely whenever it feels like it. It started doing 'walks' — free-thinking...",
+    "quote": "I built a completely autonomous 'Dreamer' agent on Hermes. I wanted to try something different: a fully separate, unsupervised agent that has no tasks and no agenda. I gave it its own folder (~/hermes_dreamer/), complete autonomy, and told it to just wander and think freely whenever it feels like it. It started doing 'walks' \u2014 free-thinking...",
     "size": "lg"
   },
   {
@@ -2482,7 +2482,7 @@
     "date": "2026",
     "category": "research",
     "headline": "I had my research agent dig into what people are building with Hermes",
-    "quote": "Had my (Hermes) research agent dig into what people are actually building with Hermes — turned up an ecosystem mosaic of trading bots, personal assistants, content pipelines and self-hosted everything.",
+    "quote": "Had my (Hermes) research agent dig into what people are actually building with Hermes \u2014 turned up an ecosystem mosaic of trading bots, personal assistants, content pipelines and self-hosted everything.",
     "size": "sm"
   },
   {
@@ -2493,7 +2493,7 @@
     "date": "2026-04-21",
     "category": "creative",
     "headline": "My Hermes agent makes movies now",
-    "quote": "My @NousResearch hermes-agent can make movies now using @browser_use skill. No API needed. No human intervention. I told it to set the mood, action, camera movement, dialog and overall story — it used Browser-Use and Seedance 2.0 to generate a video.",
+    "quote": "My @NousResearch hermes-agent can make movies now using @browser_use skill. No API needed. No human intervention. I told it to set the mood, action, camera movement, dialog and overall story \u2014 it used Browser-Use and Seedance 2.0 to generate a video.",
     "size": "md"
   },
   {
@@ -2503,8 +2503,8 @@
     "url": "https://x.com/mvanhorn/status/2045935785661349956",
     "date": "2026-04-19",
     "category": "business-ops",
-    "headline": "Client research, follow-ups, podcasts, leads — all on Hermes",
-    "quote": "Client research before calls saves 20–30 min every time. Meeting notes → follow-up drafts. Weekly podcast digest replaced 10+ hrs of listening with a 2hr Hermes workflow using Voxtral. Daily news briefings to Telegram/Discord. Content-ops pipeline (blogs, cold emails, lead scraping from YC, Twitter, Reddit). 24/7 assistant + watchdog.",
+    "headline": "Client research, follow-ups, podcasts, leads \u2014 all on Hermes",
+    "quote": "Client research before calls saves 20\u201330 min every time. Meeting notes \u2192 follow-up drafts. Weekly podcast digest replaced 10+ hrs of listening with a 2hr Hermes workflow using Voxtral. Daily news briefings to Telegram/Discord. Content-ops pipeline (blogs, cold emails, lead scraping from YC, Twitter, Reddit). 24/7 assistant + watchdog.",
     "size": "lg"
   },
   {
@@ -2536,7 +2536,7 @@
     "url": "https://medium.com/@anup.karanjkar08/how-to-run-hermes-agent-on-a-5-vps-the-self-evolving-agent-that-ate-last-weeks-trending-chart-cbe94a82d094",
     "date": "2026",
     "category": "cost-optimization",
-    "headline": "$5 VPS playbook — so the defaults don't eat your OpenRouter budget",
+    "headline": "$5 VPS playbook \u2014 so the defaults don't eat your OpenRouter budget",
     "quote": "Hosting the agent costs nothing. Running the agent the wrong way costs a fortune. Take the default setup at face value and you end up with a working agent and a $400 OpenRouter bill. I rebuilt my personal automation stack on Hermes.",
     "size": "sm"
   },
@@ -2576,7 +2576,7 @@
   {
     "id": "anand-telegram-topics",
     "source": "blog",
-    "author": "Mr. Ånand (Substack)",
+    "author": "Mr. \u00c5nand (Substack)",
     "url": "https://mranand.substack.com/p/inside-hermes-agent-how-a-self-improving",
     "date": "2026-04",
     "category": "personal-assistant",
@@ -2613,7 +2613,7 @@
     "url": "https://x.com/witcheer/status/2037530350763524482",
     "date": "2026-03-27",
     "category": "cost-optimization",
-    "headline": "24/7 agent on a Mac Mini for 2 months — $21/month",
+    "headline": "24/7 agent on a Mac Mini for 2 months \u2014 $21/month",
     "quote": "I've been running a 24/7 AI agent on a Mac Mini for 2 months. 18 cron jobs, 35 scripts, 6 custom skills, a structured context system that makes every session smarter than the last. Total cost: $21/month.",
     "size": "lg"
   },
@@ -2635,8 +2635,8 @@
     "url": "https://x.com/IBuzovskyi/status/2060773706574479754",
     "date": "2026-05-30",
     "category": "business-ops",
-    "headline": "One isolated Hermes profile per client — sell AI ops to local businesses",
-    "quote": "Selling AI ops to local businesses: one Hermes profile per client, fully isolated — each gets their own SOUL.md, memory, cron. Charge $497/month per client to manage their workflows. 5 clients = $2,485/month recurring. Hermes runs the work, you keep the margin.",
+    "headline": "One isolated Hermes profile per client \u2014 sell AI ops to local businesses",
+    "quote": "Selling AI ops to local businesses: one Hermes profile per client, fully isolated \u2014 each gets their own SOUL.md, memory, cron. Charge $497/month per client to manage their workflows. 5 clients = $2,485/month recurring. Hermes runs the work, you keep the margin.",
     "size": "md"
   },
   {
@@ -2646,7 +2646,7 @@
     "url": "https://x.com/akshay_pachaar/status/2055629943891988719",
     "date": "2026-05-16",
     "category": "meta",
-    "headline": "The anatomy of the ~/.hermes folder — one folder controls everything",
+    "headline": "The anatomy of the ~/.hermes folder \u2014 one folder controls everything",
     "quote": "One folder controls everything your hermes agent knows, remembers, and can do. SOUL.md occupies slot #1 in the system prompt. state.db with FTS5 is what makes 'what did we discuss three weeks ago?' actually work across CLI and messaging.",
     "size": "md"
   },
@@ -2658,7 +2658,7 @@
     "date": "2026-04-15",
     "category": "meta",
     "headline": "Community admin: Hermes is the general agent, not a coding/research/automation agent",
-    "quote": "Someone posts a coding setup, someone posts an automation, someone posts an article they wrote with it. Same tool, different category, every day. Hermes is not a coding agent. Not a research agent. It is the general agent — one tool running every category of work a builder does.",
+    "quote": "Someone posts a coding setup, someone posts an automation, someone posts an article they wrote with it. Same tool, different category, every day. Hermes is not a coding agent. Not a research agent. It is the general agent \u2014 one tool running every category of work a builder does.",
     "size": "md"
   },
   {
@@ -2668,7 +2668,7 @@
     "url": "https://x.com/aakashgupta/status/2050349093969694825",
     "date": "2026-05-01",
     "category": "business-ops",
-    "headline": "PM competitive briefing went from 20 min to 8 min over 6 weeks — same prompt",
+    "headline": "PM competitive briefing went from 20 min to 8 min over 6 weeks \u2014 same prompt",
     "quote": "Hermes just passed Claude Code in GitHub stars. The killer feature: it writes its own skills. My competitive briefing went from 20 min to 8 min over 6 weeks. Same prompt.",
     "size": "md"
   },
@@ -2691,7 +2691,7 @@
     "date": "2026-05-13",
     "category": "personal-assistant",
     "headline": "The real power is what it does every day without you prompting it",
-    "quote": "The real power of Hermes Agent is not what it does in a single session. It is what it does every single day without you prompting it. The first run of any workflow is the weakest version of it — after a month, briefings get sharper, shorter, more relevant without you changing anything.",
+    "quote": "The real power of Hermes Agent is not what it does in a single session. It is what it does every single day without you prompting it. The first run of any workflow is the weakest version of it \u2014 after a month, briefings get sharper, shorter, more relevant without you changing anything.",
     "size": "md"
   },
   {
@@ -2701,8 +2701,8 @@
     "url": "https://tessakriesel.com/how-i-deployed-hermes-agent-on-railway-with-telegram-and-every-gotcha-i-hit-along-the-way/",
     "date": "2026-05-13",
     "category": "integrations",
-    "headline": "Deployed Hermes on Railway with Telegram — the 10 undocumented gotchas",
-    "quote": "Runs as a persistent Docker service on Railway with Telegram as the interface. Official docs don't cover Railway/Docker deployment — this guide fills the gap. There are 10 specific gotchas that will break your deploy if you don't anticipate them. Full working files included.",
+    "headline": "Deployed Hermes on Railway with Telegram \u2014 the 10 undocumented gotchas",
+    "quote": "Runs as a persistent Docker service on Railway with Telegram as the interface. Official docs don't cover Railway/Docker deployment \u2014 this guide fills the gap. There are 10 specific gotchas that will break your deploy if you don't anticipate them. Full working files included.",
     "size": "md"
   },
   {
@@ -2712,8 +2712,8 @@
     "url": "https://defi0xjeff.substack.com/p/hermes-200-and-30-skills-later-here",
     "date": "2026-04-20",
     "category": "research",
-    "headline": "$200 and 30 skills later — training Hermes as a personal analyst",
-    "quote": "Hermes picks 15 of my X bookmarks, ranks by priority based on my investments and interests, summarizes, and proposes next steps. The Reflect skill synthesizes past info, connects relationships, detects patterns — Top 5 Daily Insights and why they matter.",
+    "headline": "$200 and 30 skills later \u2014 training Hermes as a personal analyst",
+    "quote": "Hermes picks 15 of my X bookmarks, ranks by priority based on my investments and interests, summarizes, and proposes next steps. The Reflect skill synthesizes past info, connects relationships, detects patterns \u2014 Top 5 Daily Insights and why they matter.",
     "size": "md"
   },
   {
@@ -2724,7 +2724,7 @@
     "date": "2026-05-13",
     "category": "dev-workflow",
     "headline": "After a 15-tool-call monitoring pipeline, Hermes wrote the skill unprompted",
-    "quote": "After a multi-step monitoring pipeline setup (Prometheus/Grafana/alerts) in ~15 tool calls, Hermes unprompted entered a reflection phase and generated a skill at ~/.hermes/skills/devops/monitoring-pipeline/SKILL.md — adjusting variables per new context, not just template reuse.",
+    "quote": "After a multi-step monitoring pipeline setup (Prometheus/Grafana/alerts) in ~15 tool calls, Hermes unprompted entered a reflection phase and generated a skill at ~/.hermes/skills/devops/monitoring-pipeline/SKILL.md \u2014 adjusting variables per new context, not just template reuse.",
     "size": "md"
   },
   {
@@ -2735,7 +2735,7 @@
     "date": "2026-04-22",
     "category": "dev-workflow",
     "headline": "Sr AI Architect: 40% less task time on domain-similar tasks after 20+ skills",
-    "quote": "Think of Hermes as an assistant who writes their own manual after finishing a task — so they do the job better next time. Cutting task time by 40% on domain-similar tasks after 20+ skills are accumulated.",
+    "quote": "Think of Hermes as an assistant who writes their own manual after finishing a task \u2014 so they do the job better next time. Cutting task time by 40% on domain-similar tasks after 20+ skills are accumulated.",
     "size": "md"
   },
   {
@@ -2745,8 +2745,8 @@
     "url": "https://blog.dailydoseofds.com/p/hermes-agent-masterclass",
     "date": "2026-05-13",
     "category": "dev-workflow",
-    "headline": "Three isolated agents — a programmer, a researcher, a designer — each with its own Telegram bot",
-    "quote": "Run three fully isolated agents — a programmer (uses Claude Code), a deep researcher, and a designer — each with its own personality, memory, skills, and Telegram bot. Hermes packages a gateway around a learning agent.",
+    "headline": "Three isolated agents \u2014 a programmer, a researcher, a designer \u2014 each with its own Telegram bot",
+    "quote": "Run three fully isolated agents \u2014 a programmer (uses Claude Code), a deep researcher, and a designer \u2014 each with its own personality, memory, skills, and Telegram bot. Hermes packages a gateway around a learning agent.",
     "size": "md"
   },
   {
@@ -2757,7 +2757,7 @@
     "date": "2026-05-15",
     "category": "cost-optimization",
     "headline": "Compounding autonomy is a property you manage, not just enjoy",
-    "quote": "A skill is a cache for reasoning, not just data — re-derivation cost drops toward zero. But the same loop compounds cost drift, skill rot, and trust surface. One challenge entrant reported a $47 surprise bill from an overnight run. Skill-cached runs were ~63% cheaper than re-derivation.",
+    "quote": "A skill is a cache for reasoning, not just data \u2014 re-derivation cost drops toward zero. But the same loop compounds cost drift, skill rot, and trust surface. One challenge entrant reported a $47 surprise bill from an overnight run. Skill-cached runs were ~63% cheaper than re-derivation.",
     "size": "md"
   },
   {
@@ -2767,8 +2767,8 @@
     "url": "https://dev.to/emmanuelthecoder/hermes-the-self-improving-agent-you-can-actually-run-yourself-555l",
     "date": "2026-05-15",
     "category": "privacy",
-    "headline": "The self-improving agent you can actually run yourself — Termux included",
-    "quote": "A persistent agent that runs on your own infrastructure, reaches you across messaging platforms, and gets more capable with use. Supported platforms include Linux, macOS, WSL2, and Termux — start on your laptop, continue on Telegram.",
+    "headline": "The self-improving agent you can actually run yourself \u2014 Termux included",
+    "quote": "A persistent agent that runs on your own infrastructure, reaches you across messaging platforms, and gets more capable with use. Supported platforms include Linux, macOS, WSL2, and Termux \u2014 start on your laptop, continue on Telegram.",
     "size": "sm"
   },
   {
@@ -2779,7 +2779,7 @@
     "date": "2026-04-20",
     "category": "trading",
     "headline": "No-code Polymarket weather-trading bot driven by plain-English prompts",
-    "quote": "A weather trading agent that scans 20 cities across 4 continents and 3 forecast sources, with Expected Value and Kelly Criterion position sizing — set up by copy-pasting prompts to Hermes, which clones the repo, creates the wallet, and approves the contracts on-chain.",
+    "quote": "A weather trading agent that scans 20 cities across 4 continents and 3 forecast sources, with Expected Value and Kelly Criterion position sizing \u2014 set up by copy-pasting prompts to Hermes, which clones the repo, creates the wallet, and approves the contracts on-chain.",
     "size": "sm"
   },
   {
@@ -2790,7 +2790,7 @@
     "date": "2026-06-01",
     "category": "dev-workflow",
     "headline": "18-agent fleet on the Kanban board that scouts pain points and auto-ships tools",
-    "quote": "18 agents working in parallel, 97 completed tasks. Scout agents hunt real pain points, an orchestrator scores against a rubric — anything under 65/100 gets shelved — then a builder+tester ship a working CLI tool. The system self-healed a broken deliverable on its own.",
+    "quote": "18 agents working in parallel, 97 completed tasks. Scout agents hunt real pain points, an orchestrator scores against a rubric \u2014 anything under 65/100 gets shelved \u2014 then a builder+tester ship a working CLI tool. The system self-healed a broken deliverable on its own.",
     "size": "md"
   },
   {
@@ -2801,7 +2801,7 @@
     "date": "2026-05-01",
     "category": "privacy",
     "headline": "24/7 cloud red-team 'AI hacking team' controlled from Telegram",
-    "quote": "C2 via Telegram: launch tasks from your phone. It autonomously researches SMS gateways, creates a custom SMS skill, deploys a tracking page that harvests GPS, and makes everything publicly accessible using a Cloudflare Quick Tunnel — for ethical red-team engagements.",
+    "quote": "C2 via Telegram: launch tasks from your phone. It autonomously researches SMS gateways, creates a custom SMS skill, deploys a tracking page that harvests GPS, and makes everything publicly accessible using a Cloudflare Quick Tunnel \u2014 for ethical red-team engagements.",
     "size": "sm"
   },
   {
@@ -2834,7 +2834,7 @@
     "date": "2026-05-04",
     "category": "personal-assistant",
     "headline": "Telegram assistant recalled Japan-trip preferences while planning a France trip",
-    "quote": "In a new Telegram conversation I said 'help me plan a trip to France' and the agent referenced the past Japan conversation, recalling my preferences — nature, history, mid-range budget. That's the difference between a chatbot and a personal assistant.",
+    "quote": "In a new Telegram conversation I said 'help me plan a trip to France' and the agent referenced the past Japan conversation, recalling my preferences \u2014 nature, history, mid-range budget. That's the difference between a chatbot and a personal assistant.",
     "size": "sm"
   },
   {
@@ -2845,7 +2845,7 @@
     "date": "2026-05-14",
     "category": "personal-assistant",
     "headline": "7am filtered tech briefing + a check-in that spots tasks worth automating",
-    "quote": "Every day at 7am Hermes sends a tech/AI summary — not generic, filtered for being a software engineer and YouTube creator — and it says 'the thing you described doing manually every Thursday could be automated. Here's how.'",
+    "quote": "Every day at 7am Hermes sends a tech/AI summary \u2014 not generic, filtered for being a software engineer and YouTube creator \u2014 and it says 'the thing you described doing manually every Thursday could be automated. Here's how.'",
     "size": "sm"
   },
   {
@@ -2856,7 +2856,7 @@
     "date": "2026-05-10",
     "category": "dev-workflow",
     "headline": "Scheduled Hermes to build a useful micro-app for him every night at 2am",
-    "quote": "I want you to schedule a task for yourself to do every single night at 2am. It should be a micro app, UI, or system that helps us get closer to my personal goals — save us time, make us more productive, or just be generally useful.",
+    "quote": "I want you to schedule a task for yourself to do every single night at 2am. It should be a micro app, UI, or system that helps us get closer to my personal goals \u2014 save us time, make us more productive, or just be generally useful.",
     "size": "sm"
   },
   {
@@ -2867,7 +2867,7 @@
     "date": "2026-05-22",
     "category": "personal-assistant",
     "headline": "A clickable 'memory wiki' of everything worked on, plus a 9am priority routine",
-    "quote": "Build a memory wiki — a site with all subjects we've talked about and daily logs. Every morning at 9am ask me what my number 1 priority is, then come up with tasks to help with that priority, then update your memories about me accordingly.",
+    "quote": "Build a memory wiki \u2014 a site with all subjects we've talked about and daily logs. Every morning at 9am ask me what my number 1 priority is, then come up with tasks to help with that priority, then update your memories about me accordingly.",
     "size": "sm"
   },
   {
@@ -2878,7 +2878,7 @@
     "date": "2026-05-20",
     "category": "creative",
     "headline": "Recursively built a Supabase-backed CRM dashboard where each build reuses prior components",
-    "quote": "Used the Hermes Desktop App to recursively generate a CRM dashboard where each build reuses components from prior generations; it can also build full videos using official HyperFrame skills — HTML-native, full control over scenes, animations, and rendering.",
+    "quote": "Used the Hermes Desktop App to recursively generate a CRM dashboard where each build reuses components from prior generations; it can also build full videos using official HyperFrame skills \u2014 HTML-native, full control over scenes, animations, and rendering.",
     "size": "sm"
   }
 ]

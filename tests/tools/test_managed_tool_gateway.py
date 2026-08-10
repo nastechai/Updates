@@ -23,7 +23,7 @@ def test_resolve_managed_tool_gateway_derives_vendor_origin_from_shared_domain()
     with patch.dict(
         os.environ,
         {
-            "TOOL_GATEWAY_DOMAIN": "nousresearch.com",
+            "TOOL_GATEWAY_DOMAIN": "nastechairesearch.com",
         },
         clear=False,
     ), patch.object(managed_tool_gateway, "managed_nous_tools_enabled", return_value=True):
@@ -33,7 +33,7 @@ def test_resolve_managed_tool_gateway_derives_vendor_origin_from_shared_domain()
         )
 
     assert result is not None
-    assert result.gateway_origin == "https://firecrawl-gateway.nousresearch.com"
+    assert result.gateway_origin == "https://firecrawl-gateway.nastechairesearch.com"
     assert result.nous_user_token == "nous-token"
     assert result.managed_mode is True
 
@@ -59,7 +59,7 @@ def test_resolve_managed_tool_gateway_is_inactive_without_nous_token():
     with patch.dict(
         os.environ,
         {
-            "TOOL_GATEWAY_DOMAIN": "nousresearch.com",
+            "TOOL_GATEWAY_DOMAIN": "nastechairesearch.com",
         },
         clear=False,
     ), patch.object(managed_tool_gateway, "managed_nous_tools_enabled", return_value=True):
@@ -72,7 +72,7 @@ def test_resolve_managed_tool_gateway_is_inactive_without_nous_token():
 
 
 def test_resolve_managed_tool_gateway_is_disabled_without_subscription():
-    with patch.dict(os.environ, {"TOOL_GATEWAY_DOMAIN": "nousresearch.com"}, clear=False), \
+    with patch.dict(os.environ, {"TOOL_GATEWAY_DOMAIN": "nastechairesearch.com"}, clear=False), \
          patch.object(managed_tool_gateway, "managed_nous_tools_enabled", return_value=False):
         result = resolve_managed_tool_gateway(
             "firecrawl",
@@ -84,7 +84,7 @@ def test_resolve_managed_tool_gateway_is_disabled_without_subscription():
 
 def test_read_nous_access_token_refreshes_expiring_cached_token(tmp_path, monkeypatch):
     monkeypatch.delenv("TOOL_GATEWAY_USER_TOKEN", raising=False)
-    monkeypatch.setenv("HERMES_HOME", str(tmp_path))
+    monkeypatch.setenv("NASTECH_HOME", str(tmp_path))
     expires_at = (datetime.now(timezone.utc) + timedelta(seconds=30)).isoformat()
     (tmp_path / "auth.json").write_text(json.dumps({
         "providers": {
@@ -96,7 +96,7 @@ def test_read_nous_access_token_refreshes_expiring_cached_token(tmp_path, monkey
         }
     }))
     monkeypatch.setattr(
-        "hermes_cli.auth.resolve_nous_access_token",
+        "nastech_cli.auth.resolve_nous_access_token",
         lambda refresh_skew_seconds=120: "fresh-token",
     )
 
@@ -112,15 +112,15 @@ def test_managed_vendor_endpoints_pin_the_deployed_gateway_url():
     """
     with patch.dict(
         os.environ,
-        {"TOOL_GATEWAY_DOMAIN": "nousresearch.com", "TOOL_GATEWAY_SCHEME": "https"},
+        {"TOOL_GATEWAY_DOMAIN": "nastechairesearch.com", "TOOL_GATEWAY_SCHEME": "https"},
         clear=False,
     ):
         os.environ.pop("TOOL_GATEWAY_URL", None)
         endpoints = managed_tool_gateway.managed_vendor_endpoints("bfl")
 
     assert endpoints == {
-        "origin": "https://tool-gateway.nousresearch.com",
-        "base_url": "https://tool-gateway.nousresearch.com/api/bfl",
+        "origin": "https://tool-gateway.nastechairesearch.com",
+        "base_url": "https://tool-gateway.nastechairesearch.com/api/bfl",
         "upload_path": "/api/uploads/bfl",
     }
 
@@ -132,7 +132,7 @@ def test_managed_vendor_endpoints_do_not_consult_entitlement():
     Guessing at it here would hide the address from a caller the server would
     have served, so entitlement must not be read on this path at all.
     """
-    with patch.dict(os.environ, {"TOOL_GATEWAY_DOMAIN": "nousresearch.com"}, clear=False), \
+    with patch.dict(os.environ, {"TOOL_GATEWAY_DOMAIN": "nastechairesearch.com"}, clear=False), \
          patch.object(
              managed_tool_gateway,
              "managed_nous_tools_enabled",
@@ -142,7 +142,7 @@ def test_managed_vendor_endpoints_do_not_consult_entitlement():
         endpoints = managed_tool_gateway.managed_vendor_endpoints("bfl")
 
     assert endpoints is not None
-    assert endpoints["base_url"] == "https://tool-gateway.nousresearch.com/api/bfl"
+    assert endpoints["base_url"] == "https://tool-gateway.nastechairesearch.com/api/bfl"
 
 
 def test_managed_vendor_endpoints_are_none_when_no_origin_resolves():
@@ -380,7 +380,7 @@ class TestManagedMediaUploader:
 
 def test_is_managed_tool_gateway_ready_skips_refresh_for_expired_cached_token(tmp_path, monkeypatch):
     monkeypatch.delenv("TOOL_GATEWAY_USER_TOKEN", raising=False)
-    monkeypatch.setenv("HERMES_HOME", str(tmp_path))
+    monkeypatch.setenv("NASTECH_HOME", str(tmp_path))
     expired_at = (datetime.now(timezone.utc) - timedelta(seconds=30)).isoformat()
     (tmp_path / "auth.json").write_text(json.dumps({
         "providers": {
@@ -398,13 +398,13 @@ def test_is_managed_tool_gateway_ready_skips_refresh_for_expired_cached_token(tm
         return "fresh-token"
 
     monkeypatch.setattr(
-        "hermes_cli.auth.resolve_nous_access_token",
+        "nastech_cli.auth.resolve_nous_access_token",
         _record_refresh,
     )
 
     with patch.dict(
         os.environ,
-        {"TOOL_GATEWAY_DOMAIN": "nousresearch.com"},
+        {"TOOL_GATEWAY_DOMAIN": "nastechairesearch.com"},
         clear=False,
     ), patch.object(managed_tool_gateway, "managed_nous_tools_enabled", return_value=True):
         assert is_managed_tool_gateway_ready("modal") is True
