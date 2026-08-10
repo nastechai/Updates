@@ -73,6 +73,8 @@ jobs:
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
           git merge upstream/main --no-commit --no-ff || true
+          # Restore our own workflows to avoid permission issues when pushing
+          git checkout HEAD -- .github/workflows/
 
       - name: Apply branding transformations
         if: steps.check-sync.outputs.already_synced == 'false'

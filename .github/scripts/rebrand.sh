@@ -73,7 +73,7 @@ INCLUDE_PATTERNS=(
 
 # Exclude patterns
 EXCLUDE_PATTERNS=(
-  ".git" "node_modules" ".venv" "dist" "build" ".next" "*.lock" "*.lockfile" ".DS_Store"
+  ".git" "node_modules" ".venv" "dist" "build" ".next" "*.lock" "*.lockfile" ".DS_Store" ".github/workflows"
 )
 
 # Track statistics
