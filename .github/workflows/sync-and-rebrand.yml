@@ -1,0 +1,256 @@
+name: Sync, Rebrand & Create PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_ref:
+        description: 'Upstream ref to sync (e.g., main, v1.0.0)'
+        required: false
+        default: 'main'
+      target_repo:
+        description: 'Target repo for PR (e.g., nastechai/nastech-agent)'
+        required: false
+        default: 'nastechai/nastech-agent'
+
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+
+  repository_dispatch:
+    types: [upstream-update]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-rebrand-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # =====================================================================
+      # 1. Setup and Checkout
+      # =====================================================================
+      - name: Checkout Updates repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "NasTech Sync Bot"
+          git config user.email "sync@nastechai.dev"
+
+      # =====================================================================
+      # 2. Add Remotes and Fetch
+      # =====================================================================
+      - name: Add upstream remote (hermes-agent)
+        run: |
+          git remote add upstream https://github.com/NousResearch/hermes-agent.git || true
+          git fetch upstream
+
+      - name: Add target remote (nastech-agent)
+        run: |
+          git remote add target https://github.com/${{ github.event.inputs.target_repo || 'nastechai/nastech-agent' }}.git || true
+          git fetch target
+
+      # =====================================================================
+      # 3. Determine Upstream Ref
+      # =====================================================================
+      - name: Determine upstream ref
+        id: upstream-ref
+        run: |
+          UPSTREAM_REF="${{ github.event.inputs.upstream_ref || 'main' }}"
+          UPSTREAM_SHA=$(git rev-parse upstream/$UPSTREAM_REF)
+          SHORT_SHA=${UPSTREAM_SHA:0:8}
+          echo "ref=$UPSTREAM_REF" >> $GITHUB_OUTPUT
+          echo "sha=$UPSTREAM_SHA" >> $GITHUB_OUTPUT
+          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "Syncing from upstream: $UPSTREAM_REF@$SHORT_SHA"
+
+      # =====================================================================
+      # 4. Check if Already Synced
+      # =====================================================================
+      - name: Check if already synced
+        id: check-sync
+        run: |
+          if git log --oneline | grep -q "${{ steps.upstream-ref.outputs.short_sha }}"; then
+            echo "already_synced=true" >> $GITHUB_OUTPUT
+            echo "Already synced with upstream"
+          else
+            echo "already_synced=false" >> $GITHUB_OUTPUT
+            echo "New commits available"
+          fi
+
+      # =====================================================================
+      # 5. Create Sync Branch
+      # =====================================================================
+      - name: Create sync branch
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          BRANCH_NAME="sync/$(date +%Y%m%d)-${{ steps.upstream-ref.outputs.short_sha }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "SYNC_BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
+
+      # =====================================================================
+      # 6. Merge Upstream Changes
+      # =====================================================================
+      - name: Merge upstream changes
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          git merge upstream/${{ steps.upstream-ref.outputs.ref }} --no-commit --no-ff || true
+
+      # =====================================================================
+      # 7. Apply Branding Transformations
+      # =====================================================================
+      - name: Apply branding transformations
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          chmod +x .github/scripts/rebrand.sh
+          .github/scripts/rebrand.sh . false
+
+      # =====================================================================
+      # 8. Verify Branding Compliance
+      # =====================================================================
+      - name: Verify branding compliance
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          chmod +x .github/scripts/verify-branding.sh
+          .github/scripts/verify-branding.sh . || exit 1
+
+      # =====================================================================
+      # 9. Run npm Audit (informational)
+      # =====================================================================
+      - name: Run npm audit
+        if: steps.check-sync.outputs.already_synced == 'false'
+        continue-on-error: true
+        run: |
+          if [ -f "package.json" ]; then
+            npm audit --json > /tmp/npm-audit.json || true
+            echo "npm audit results:"
+            cat /tmp/npm-audit.json | head -50
+          fi
+
+      # =====================================================================
+      # 10. Commit Changes
+      # =====================================================================
+      - name: Commit changes
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          git add -A
+          git commit -m "chore: sync and rebrand from Hermes
+
+          Upstream: ${{ steps.upstream-ref.outputs.ref }}@${{ steps.upstream-ref.outputs.short_sha }}
+          
+          Changes:
+          - Merged upstream commits
+          - Rebranded Hermes → NasTech
+          - Rebranded @nous-research → @nastech-research
+          - Rebranded nousresearch → nastechairesearch
+          - Updated environment variables and paths
+          - Verified branding compliance
+          
+          Automated by: NasTech Sync Bot"
+
+      # =====================================================================
+      # 11. Push to Updates Repo
+      # =====================================================================
+      - name: Push sync branch to Updates
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          git push origin "$SYNC_BRANCH"
+
+      # =====================================================================
+      # 12. Create PR to Target Repo (nastech-agent)
+      # =====================================================================
+      - name: Create PR to nastech-agent
+        if: steps.check-sync.outputs.already_synced == 'false'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const targetRepo = '${{ github.event.inputs.target_repo || 'nastechai/nastech-agent' }}';
+            const [owner, repo] = targetRepo.split('/');
+            const syncBranch = '${{ env.SYNC_BRANCH }}';
+            const shortSha = '${{ steps.upstream-ref.outputs.short_sha }}';
+            
+            try {
+              const { data: pr } = await github.rest.pulls.create({
+                owner: owner,
+                repo: repo,
+                title: `chore: sync and rebrand from Hermes (${shortSha})`,
+                head: `nastechai:${syncBranch}`,
+                base: 'main',
+                body: `## Sync and Rebrand from Hermes
+
+**Upstream:** \`${{ steps.upstream-ref.outputs.ref }}@${shortSha}\`
+
+This PR syncs the latest changes from [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) and applies NasTech branding transformations.
+
+### Changes Applied
+- ✓ Merged upstream commits
+- ✓ Rebranded all files and folders (Hermes → NasTech)
+- ✓ Updated npm packages (@nous-research → @nastech-research)
+- ✓ Updated Docker images (nousresearch → nastechairesearch)
+- ✓ Updated environment variables (HERMES_ → NASTECH_)
+- ✓ Updated repository URLs and paths
+- ✓ Verified branding compliance
+
+### Verification
+- ✓ Branding verification passed
+- ✓ No remaining Hermes/nous-research references
+- ✓ All file and folder names updated
+- ✓ Code imports and paths verified
+- ✓ npm audit completed (see workflow logs)
+
+### Next Steps
+1. Review the changes
+2. Run additional tests if needed
+3. Merge when ready
+
+**Created by:** NasTech Sync Bot
+**Source:** Updates Repository
+`,
+                labels: ['sync', 'automated', 'rebrand']
+              });
+              
+              console.log(`✓ Created PR #${pr.number} in ${owner}/${repo}`);
+            } catch (error) {
+              console.error(`✗ Failed to create PR: ${error.message}`);
+              throw error;
+            }
+
+      # =====================================================================
+      # 13. Report Success
+      # =====================================================================
+      - name: Report success
+        if: steps.check-sync.outputs.already_synced == 'false'
+        run: |
+          echo "✓ Sync and rebrand completed successfully"
+          echo "PR created to nastechai/nastech-agent"
+
+      - name: Report already synced
+        if: steps.check-sync.outputs.already_synced == 'true'
+        run: |
+          echo "ℹ Already synced with upstream ${{ steps.upstream-ref.outputs.ref }}@${{ steps.upstream-ref.outputs.short_sha }}"
+
+  # =========================================================================
+  # Failure Notification
+  # =========================================================================
+  notify-failure:
+    if: failure()
+    runs-on: ubuntu-latest
+    needs: [sync-rebrand-pr]
+    steps:
+      - name: Create failure issue
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Sync and Rebrand Workflow Failed',
+              body: `The sync and rebrand workflow failed. Please check the [workflow logs](${context.payload.repository.html_url}/actions/runs/${context.runId}).`,
+              labels: ['sync', 'error', 'automated']
+            });
