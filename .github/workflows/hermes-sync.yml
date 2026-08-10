@@ -1,0 +1,45 @@
+name: "Hermes: Sync from NousResearch/hermes-agent"
+
+# This workflow runs on the `hermes-automation` branch only.
+# It syncs the latest code from NousResearch/hermes-agent into
+# hermes-automation, then the push triggers stage-1 → verify → ... → final.
+# main is NEVER touched.
+
+on:
+  schedule:
+    # Daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-hermes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout hermes-automation branch
+        uses: actions/checkout@v4
+        with:
+          ref: hermes-automation
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "NasTech Sync Bot"
+          git config user.email "sync@nastechai.dev"
+
+      - name: Add NousResearch/hermes-agent as upstream
+        run: |
+          git remote add hermes-upstream https://github.com/NousResearch/hermes-agent.git || true
+          git fetch hermes-upstream main
+
+      - name: Merge upstream into hermes-automation
+        run: |
+          git merge hermes-upstream/main --no-ff \
+            -m "chore(hermes-sync): merge from NousResearch/hermes-agent [auto]" \
+            --allow-unrelated-histories || true
+          git push origin hermes-automation
+        # Pushing to hermes-automation automatically triggers stage-1-hermes-to-verify.yml
