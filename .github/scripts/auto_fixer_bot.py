@@ -8,7 +8,7 @@ import subprocess
 
 # Configuration
 OLLAMA_API_BASE = "https://ollama.com/v1"
-MODELS = ["gemma:31b", "codellama:34b", "llama3:70b"]
+MODELS = ["gemma4:31b", "kimi-k2.7-code", "deepseek-v4-pro", "mistral-large-3:675b"]
 KEYS = [
     os.environ.get("OLLAMA_API_KEY_1"),
     os.environ.get("OLLAMA_API_KEY_2"),
