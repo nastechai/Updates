@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Configure git
         run: |
@@ -39,8 +39,11 @@ jobs:
           git fetch upstream --depth=50
 
       - name: Add target remote
+        env:
+          NAS_TOKEN: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          git remote add target https://github.com/nastechai/nastech-agent.git || true
+          # Use NAS_TOKEN if available, otherwise fallback to GITHUB_TOKEN
+          git remote add target https://nastechai:${NAS_TOKEN}@github.com/nastechai/nastech-agent.git || true
           git fetch target --depth=50
 
       - name: Get upstream HEAD
@@ -73,7 +76,7 @@ jobs:
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
           git merge upstream/main --no-commit --no-ff || true
-          # Restore our own workflows to avoid permission issues when pushing
+          # Preserve our own workflows
           git checkout HEAD -- .github/workflows/
 
       - name: Apply branding transformations
@@ -90,7 +93,6 @@ jobs:
 
       - name: Commit changes
         if: steps.check-sync.outputs.already_synced == 'false'
-        id: commit
         run: |
           git add -A
           git commit -m "chore: sync and rebrand from Hermes
@@ -99,18 +101,18 @@ jobs:
           Message: ${{ steps.upstream-info.outputs.message }}
           
           Automated by: NasTech Sync Bot"
-          echo "changed=true" >> $GITHUB_OUTPUT
 
-      - name: Push sync branch
+      - name: Push sync branch to target repo
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
-          git push origin "${{ env.SYNC_BRANCH }}"
+          # Push to the target repository (nastech-agent)
+          git push target "${{ env.SYNC_BRANCH }}" --force
 
-      - name: Create PR to nastech-agent
+      - name: Create PR in nastech-agent
         if: steps.check-sync.outputs.already_synced == 'false'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const syncBranch = '${{ env.SYNC_BRANCH }}';
             const shortSha = '${{ steps.upstream-info.outputs.short_sha }}';
@@ -119,9 +121,9 @@ jobs:
               owner: 'nastechai',
               repo: 'nastech-agent',
               title: `chore: sync and rebrand from Hermes (${shortSha})`,
-              head: `nastechai:${syncBranch}`,
+              head: syncBranch,
               base: 'main',
-              body: `## Sync and Rebrand from Hermes\n\n**Upstream:** \`main@${shortSha}\`\n\nThis PR was automatically generated and verified by the NasTech Sync Bot.`
+              body: `## Sync and Rebrand from Hermes\n\n**Upstream:** \`main@${shortSha}\`\n\nThis PR was automatically generated and verified by the NasTech Sync Bot from the Updates repository.`
             });
 
   handle-failure:
@@ -132,11 +134,11 @@ jobs:
       - name: Create failure issue
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: '🚨 Auto Sync Workflow Failed',
-              body: 'The sync and rebrand workflow failed. Please check the workflow logs.'
+              body: 'The sync and rebrand workflow failed. Please check the workflow logs in the Updates repository.'
             });
