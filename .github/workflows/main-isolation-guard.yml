@@ -1,10 +1,11 @@
 name: "Main Branch Isolation Guard"
 
-# main is the HEAD of the pipeline. It only ever receives the final stage
-# (final → main) via the ordered stage-pipeline workflow. This guard BLOCKS
-# PRs from any intermediate pipeline branch (hermes-automation, verify,
-# semi-stage, sync/*, nastech, setup-automation) from merging into main.
-# `final` is the ONE branch allowed to promote into main (Stage 4).
+# main is the HEAD of the ordered pipeline. It only ever receives the final
+# stage (final → main, Stage 8 of stage-pipeline.yml). This guard BLOCKS PRs
+# from every other pipeline branch (hermes-upstream, hermes-analyser,
+# brand-ideas, brand-verifier, dependencies-fixes, verify, semi-stage,
+# sync/*, nastech, setup-automation) from merging into main. `final` is the
+# ONE branch allowed to promote into main.
 
 on:
   pull_request:
@@ -25,15 +26,19 @@ jobs:
           SOURCE="${{ github.head_ref }}"
           echo "Source branch: $SOURCE"
 
-          # Only `final` may promote into main (Stage 4). Everything else is blocked.
+          # Only `final` may promote into main (Stage 8). Everything else is blocked.
           if [[ "$SOURCE" == "final" ]]; then
             echo "BLOCKED=false" >> $GITHUB_OUTPUT
-            echo "REASON=final is the Stage 4 head promotion branch." >> $GITHUB_OUTPUT
+            echo "REASON=final is the Stage 8 head promotion branch." >> $GITHUB_OUTPUT
             exit 0
           fi
 
           # Block all other pipeline and sync branches from merging into main
-          BLOCKED_PATTERNS=("hermes-automation" "verify" "semi-stage" "nastech" "setup-automation" "sync/")
+          BLOCKED_PATTERNS=(
+            "hermes-upstream" "hermes-analyser" "brand-ideas" "brand-verifier"
+            "dependencies-fixes" "verify" "semi-stage" "nastech"
+            "setup-automation" "sync/"
+          )
 
           for pattern in "${BLOCKED_PATTERNS[@]}"; do
             if [[ "$SOURCE" == *"$pattern"* ]]; then
@@ -54,7 +59,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## 🚫 Main Branch Isolation Guard\n\n**This PR is blocked.**\n\n\`main\` is the HEAD of the pipeline and only receives the final stage. Only \`final\` may promote into main (Stage 4).\n\nThe ordered pipeline flow is:\n\`\`\`\nhermes-automation →(S1)→ verify →(S2)→ semi-stage →(S3)→ final →(S4)→ main (HEAD)\n\`\`\`\n\nPromote code through the ordered stage pipeline instead. Please close this PR.`
+              body: `## 🚫 Main Branch Isolation Guard\n\n**This PR is blocked.**\n\n\`main\` is the HEAD of the pipeline and only receives the final stage. Only \`final\` may promote into main (Stage 8).\n\nThe ordered pipeline flow is:\n\`\`\`\nhermes-upstream →(S1)→ hermes-analyser →(S2)→ brand-ideas →(S3)→ brand-verifier →(S4)→ dependencies-fixes →(S5)→ verify →(S6)→ semi-stage →(S7)→ final →(S8)→ main (HEAD) →(S9)→ nastech-agent PR\n\`\`\`\n\nPromote code through the ordered stage pipeline instead. Please close this PR.`
             });
 
       - name: Fail the check

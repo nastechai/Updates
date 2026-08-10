@@ -1,0 +1,102 @@
+name: "Sync Stream Bot — always watch for new commits"
+
+# The auto-updater stream bot. Runs frequently, checks every pipeline branch
+# for NEW commits, refreshes INCOMING_REPORT.md, keeps a tracking issue up to
+# date, and sends ONE professional Telegram notification when new commits
+# arrive (never spams when nothing changed).
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 minutes
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+jobs:
+  watch-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "NasTech Sync Bot"
+          git config user.email "sync@nastechai.dev"
+
+      - name: Fetch all pipeline branches
+        run: git fetch origin main hermes-upstream hermes-analyser brand-ideas brand-verifier dependencies-fixes verify semi-stage final --prune
+
+      - name: Compute new-commit deltas across the pipeline
+        id: deltas
+        run: |
+          CHANGED=""
+          for b in hermes-upstream hermes-analyser brand-ideas brand-verifier dependencies-fixes verify semi-stage final main; do
+            local=$(git rev-parse "origin/$b" 2>/dev/null || echo "none")
+            remote=$(git ls-remote origin "$b" 2>/dev/null | awk '{print $1}')
+            if [ -n "$remote" ] && [ "$local" != "$remote" ]; then
+              CHANGED="$CHANGED $b"
+            fi
+          done
+          echo "CHANGED_BRANCHES=$(echo $CHANGED)" >> $GITHUB_OUTPUT
+          if [ -z "$CHANGED" ]; then
+            echo "NEW_COMMITS=false" >> $GITHUB_OUTPUT
+          else
+            echo "NEW_COMMITS=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Refresh incoming report for changed branches
+        if: steps.deltas.outputs.NEW_COMMITS == 'true'
+        run: |
+          {
+            echo "# Sync Stream — Incoming Updates"
+            echo ""
+            echo "_Last checked: $(date -u '+%Y-%m-%d %H:%M UTC')_"
+            echo ""
+            echo "Branches with new commits:${{ steps.deltas.outputs.CHANGED_BRANCHES }}"
+            echo ""
+          } > INCOMING_REPORT.md
+          git add INCOMING_REPORT.md
+          git commit -m "chore(sync-stream): refresh incoming report [auto]" || true
+          git push origin main || true
+
+      - name: Open/update tracking issue
+        if: steps.deltas.outputs.NEW_COMMITS == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const title = '📥 Sync Stream — incoming updates';
+            const body = `## Incoming updates\n\nNew commits detected on: \`${{ steps.deltas.outputs.CHANGED_BRANCHES }}\`\n\nSee INCOMING_REPORT.md. The ordered pipeline is processing them.`;
+            const { data: issues } = await github.rest.issues.listForRepo({ owner, repo, state: 'open' });
+            const existing = issues.find((i) => i.title === title);
+            if (existing) {
+              await github.rest.issues.update({ owner, repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({ owner, repo, title, body });
+            }
+
+      - name: Telegram — new commits
+        if: steps.deltas.outputs.NEW_COMMITS == 'true'
+        shell: bash
+        run: |
+          python3 .github/scripts/telegram_notify.py \
+            --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
+            --chat "${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --event incoming-report \
+            --title "📥 New commits — sync stream" \
+            --level "info" \
+            --body "Branches with new commits:${{ steps.deltas.outputs.CHANGED_BRANCHES }}\nPipeline is processing them." \
+            --file INCOMING_REPORT.md || true
+
+      - name: Nothing new (no notification)
+        if: steps.deltas.outputs.NEW_COMMITS == 'false'
+        run: echo "No new commits anywhere in the pipeline — quiet."

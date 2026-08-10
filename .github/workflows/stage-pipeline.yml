@@ -1,30 +1,32 @@
-name: "Stage Pipeline: ordered push + verify (main = HEAD)"
+name: "Stage Pipeline: ordered promote → main → nastech-agent PR"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# THE ordered pipeline. Every stage is a job chained with `needs:`, so stages
-# run strictly one after another — NOT all at once. Each stage:
-#   1. BRAND:  runs the branding orchestrator on its branch (verify/semi/final)
-#   2. PUSH:   promotes the branch into the NEXT branch
-#   3. VERIFY: waits for the next branch's checks to pass before continuing
+# THE ordered pipeline (10 branches, main = HEAD). Every stage is a job chained
+# with `needs:`, so stages run strictly one after another — NEVER in parallel.
 #
-#   hermes-automation →(S1)→ verify →(S2)→ semi-stage →(S3)→ final →(S4)→ main
+#   [NousResearch/hermes-agent]  (upstream source)
+#        │ sync-stream-bot
+#   01  hermes-upstream      — always up-to-date mirror; bots get fixes here
+#   02  hermes-analyser      — brand-analysis.py → BRANDING_REPORT.md + questions
+#   03  brand-ideas          — proposal; owner approves in GitHub Discussions
+#   04  brand-verifier       — name↔name mapping checks (fails stage on mismatch)
+#   05  dependencies-fixes   — npm/pypi/docker/actions fixes
+#   06  verify               — CI/tests/npm/pypi surface; stops + fills blanks if missing
+#   07  semi-stage           — ecosystem transforms (npm/docker/config)
+#   08  final                — full transform + final verification
+#   09  main (HEAD)          — all work lands here
+#        │ main triggers final job
+#   → PR into nastechai/nastech-agent repo (nastech gets ALL fixes)
 #
-# main is the HEAD — the final destination of the pipeline.
-#
-# Hermes tests/sync are NOT part of main: they live on the `hermes-automation`
-# branch and trigger there (see hermes-sync.yml on that branch). Nothing
-# hermes-specific runs on main.
-#
-# Scaling: to add stages, append more jobs below, each with
-#   needs: <previous job>
-# and the correct source/target branches — the chain stays in order.
+# Token-limited checks (e.g. Docker image builds) are intentionally not fatal;
+# focus is tests/CI/npm/pypi.
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: "Start the full ordered pipeline (yes)"
+        description: "Start the full ordered pipeline"
         default: "yes"
   push:
     branches:
@@ -38,63 +40,193 @@ permissions:
   pull-requests: write
   checks: read
   actions: read
+  discussions: write
 
 jobs:
-  # ── Stage 1: Hermes Automation → Verify ───────────────────────────────────
-  stage-1-hermes-to-verify:
+  # ── Stage 1: hermes-upstream → hermes-analyser ────────────────────────────
+  stage-1-upstream-to-analyser:
     runs-on: ubuntu-latest
     steps:
-      - name: Stage 1 (push + verify)
-        uses: ./.github/actions/stage
+      - uses: ./.github/actions/stage
         with:
-          source: hermes-automation
-          target: verify
-          stage_name: "Stage 1: Hermes Automation → Verify"
+          source: hermes-upstream
+          target: hermes-analyser
+          stage_name: "Stage 1: Hermes Upstream → Hermes Analyser"
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
-          run_orchestrator: "false"
-          orchestrator_arg: ""
+          run_brand_analysis: "true"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-  # ── Stage 2: Verify → Semi-Stage ──────────────────────────────────────────
-  stage-2-verify-to-semi-stage:
-    needs: stage-1-hermes-to-verify
+  # ── Stage 2: hermes-analyser → brand-ideas ────────────────────────────────
+  stage-2-analyser-to-brand-ideas:
+    needs: stage-1-upstream-to-analyser
     runs-on: ubuntu-latest
     steps:
-      - name: Stage 2 (brand → push → verify)
-        uses: ./.github/actions/stage
+      - uses: ./.github/actions/stage
+        with:
+          source: hermes-analyser
+          target: brand-ideas
+          stage_name: "Stage 2: Hermes Analyser → Brand Ideas"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  # ── Stage 3: brand-ideas → brand-verifier (OWNER APPROVAL) ────────────────
+  stage-3-brand-ideas-to-brand-verifier:
+    needs: stage-2-analyser-to-brand-ideas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/stage
+        with:
+          source: brand-ideas
+          target: brand-verifier
+          stage_name: "Stage 3: Brand Ideas → Brand Verifier (owner approval)"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          require_approval: "true"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  # ── Stage 4: brand-verifier → dependencies-fixes ──────────────────────────
+  stage-4-brand-verifier-to-deps:
+    needs: stage-3-brand-ideas-to-brand-verifier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/stage
+        with:
+          source: brand-verifier
+          target: dependencies-fixes
+          stage_name: "Stage 4: Brand Verifier → Dependencies Fixes"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          run_brand_verifier: "true"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  # ── Stage 5: dependencies-fixes → verify (MANIFEST STOP) ──────────────────
+  stage-5-deps-to-verify:
+    needs: stage-4-brand-verifier-to-deps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/stage
+        with:
+          source: dependencies-fixes
+          target: verify
+          stage_name: "Stage 5: Dependencies Fixes → Verify"
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          verify_manifests: "true"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  # ── Stage 6: verify → semi-stage (branding verify ≥80%) ───────────────────
+  stage-6-verify-to-semi-stage:
+    needs: stage-5-deps-to-verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/stage
         with:
           source: verify
           target: semi-stage
-          stage_name: "Stage 2: Verify → Semi-Stage"
+          stage_name: "Stage 6: Verify → Semi-Stage"
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           run_orchestrator: "true"
           orchestrator_arg: "verify"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-  # ── Stage 3: Semi-Stage → Final ───────────────────────────────────────────
-  stage-3-semi-stage-to-final:
-    needs: stage-2-verify-to-semi-stage
+  # ── Stage 7: semi-stage → final ───────────────────────────────────────────
+  stage-7-semi-stage-to-final:
+    needs: stage-6-verify-to-semi-stage
     runs-on: ubuntu-latest
     steps:
-      - name: Stage 3 (brand → push → verify)
-        uses: ./.github/actions/stage
+      - uses: ./.github/actions/stage
         with:
           source: semi-stage
           target: final
-          stage_name: "Stage 3: Semi-Stage → Final"
+          stage_name: "Stage 7: Semi-Stage → Final"
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           run_orchestrator: "true"
           orchestrator_arg: "semi-stage"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-  # ── Stage 4: Final → main (HEAD) ──────────────────────────────────────────
-  stage-4-final-to-main:
-    needs: stage-3-semi-stage-to-final
+  # ── Stage 8: final → main (HEAD) ──────────────────────────────────────────
+  stage-8-final-to-main:
+    needs: stage-7-semi-stage-to-final
     runs-on: ubuntu-latest
     steps:
-      - name: Stage 4 (brand → push → verify) — main is HEAD
-        uses: ./.github/actions/stage
+      - uses: ./.github/actions/stage
         with:
           source: final
           target: main
-          stage_name: "Stage 4: Final → Main (HEAD)"
+          stage_name: "Stage 8: Final → Main (HEAD)"
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           run_orchestrator: "true"
           orchestrator_arg: "final"
+          run_brand_verifier: "true"
+          brand_verifier_mode: "tree"
+          notify_telegram: "true"
+          telegram_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+  # ── Stage 9: main → nastech-agent repo PR (nastech gets ALL fixes) ────────
+  stage-9-main-to-nastech-agent:
+    needs: stage-8-final-to-main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main (HEAD)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Push main → nastechai/nastech-agent and open PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const sourceSha = context.sha;
+            const targetOwner = 'nastechai';
+            const targetRepo = 'nastech-agent';
+            const branch = 'nastech-sync';
+            const api = github.rest;
+
+            // Push main's tree to the target repo (requires NAS_TOKEN access).
+            const push = await github.rest.git.createRef({ owner: targetOwner, repo: targetRepo, ref: `refs/heads/${branch}`, sha: sourceSha }).catch(async (e) => {
+              await github.rest.git.updateRef({ owner: targetOwner, repo: targetRepo, ref: `heads/${branch}`, sha: sourceSha, force: true });
+            });
+
+            const { data: prs } = await api.pulls.list({
+              owner: targetOwner, repo: targetRepo, state: 'open',
+              head: `${targetOwner}:${branch}`, base: 'main',
+            });
+            if (prs.length > 0) {
+              console.log(`PR already open: ${prs[0].html_url}`);
+              return;
+            }
+            const pr = await api.pulls.create({
+              owner: targetOwner, repo: targetRepo,
+              title: 'chore(updates): apply NasTech pipeline fixes [auto]',
+              head: branch,
+              base: 'main',
+              body: `## 🤖 NasTech Update Pipeline — upstream fixes\n\nAll fixes from \`nastechai/Updates\` main (produced by the ordered stage pipeline: hermes-upstream → … → final → main) are now proposed for \`nastech-agent\`.\n\n- Source: \`nastechai/Updates\` @ \`${sourceSha.slice(0, 12)}\`\n- Generated reports: BRANDING_REPORT.md, BRAND_VERIFICATION.md, STAGE_REPORT.md\n\n> Created automatically by the Stage Pipeline (Stage 9). Review and merge.`,
+            });
+            console.log(`PR created: ${pr.data.html_url}`);
+
+      - name: Telegram — nastech-agent PR
+        shell: bash
+        run: |
+          python3 .github/scripts/telegram_notify.py \
+            --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
+            --chat "${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --event nastech-pr \
+            --title "🚀 main → nastech-agent PR opened" \
+            --level "info" \
+            --body "Stage 9 done: all pipeline fixes pushed to nastechai/nastech-agent as a PR." || true

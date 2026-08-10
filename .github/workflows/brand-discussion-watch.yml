@@ -1,0 +1,78 @@
+name: "Brand Discussion — owner approval + answers"
+
+# Watches GitHub Discussions in this repo.
+#   - When the OWNER comments "yes" / "approve" on a brand-ideas discussion,
+#     it records brand-approval.md onto the `brand-ideas` branch → the
+#     pipeline's Stage 3 can then promote.
+#   - When the OWNER comments/EDITS with answers to the fill-the-blank
+#     questions, they are recorded to brand-answers.md.
+#   - Because the owner can also EDIT the discussion body, both `discussion`
+#     (created/edited/commented) and `discussion_comment` events are watched.
+#   - Only the repo owner is accepted. No spam notifications.
+
+on:
+  discussion:
+    types: [created, edited, commented, answered]
+  discussion_comment:
+    types: [created, edited]
+
+permissions:
+  contents: write
+  discussions: write
+
+jobs:
+  watch-brand-ideas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record approval / answers
+        id: record
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const payload = context.payload;
+            const disc = payload.discussion;
+            if (!disc || !/brand-ideas/i.test(disc.title || '')) {
+              console.log('Not a brand-ideas discussion — skip.');
+              return;
+            }
+            const isComment = !!payload.comment;
+            const text = isComment ? (payload.comment.body || '') : (disc.body || '');
+            const author = isComment
+              ? (payload.comment.user && payload.comment.user.login)
+              : (disc.user && disc.user.login);
+            const repoOwner = payload.repository.owner.login;
+            if (author !== repoOwner) {
+              console.log(`Author '${author}' is not the owner ('${repoOwner}') — only the owner can approve.`);
+              return;
+            }
+            const body = text || '';
+            const approved = /(^|\s)(yes|approve|approved)\b/i.test(body);
+            const path = approved ? 'brand-approval.md' : 'brand-answers.md';
+            const content = approved
+              ? `Approved by ${author} in Discussion #${disc.number}\nApproved at: ${new Date().toISOString()}\n`
+              : `Answers from ${author} (Discussion #${disc.number}):\n\n${body}\n`;
+            try {
+              await github.rest.repos.createOrUpdateFileContents({
+                owner, repo, path, branch: 'brand-ideas',
+                message: `chore(brand): ${approved ? 'owner approval' : 'owner answers'} from Discussion #${disc.number} [auto]`,
+                content: Buffer.from(content).toString('base64'),
+              });
+              console.log(`${approved ? 'Approval' : 'Answers'} recorded to brand-ideas/${path}`);
+            } catch (e) {
+              console.log(`brand-ideas branch may not exist yet; skipped file write (${e.message})`);
+            }
+            core.setOutput('approved', String(approved));
+            core.setOutput('discussion_number', disc.number);
+
+      - name: Telegram — approval notification
+        shell: bash
+        run: |
+          python3 .github/scripts/telegram_notify.py \
+            --token "${{ secrets.TELEGRAM_BOT_TOKEN }}" \
+            --chat "${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --event approval \
+            --title "👍 Brand proposal updated" \
+            --level "info" \
+            --body "Discussion #${{ steps.record.outputs.discussion_number }} updated by the owner. Approval state recorded on brand-ideas. Pipeline Stage 3 can continue." || true

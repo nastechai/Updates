@@ -1,9 +1,9 @@
-name: "Stage promote + verify"
+name: "Stage promote + verify (ordered pipeline)"
 description: >
-  Ordered-pipeline building block. Verifies the source branch, promotes it into
-  the next pipeline branch (push), then waits for that branch's checks to pass.
-  Used by stage-pipeline.yml; jobs chain with `needs:` so stages run strictly
-  in order — never in parallel.
+  Ordered-pipeline building block. Runs the stage's work on the source branch,
+  promotes it into the NEXT branch, then waits for that branch's checks to
+  pass. Used by stage-pipeline.yml; jobs chain with `needs:` so stages run
+  strictly in order — never in parallel.
 
 inputs:
   source:
@@ -13,17 +13,49 @@ inputs:
     description: "Branch to promote INTO (next branch in the pipeline)"
     required: true
   stage_name:
-    description: "Human-readable stage label, e.g. 'Stage 2: Verify → Semi-Stage'"
+    description: "Human-readable stage label, e.g. 'Stage 6: Verify → Semi-Stage'"
     required: true
   token:
-    description: "GitHub token with contents:write, pull-requests:write, checks:read"
+    description: "GitHub token (contents:write, pull-requests:write, checks:read)"
     required: true
   run_orchestrator:
-    description: "'true' to run the branding orchestrator on the source branch before promoting"
+    description: "'true' to run branding-orchestrator.sh on the source branch"
     required: false
     default: "false"
   orchestrator_arg:
-    description: "Stage argument passed to branding-orchestrator.sh (verify|semi-stage|final) when run_orchestrator=true"
+    description: "Stage arg for branding-orchestrator.sh (verify|semi-stage|final)"
+    required: false
+    default: ""
+  run_brand_analysis:
+    description: "'true' to run brand-analysis.py (BRANDING_REPORT.md + OPEN_QUESTIONS.md)"
+    required: false
+    default: "false"
+  run_brand_verifier:
+    description: "'true' to run brand-verifier.py (--mode mapping; verifies the brand rules DB)"
+    required: false
+    default: "false"
+  brand_verifier_mode:
+    description: "brand-verifier.py mode (mapping at Stage 4, tree at Stage 8)"
+    required: false
+    default: "mapping"
+  require_approval:
+    description: "'true' to require brand-approval.md on the source branch (owner approval via Discussion) before promoting"
+    required: false
+    default: "false"
+  verify_manifests:
+    description: "'true' to run manifest-check.py (CI/tests/npm/pypi); stops + posts fill-the-blank if missing"
+    required: false
+    default: "false"
+  notify_telegram:
+    description: "'true' to send a Telegram notification for this stage's result"
+    required: false
+    default: "false"
+  telegram_token:
+    description: "Telegram bot token (secret TELEGRAM_BOT_TOKEN)"
+    required: false
+    default: ""
+  telegram_chat:
+    description: "Telegram chat id (secret TELEGRAM_CHAT_ID)"
     required: false
     default: ""
   verify_timeout_ms:
@@ -47,13 +79,72 @@ runs:
         git config user.name "NasTech Sync Bot"
         git config user.email "sync@nastechai.dev"
 
-    - name: Announce stage
+    - name: Announce ordered stage
       shell: bash
       run: |
-        echo "::group::⛓ ${{ inputs.stage_name }}  |  ${{ inputs.source }} → ${{ inputs.target }}"
-        echo "Pipeline: hermes-automation → verify → semi-stage → final → main (HEAD)"
+        echo "::group::⛓ ${{ inputs.stage_name }}"
+        echo "Pipeline: hermes-upstream → hermes-analyser → brand-ideas → brand-verifier → dependencies-fixes → verify → semi-stage → final → main (HEAD) → nastech-agent PR"
 
-    - name: Run branding orchestrator
+    # ── Stage work ──────────────────────────────────────────────────────────
+    - name: Require owner approval (brand-ideas Discussion)
+      if: ${{ inputs.require_approval == 'true' }}
+      shell: bash
+      run: |
+        if [ ! -f brand-approval.md ]; then
+          echo "::error::Brand proposal NOT approved yet. The owner must approve in the brand-ideas GitHub Discussion (comment 'yes' or edit the discussion). brand-discussion-watch.yml records approval into brand-approval.md."
+          exit 1
+        fi
+        echo "Brand proposal approved: $(cat brand-approval.md)"
+
+    - name: Brand analysis (how it must be branded)
+      if: ${{ inputs.run_brand_analysis == 'true' }}
+      shell: bash
+      run: |
+        python3 .github/scripts/brand-analysis.py . --out . || exit 1
+        git add BRANDING_REPORT.md OPEN_QUESTIONS.md
+
+    - name: "Brand verifier (mode: ${{ inputs.brand_verifier_mode }})"
+      if: ${{ inputs.run_brand_verifier == 'true' }}
+      shell: bash
+      run: |
+        python3 .github/scripts/brand-verifier.py . --mode "${{ inputs.brand_verifier_mode }}" --report BRAND_VERIFICATION.md || exit 1
+        git add BRAND_VERIFICATION.md
+
+    - name: Manifest check (CI/tests/npm/pypi — stop if missing)
+      id: manifests
+      if: ${{ inputs.verify_manifests == 'true' }}
+      shell: bash
+      run: |
+        python3 .github/scripts/manifest-check.py . --out . && echo "MANIFESTS_OK=true" >> $GITHUB_OUTPUT || echo "MANIFESTS_OK=false" >> $GITHUB_OUTPUT
+
+    - name: Post fill-the-blank to brand-ideas Discussion if manifests missing
+      if: ${{ inputs.verify_manifests == 'true' && steps.manifests.outputs.MANIFESTS_OK == 'false' }}
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const fs = require('fs');
+          const needs = fs.readFileSync('MANIFEST_NEEDS.md', 'utf8');
+          const { owner, repo } = context.repo;
+          const { data: ds } = await github.rest.graphql(`
+            query($q: String!) { search(query: $q, type: DISCUSSIONS, first: 5) { nodes { ... on Discussion { number title } } } }`,
+            { q: 'repo:nastechai/Updates brand-ideas in:title' });
+          let disc = ds.search.nodes && ds.search.nodes[0];
+          if (!disc) {
+            const created = await github.rest.graphql(`
+              mutation($r: ID!, $t: String!, $b: String!) {
+                createDiscussion(input: { repositoryId: $r, title: $t, body: $b }) { discussion { number } } }`,
+              { r: context.payload.repository.node_id, t: 'brand-ideas: fill the blanks', b: needs });
+            disc = created.createDiscussion.discussion;
+          } else {
+            await github.rest.graphql(`
+              mutation($id: ID!, $b: String!) {
+                updateDiscussion(input: { discussionId: $id, body: $b }) { discussion { number } } }`,
+              { id: disc.id, b: needs });
+          }
+          core.setFailed(`Manifest check failed for ${{ inputs.source }}. Fill-the-blank posted to Discussion #${disc.number} — answer there (comment or edit) and re-run the pipeline.`);
+
+    - name: Run branding orchestrator (${{ inputs.orchestrator_arg }})
       if: ${{ inputs.run_orchestrator == 'true' }}
       shell: bash
       run: |
@@ -61,13 +152,14 @@ runs:
         ./.github/scripts/branding-orchestrator.sh . "${{ inputs.orchestrator_arg }}" || exit 1
 
     - name: Commit stage artifacts on source
-      if: ${{ inputs.run_orchestrator == 'true' }}
       shell: bash
       run: |
         git add -A
         git commit -m "chore(pipeline): ${{ inputs.stage_name }} artifacts [auto]" || echo "No new artifacts"
 
+    # ── Promote ─────────────────────────────────────────────────────────────
     - name: Promote — push ${{ inputs.source }} → ${{ inputs.target }}
+      id: promote
       shell: bash
       run: |
         git fetch origin
@@ -81,6 +173,7 @@ runs:
         git push origin "${{ inputs.target }}" --force-with-lease || git push origin "${{ inputs.target }}"
         echo "Pushed ${{ inputs.source }} → ${{ inputs.target }}"
 
+    # ── Verify ──────────────────────────────────────────────────────────────
     - name: Verify — wait for ${{ inputs.target }} checks
       uses: actions/github-script@v7
       with:
@@ -108,3 +201,22 @@ runs:
             await new Promise((r) => setTimeout(r, 30000));
           }
           core.setFailed(`[verify] timed out waiting for ${target} checks after ${timeoutMs}ms`);
+
+    # ── Telegram notify ─────────────────────────────────────────────────────
+    - name: Telegram stage notification
+      if: ${{ inputs.notify_telegram == 'true' && always() && inputs.telegram_token != '' }}
+      shell: bash
+      run: |
+        STATUS="${{ steps.promote.outcome }}"
+        if [ "$STATUS" = "success" ]; then
+          LEVEL="success"; TITLE="✅ ${{ inputs.stage_name }} passed"
+        else
+          LEVEL="error"; TITLE="❌ ${{ inputs.stage_name }} failed"
+        fi
+        python3 .github/scripts/telegram_notify.py \
+          --token "${{ inputs.telegram_token }}" \
+          --chat "${{ inputs.telegram_chat }}" \
+          --event "${{ inputs.stage_name }}" \
+          --title "$TITLE" \
+          --level "$LEVEL" \
+          --body "Promotion: ${{ inputs.source }} → ${{ inputs.target }} on nastechai/Updates." || true

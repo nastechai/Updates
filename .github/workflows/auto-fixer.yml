@@ -3,7 +3,10 @@ name: "Auto System Fixer Bot"
 on:
   workflow_run:
     workflows:
-      - "Stage Pipeline: ordered push + verify (main = HEAD)"
+      - "Stage Pipeline: ordered promote → main → nastech-agent PR"
+      - "Hermes Sync → hermes-upstream (always up to date)"
+      - "Sync Stream Bot — always watch for new commits"
+      - "Brand Discussion — owner approval + answers"
       - "Stage 1: Hermes Automation → Verify (PR)"
       - "Stage 2: Verify → Semi-Stage (PR)"
       - "Stage 3: Semi-Stage → Final (PR)"
