@@ -1,0 +1,50 @@
+name: "Stage 1: Sync to Verify"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Updates repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "NasTech Sync Bot"
+          git config user.email "sync@nastechai.dev"
+
+      - name: Add Upstream
+        run: |
+          git remote add upstream https://github.com/NousResearch/hermes-agent.git
+          git fetch upstream main
+
+      - name: Sync to Verify Branch
+        run: |
+          git checkout -B verify
+          git merge upstream/main --no-commit --no-ff || true
+          # Keep our own workflows
+          git checkout HEAD -- .github/workflows/
+          git commit -m "chore: sync from upstream hermes-agent" || echo "No changes to commit"
+          git push origin verify --force
+
+      - name: Run Orchestrator (Verify Stage)
+        run: |
+          chmod +x .github/scripts/*.sh .github/scripts/*.py
+          ./.github/scripts/branding-orchestrator.sh . verify
+          
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-report
+          path: STAGE_REPORT.md

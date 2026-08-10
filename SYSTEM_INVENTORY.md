@@ -4,7 +4,7 @@
 
 - **Total Lines of Code**: 3,306+
 - **Total Size**: 192 KB
-- **Scripts**: 9 executable files
+- **Scripts**: 10 executable files
 - **Documentation**: 2 comprehensive guides
 - **Supported Ecosystems**: 40+
 - **File Types Supported**: 150+
@@ -15,16 +15,20 @@
 
 ### 1. Master Orchestrator
 **File**: `.github/scripts/branding-orchestrator.sh`
-- **Size**: 14 KB
-- **Lines**: 380+
-- **Language**: Bash
-- **Purpose**: Master coordinator for all validators
+- **Version**: 4.0
+- **Purpose**: Multi-Stage Pipeline Orchestrator
 - **Features**:
-  - Sequential and parallel execution modes
-  - 7-phase transformation pipeline
-  - Comprehensive logging
-  - Git integration
-  - Error handling and recovery
+  - Branch-specific execution (Verify, Semi-Stage, Final)
+  - Automated stage-specific logging
+  - Integration with Markdown report generator
+
+### 1.1 Report Generator
+**File**: `.github/scripts/generate-report.py`
+- **Purpose**: Aggregates logs into production-grade Markdown reports
+- **Features**:
+  - Automated timestamping
+  - Status tracking
+  - Log inclusion and formatting
 
 ### 2. Python Branding Engine
 **File**: `.github/scripts/branding_engine.py`
@@ -127,22 +131,23 @@
 
 ## Workflow Files
 
-### GitHub Actions Workflows
+### Multi-Stage Pipeline Workflows
 
-**File**: `.github/workflows/auto-sync-test-rebrand-pr.yml`
-- **Size**: 8 KB
-- **Purpose**: Automated sync and rebrand
-- **Triggers**:
-  - Daily schedule (02:00 UTC)
-  - Manual trigger
-  - Webhook from upstream
-  - Script changes
-- **Features**:
-  - Concurrency control
-  - Merge conflict detection
-  - Branding verification
-  - Automatic PR creation
-  - Failure handling
+**1. Stage 1: Sync to Verify**
+- **File**: `.github/workflows/stage-1-sync-verify.yml`
+- **Purpose**: Pulls from `NousResearch/hermes-agent` to `verify` branch.
+
+**2. Stage 2: Verify to Semi-Stage**
+- **File**: `.github/workflows/stage-2-semi-stage.yml`
+- **Purpose**: Applies ecosystem transformations (npm, Docker, Config) to `semi-stage` branch.
+
+**3. Stage 3: Semi-Stage to Final**
+- **File**: `.github/workflows/stage-3-final.yml`
+- **Purpose**: Full transformation and final verification to `final` branch.
+
+**4. Stage 4: Production PR**
+- **File**: `.github/workflows/stage-4-production-pr.yml`
+- **Purpose**: Creates the final PR to `nastech-agent` with a full audit report.
 
 **File**: `.github/workflows/issue-tracker.yml`
 - **Size**: 4 KB
