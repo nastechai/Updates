@@ -25,10 +25,21 @@ jobs:
           git config user.name "NasTech Sync Bot"
           git config user.email "sync@nastechai.dev"
 
+      - name: Install Test Dependencies
+        run: |
+          pip3 install pytest pytest-json-report
+
       - name: Run Orchestrator (Verify Stage)
         run: |
           chmod +x .github/scripts/*.sh .github/scripts/*.py .github/scripts/*.js
           ./.github/scripts/branding-orchestrator.sh . verify
+
+      - name: Upload Failure Report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-report
+          path: FAILURE_REPORT.md
           
       - name: Commit and Push to Verify
         run: |
