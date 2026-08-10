@@ -32,7 +32,6 @@ jobs:
             -not -path "./.git/*" -not -path "./node_modules/*" \
             -exec grep -l "hermes-agent\|Hermes" {} \; 2>/dev/null | wc -l)
           if [ "$HERMES_COUNT" -gt 0 ]; then
-            echo "hermes_found=true" >> $GITHUB_OUTPUT
             exit 1
           fi
 
@@ -44,7 +43,6 @@ jobs:
             -not -path "./.git/*" -not -path "./node_modules/*" \
             -exec grep -l "@nous-research" {} \; 2>/dev/null | wc -l)
           if [ "$NOUS_COUNT" -gt 0 ]; then
-            echo "nous_found=true" >> $GITHUB_OUTPUT
             exit 1
           fi
 
@@ -56,7 +54,6 @@ jobs:
           script: |
             const hermesPassed = '${{ steps.check-hermes.outcome }}' === 'success';
             const nousPassed = '${{ steps.check-nous.outcome }}' === 'success';
-            const passed = (hermesPassed ? 1 : 0) + (nousPassed ? 1 : 0);
             
             let comment = `## 🔍 Branding Verification\n\n`;
             comment += `| Check | Status |\n`;
@@ -64,12 +61,6 @@ jobs:
             comment += `| Hermes references | ${hermesPassed ? '✓ PASS' : '✗ FAIL'} |\n`;
             comment += `| @nous-research | ${nousPassed ? '✓ PASS' : '✗ FAIL'} |\n`;
             
-            if (passed === 2) {
-              comment += `\n✅ All checks passed!`;
-            } else {
-              comment += `\n❌ Some checks failed.`;
-            }
-
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

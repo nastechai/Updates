@@ -91,16 +91,6 @@ jobs:
           chmod +x .github/scripts/verify-branding.sh
           .github/scripts/verify-branding.sh . || exit 1
 
-      - name: Run npm audit
-        if: steps.check-sync.outputs.already_synced == 'false'
-        continue-on-error: true
-        run: |
-          if [ -f "package.json" ]; then
-            npm audit --json > /tmp/npm-audit.json || true
-            echo "npm audit results:"
-            cat /tmp/npm-audit.json | head -50
-          fi
-
       - name: Commit changes
         if: steps.check-sync.outputs.already_synced == 'false'
         run: |
@@ -152,17 +142,9 @@ This PR syncs the latest changes from [NousResearch/hermes-agent](https://github
 - ✓ Updated npm packages (@nous-research → @nastech-research)
 - ✓ Updated Docker images (nousresearch → nastechairesearch)
 - ✓ Updated environment variables (HERMES_ → NASTECH_)
-- ✓ Updated repository URLs and paths
 - ✓ Verified branding compliance
 
-### Verification
-- ✓ Branding verification passed
-- ✓ No remaining Hermes/nous-research references
-- ✓ All file and folder names updated
-- ✓ Code imports and paths verified
-
 **Created by:** NasTech Sync Bot
-**Source:** Updates Repository
 `,
                 labels: ['sync', 'automated', 'rebrand']
               });
