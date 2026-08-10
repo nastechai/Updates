@@ -1,22 +1,23 @@
-name: "Stage 2: Automation to Verify"
+name: "Stage 2: Verify → Semi-Stage (PR)"
 
 on:
   push:
     branches:
-      - hermes-automation
+      - verify
   workflow_dispatch:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  verify-stage:
+  orchestrate-verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout hermes-automation branch
+      - name: Checkout verify branch
         uses: actions/checkout@v4
         with:
-          ref: hermes-automation
+          ref: verify
           fetch-depth: 0
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -26,13 +27,18 @@ jobs:
           git config user.email "sync@nastechai.dev"
 
       - name: Install Test Dependencies
-        run: |
-          pip3 install pytest pytest-json-report
+        run: pip3 install pytest pytest-json-report
 
       - name: Run Orchestrator (Verify Stage)
         run: |
-          chmod +x .github/scripts/*.sh .github/scripts/*.py .github/scripts/*.js
+          chmod +x .github/scripts/*.sh .github/scripts/*.py .github/scripts/*.js 2>/dev/null || true
           ./.github/scripts/branding-orchestrator.sh . verify
+
+      - name: Commit verify-stage artifacts
+        run: |
+          git add -A
+          git commit -m "chore(stage2): branding verification artifacts [auto]" || echo "Nothing to commit"
+          git push origin verify
 
       - name: Upload Failure Report
         if: failure()
@@ -40,16 +46,70 @@ jobs:
         with:
           name: failure-report
           path: FAILURE_REPORT.md
-          
-      - name: Commit and Push to Verify
-        run: |
-          git checkout -B verify
-          git add -A
-          git commit -m "chore: initial branding verification" || echo "No changes to commit"
-          git push origin verify --force
 
-      - name: Upload Report
+      - name: Upload Stage Report
         uses: actions/upload-artifact@v4
         with:
           name: verify-report
           path: STAGE_REPORT.md
+
+  open-pr-to-semi-stage:
+    needs: orchestrate-verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout verify
+        uses: actions/checkout@v4
+        with:
+          ref: verify
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Ensure semi-stage branch exists
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code origin semi-stage; then
+            echo "semi-stage already exists"
+          else
+            git checkout -B semi-stage
+            git push origin semi-stage
+          fi
+
+      - name: Create or update PR verify → semi-stage
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const head = 'verify';
+            const base = 'semi-stage';
+
+            const prs = await github.rest.pulls.list({
+              owner, repo, head: `${owner}:${head}`, base, state: 'open'
+            });
+
+            let pr;
+            if (prs.data.length > 0) {
+              pr = prs.data[0];
+              console.log(`Existing PR: ${pr.html_url}`);
+            } else {
+              pr = (await github.rest.pulls.create({
+                owner, repo,
+                title: `chore(stage2): verify → semi-stage [auto]`,
+                head,
+                base,
+                body: `## Stage 2 Auto-PR\n\nOrchestrator ran on \`verify\`. Promoting to \`semi-stage\`.\n\n> **main is never touched by this pipeline.**`,
+              })).data;
+              console.log(`PR created: ${pr.html_url}`);
+            }
+
+            try {
+              await github.rest.pulls.merge({
+                owner, repo,
+                pull_number: pr.number,
+                merge_method: 'squash',
+                commit_title: `chore(stage2): verify → semi-stage [auto-merge]`
+              });
+              console.log('PR auto-merged');
+            } catch (e) {
+              console.log(`Auto-merge skipped: ${e.message}`);
+            }
