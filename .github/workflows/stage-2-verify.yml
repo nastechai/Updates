@@ -1,0 +1,44 @@
+name: "Stage 2: Automation to Verify"
+
+on:
+  push:
+    branches:
+      - hermes-automation
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout hermes-automation branch
+        uses: actions/checkout@v4
+        with:
+          ref: hermes-automation
+          fetch-depth: 0
+          token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "NasTech Sync Bot"
+          git config user.email "sync@nastechai.dev"
+
+      - name: Run Orchestrator (Verify Stage)
+        run: |
+          chmod +x .github/scripts/*.sh .github/scripts/*.py .github/scripts/*.js
+          ./.github/scripts/branding-orchestrator.sh . verify
+          
+      - name: Commit and Push to Verify
+        run: |
+          git checkout -B verify
+          git add -A
+          git commit -m "chore: initial branding verification" || echo "No changes to commit"
+          git push origin verify --force
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-report
+          path: STAGE_REPORT.md
