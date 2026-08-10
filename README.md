@@ -1,422 +1,264 @@
-# NasTech Updates Repository
+<p align="center">
+  <img src="assets/banner.png" alt="Hermes Agent" width="100%">
+</p>
 
-> **High-End Branding Transformation System**  
-> Production-grade automation for syncing and rebranding NasTech → NasTech across 40+ ecosystems
+# Hermes Agent ☤
+<p align="center">
+  <a href="https://hermes-agent.nousresearch.com/">Hermes Agent</a> | <a href="https://hermes-agent.nousresearch.com/">Hermes Desktop</a>
+</p>
+<p align="center">
+  <a href="https://hermes-agent.nousresearch.com/docs/"><img src="https://img.shields.io/badge/Docs-hermes--agent.nousresearch.com-FFD700?style=for-the-badge" alt="Documentation"></a>
+  <a href="https://discord.gg/NousResearch"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
+  <a href="https://github.com/NousResearch/hermes-agent/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://nousresearch.com"><img src="https://img.shields.io/badge/Built%20by-Nous%20Research-blueviolet?style=for-the-badge" alt="Built by Nous Research"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/Lang-中文-red?style=for-the-badge" alt="中文"></a>
+  <a href="README.ur-pk.md"><img src="https://img.shields.io/badge/Lang-اردو-green?style=for-the-badge" alt="اردو"></a>
+  <a href="README.es.md"><img src="https://img.shields.io/badge/Lang-Español-orange?style=for-the-badge" alt="Español"></a>
+</p>
 
----
+**The self-improving AI agent built by [Nous Research](https://nousresearch.com).** It's the only agent with a built-in learning loop — it creates skills from experience, improves them during use, nudges itself to persist knowledge, searches its own past conversations, and builds a deepening model of who you are across sessions. Run it on a $5 VPS, a GPU cluster, or serverless infrastructure that costs nearly nothing when idle. It's not tied to your laptop — talk to it from Telegram while it works on a cloud VM.
 
-## 📋 Overview
+Use any model you want — [Nous Portal](https://portal.nousresearch.com), OpenRouter, OpenAI, your own endpoint, and [many others](https://hermes-agent.nousresearch.com/docs/integrations/providers). Switch with `hermes model` — no code changes, no lock-in.
 
-This repository is a **staging hub** for synchronizing and rebranding **nastech-agent** (NasTech) as **nastech-agent** (NasTech). It implements a comprehensive, multi-stage branding transformation system that handles:
-
-- ✅ **Content transformation** across all file types
-- ✅ **File/directory renaming** with dependency tracking
-- ✅ **40+ ecosystem validators** (Python, Node.js, Go, Rust, Java, Ruby, PHP, .NET, Docker, Kubernetes, etc.)
-- ✅ **npm package management** validation and transformation
-- ✅ **Docker/container** image and configuration validation
-- ✅ **Configuration files** (YAML, TOML, JSON, INI, environment)
-- ✅ **CI/CD pipelines** (GitHub Actions, GitLab CI, CircleCI, Jenkins, etc.)
-- ✅ **Infrastructure-as-Code** (Terraform, Ansible, Helm, Kubernetes)
-- ✅ **Build systems** (Make, CMake, Bazel, Gradle, Maven, etc.)
-- ✅ **Documentation** and markdown files
-- ✅ **Git-aware** diff tracking and reporting
-
----
-
-## 🏗️ Architecture
-
-### Workflow
-
-```
-nastechai/nastech-agent (upstream)
-         ↓
-    [Fetch commits]
-         ↓
-nastechai/Updates (this repo)
-         ↓
-    [Orchestrator]
-         ├─→ Content Transformation (Python)
-         ├─→ File/Directory Renaming (Bash)
-         ├─→ npm Validation (Node.js)
-         ├─→ Docker Validation (Bash)
-         ├─→ Config Validation (Python)
-         ├─→ Ecosystem Validation (Python)
-         └─→ Final Verification (Python)
-         ↓
-    [Create PR]
-         ↓
-nastechai/nastech-agent (main repo)
-```
-
-### Components
-
-| Component | Language | Purpose |
-|-----------|----------|---------|
-| `branding-orchestrator.sh` | Bash | Master orchestrator; coordinates all validators |
-| `branding_engine.py` | Python | Core transformation engine; handles all file types |
-| `validate-npm-branding.js` | Node.js | npm/package manager ecosystem validator |
-| `validate-docker-branding.sh` | Bash | Docker/container ecosystem validator |
-| `validate-config-branding.py` | Python | Configuration files (YAML, TOML, JSON, INI) |
-| `validate-ecosystem-branding.py` | Python | 40+ language/framework ecosystems |
-| `rebrand.sh` | Bash | Legacy text-based rebrand script (enhanced v3) |
-| `verify-branding.sh` | Bash | Legacy branding verification (enhanced v3) |
+<table>
+<tr><td><b>A real terminal interface</b></td><td>Full TUI with multiline editing, slash-command autocomplete, conversation history, interrupt-and-redirect, and streaming tool output.</td></tr>
+<tr><td><b>Lives where you do</b></td><td>Telegram, Discord, Slack, WhatsApp, Signal, and CLI — all from a single gateway process. Voice memo transcription, cross-platform conversation continuity.</td></tr>
+<tr><td><b>A closed learning loop</b></td><td>Agent-curated memory with periodic nudges. Autonomous skill creation after complex tasks. Skills self-improve during use. FTS5 session search with LLM summarization for cross-session recall. <a href="https://github.com/plastic-labs/honcho">Honcho</a> dialectic user modeling. Compatible with the <a href="https://agentskills.io">agentskills.io</a> open standard.</td></tr>
+<tr><td><b>Scheduled automations</b></td><td>Built-in cron scheduler with delivery to any platform. Daily reports, nightly backups, weekly audits — all in natural language, running unattended.</td></tr>
+<tr><td><b>Delegates and parallelizes</b></td><td>Spawn isolated subagents for parallel workstreams. Write Python scripts that call tools via RPC, collapsing multi-step pipelines into zero-context-cost turns.</td></tr>
+<tr><td><b>Runs anywhere, not just your laptop</b></td><td>Seven terminal backends — local, Docker, SSH, Singularity, Modal, Daytona, and Vercel Sandbox. Daytona and Modal offer serverless persistence — your agent's environment hibernates when idle and wakes on demand, costing nearly nothing between sessions. Run it on a $5 VPS or a GPU cluster.</td></tr>
+<tr><td><b>Research-ready</b></td><td>Batch trajectory generation, trajectory compression for training the next generation of tool-calling models.</td></tr>
+</table>
 
 ---
 
-## 🎯 Supported Ecosystems (40+)
+## Quick Install
 
-### Languages & Runtimes
-- **Python**: setup.py, pyproject.toml, requirements.txt, Pipfile, poetry.lock, tox.ini
-- **Node.js**: package.json, package-lock.json, yarn.lock, pnpm-lock.yaml, .npmrc
-- **Go**: go.mod, go.sum, *.go files
-- **Rust**: Cargo.toml, Cargo.lock
-- **Java**: pom.xml, build.gradle, gradle.properties, settings.gradle
-- **Ruby**: Gemfile, Gemfile.lock, .gemrc
-- **PHP**: composer.json, composer.lock
-- **.NET**: .csproj, .fsproj, .vbproj, packages.config
-- **Kotlin**: build.gradle.kts
-- **Scala**: build.sbt
-- **Clojure**: project.clj, deps.edn
-- **Elixir**: mix.exs, mix.lock
-- **Haskell**: cabal.project, stack.yaml
-- **R**: DESCRIPTION, renv.lock
-- **Perl**: Makefile.PL, cpanfile
-- **Swift**: Package.swift
-
-### Build Systems
-- **Make**: Makefile, makefile
-- **CMake**: CMakeLists.txt
-- **Bazel**: BUILD, BUILD.bazel, WORKSPACE
-- **Maven**: pom.xml
-- **Gradle**: build.gradle, gradle.properties
-- **SBT**: build.sbt
-- **Ant**: build.xml
-
-### CI/CD Platforms
-- **GitHub Actions**: .github/workflows/*.yml
-- **GitLab CI**: .gitlab-ci.yml
-- **CircleCI**: .circleci/config.yml
-- **Jenkins**: Jenkinsfile
-- **Travis CI**: .travis.yml
-- **Azure Pipelines**: azure-pipelines.yml
-
-### Infrastructure & DevOps
-- **Docker**: Dockerfile, docker-compose.yml, .dockerignore
-- **Kubernetes**: *.yaml, *.yml in k8s/
-- **Terraform**: *.tf files
-- **Ansible**: playbooks, roles
-- **Helm**: Chart.yaml, values.yaml
-
-### Configuration & Docs
-- **YAML**: *.yml, *.yaml
-- **TOML**: *.toml (pyproject.toml, Cargo.toml, etc.)
-- **JSON**: *.json (package.json, tsconfig.json, etc.)
-- **INI**: *.ini, *.conf, .env files
-- **Markdown**: *.md, README files
-
-### Web Technologies
-- **HTML**: *.html
-- **CSS/SCSS/LESS**: *.css, *.scss, *.less
-- **JavaScript**: *.js
-- **TypeScript**: *.ts, *.tsx
-- **Vue**: *.vue
-- **React**: *.jsx
-
----
-
-## 🚀 Usage
-
-### Prerequisites
+### Linux, macOS, WSL2, Termux
 
 ```bash
-# Required
-- bash (4.0+)
-- git
-- python3 (3.7+)
-- node.js (12+)
-
-# Optional (for specific ecosystems)
-- Go, Rust, Java, Ruby, PHP, etc.
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 ```
 
-### Installation
+### Windows (native, PowerShell)
+
+> **Heads up:** Native Windows runs Hermes without WSL — CLI, gateway, TUI, and tools all work natively. If you'd rather use WSL2, the Linux/macOS one-liner above works there too. Found a bug? Please [file issues](https://github.com/NousResearch/hermes-agent/issues).
+
+Run this in PowerShell:
+
+```powershell
+iex (irm https://hermes-agent.nousresearch.com/install.ps1)
+```
+
+The installer handles everything: uv, Python 3.11, Node.js, ripgrep, ffmpeg, **and a portable Git Bash** (MinGit, unpacked to `%LOCALAPPDATA%\hermes\git` — no admin required, completely isolated from any system Git install). Hermes uses this bundled Git Bash to run shell commands.
+
+If you already have Git installed, the installer detects it and uses that instead. Otherwise a ~45MB MinGit download is all you need — it won't touch or interfere with any system Git.
+
+> **Android / Termux:** The tested manual path is documented in the [Termux guide](https://hermes-agent.nousresearch.com/docs/getting-started/termux). On Termux, Hermes installs a curated `.[termux]` extra because the full `.[all]` extra currently pulls Android-incompatible voice dependencies.
+>
+> **Windows:** Native Windows is fully supported — the PowerShell one-liner above installs everything. If you'd rather use WSL2, the Linux command works there too. Native Windows install lives under `%LOCALAPPDATA%\hermes`; WSL2 installs under `~/.hermes` as on Linux.
+
+After installation:
 
 ```bash
-# Clone the repository
-git clone https://github.com/nastechai/Updates.git
-cd Updates
-
-# Make scripts executable
-chmod +x .github/scripts/*.sh
-chmod +x .github/scripts/*.py
-chmod +x .github/scripts/*.js
+source ~/.bashrc    # reload shell (or: source ~/.zshrc)
+hermes              # start chatting!
 ```
 
-### Quick Start
+### Troubleshooting
 
-#### Full Transformation (Recommended)
+#### Windows Defender or antivirus flags `uv.exe` as malware
+
+If your antivirus (Bitdefender, Windows Defender, etc.) quarantines `uv.exe` from the Hermes `bin` folder (`%LOCALAPPDATA%\hermes\bin\uv.exe`), this is a **false positive**. The file is Astral's `uv` — the Rust Python package manager Hermes bundles to manage its Python environment. ML-based antivirus engines commonly flag unsigned Rust binaries that download and install packages.
+
+**To verify your copy is authentic:**
+
+```powershell
+# Install GitHub CLI if needed
+winget install --id GitHub.cli
+
+# Login to GitHub
+gh auth login
+
+# Run verification
+$uv = "$env:LOCALAPPDATA\hermes\bin\uv.exe"
+$ver = (& $uv --version).Split(' ')[1]
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$zip = "$env:TEMP\uv.zip"
+Invoke-WebRequest "https://github.com/astral-sh/uv/releases/download/$ver/uv-x86_64-pc-windows-msvc.zip" -OutFile $zip -UseBasicParsing
+gh attestation verify $zip --repo astral-sh/uv
+Expand-Archive $zip "$env:TEMP\uv_x" -Force
+(Get-FileHash "$env:TEMP\uv_x\uv.exe").Hash -eq (Get-FileHash $uv).Hash
+```
+
+If attestation says "Verification succeeded" and the last line prints `True`, you're good.
+
+**To whitelist Hermes:**
+- **Windows Defender:** Run PowerShell as Admin → `Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\hermes\bin"`
+- **Bitdefender:** Add an exception in the Bitdefender console (Protection > Antivirus > Settings > Manage Exceptions)
+- Whitelist the **folder**, not the file hash — Hermes updates `uv` and the hash changes every version
+
+For more context, see the upstream Astral reports: [astral-sh/uv#13553](https://github.com/astral-sh/uv/issues/13553), [astral-sh/uv#15011](https://github.com/astral-sh/uv/issues/15011), [astral-sh/uv#10079](https://github.com/astral-sh/uv/issues/10079).
+
+---
+
+## Getting Started
 
 ```bash
-# Transform everything (content, files, directories, all ecosystems)
-./.github/scripts/branding-orchestrator.sh --repo . --mode transform
-
-# Dry-run (preview changes without writing)
-./.github/scripts/branding-orchestrator.sh --repo . --mode transform --dry-run
-
-# Parallel execution (faster)
-./.github/scripts/branding-orchestrator.sh --repo . --mode transform --parallel
+hermes              # Interactive CLI — start a conversation
+hermes model        # Choose your LLM provider and model
+hermes tools        # Configure which tools are enabled
+hermes config set   # Set individual config values
+hermes config get   # Print individual config values
+hermes gateway      # Start the messaging gateway (Telegram, Discord, etc.)
+hermes setup        # Run the full setup wizard (configures everything at once)
+hermes claw migrate # Migrate from OpenClaw (if coming from OpenClaw)
+hermes update       # Update to the latest version
+hermes doctor       # Diagnose any issues
 ```
 
-#### Validation Only
+📖 **[Full documentation →](https://hermes-agent.nousresearch.com/docs/)**
+
+---
+
+## Skip the API-key collection — Nous Portal
+
+Hermes works with whatever provider you want — that's not changing. But if you'd rather not collect five separate API keys for the model, web search, image generation, TTS, and a cloud browser, **[Nous Portal](https://portal.nousresearch.com)** covers all of them under one subscription:
+
+- **300+ models** — pick any of them with `/model <name>`
+- **Tool Gateway** — web search (Firecrawl), image generation (FAL), text-to-speech (OpenAI), cloud browser (Browser Use), all routed through your sub. No extra accounts.
+
+One command from a fresh install:
 
 ```bash
-# Validate branding compliance
-./.github/scripts/branding-orchestrator.sh --repo . --mode validate
-
-# Generate detailed report
-./.github/scripts/branding-orchestrator.sh --repo . --mode report
+hermes setup --portal
 ```
 
-#### Individual Validators
+That logs you in via OAuth, sets Nous as your provider, and turns on the Tool Gateway. Check what's wired up any time with `hermes portal info`. Full details on the [Tool Gateway docs page](https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway).
+
+You can still bring your own keys per-tool whenever you want — the gateway is per-backend, not all-or-nothing.
+
+---
+
+## CLI vs Messaging Quick Reference
+
+Hermes has two entry points: start the terminal UI with `hermes`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
+
+| Action                         | CLI                                           | Messaging platforms                                                              |
+| ------------------------------ | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| Start chatting                 | `hermes`                                      | Run `hermes gateway setup` + `hermes gateway start`, then send the bot a message |
+| Start fresh conversation       | `/new` or `/reset`                            | `/new` or `/reset`                                                               |
+| Change model                   | `/model [provider:model]`                     | `/model [provider:model]`                                                        |
+| Set a personality              | `/personality [name]`                         | `/personality [name]`                                                            |
+| Retry or undo the last turn    | `/retry`, `/undo`                             | `/retry`, `/undo`                                                                |
+| Compress context / check usage | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]`                                        |
+| Browse skills                  | `/skills` or `/<skill-name>`                  | `/<skill-name>`                                                                  |
+| Interrupt current work         | `Ctrl+C` or send a new message                | `/stop` or send a new message                                                    |
+| Platform-specific status       | `/platforms`                                  | `/status`, `/sethome`                                                            |
+
+For the full command lists, see the [CLI guide](https://hermes-agent.nousresearch.com/docs/user-guide/cli) and the [Messaging Gateway guide](https://hermes-agent.nousresearch.com/docs/user-guide/messaging).
+
+---
+
+## Documentation
+
+All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
+
+| Section                                                                                             | What's Covered                                             |
+| --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart)                 | Install → setup → first conversation in 2 minutes          |
+| [CLI Usage](https://hermes-agent.nousresearch.com/docs/user-guide/cli)                              | Commands, keybindings, personalities, sessions             |
+| [Configuration](https://hermes-agent.nousresearch.com/docs/user-guide/configuration)                | Config file, providers, models, all options                |
+| [Messaging Gateway](https://hermes-agent.nousresearch.com/docs/user-guide/messaging)                | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant |
+| [Security](https://hermes-agent.nousresearch.com/docs/user-guide/security)                          | Command approval, DM pairing, container isolation          |
+| [Tools & Toolsets](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools)            | 40+ tools, toolset system, terminal backends               |
+| [Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)              | Procedural memory, Skills Hub, creating skills             |
+| [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)                     | Persistent memory, user profiles, best practices           |
+| [MCP Integration](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)               | Connect any MCP server for extended capabilities           |
+| [Cron Scheduling](https://hermes-agent.nousresearch.com/docs/user-guide/features/cron)              | Scheduled tasks with platform delivery                     |
+| [Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files)       | Project context that shapes every conversation             |
+| [Architecture](https://hermes-agent.nousresearch.com/docs/developer-guide/architecture)             | Project structure, agent loop, key classes                 |
+| [Contributing](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing)             | Development setup, PR process, code style                  |
+| [CLI Reference](https://hermes-agent.nousresearch.com/docs/reference/cli-commands)                  | All commands and flags                                     |
+| [Environment Variables](https://hermes-agent.nousresearch.com/docs/reference/environment-variables) | Complete env var reference                                 |
+
+---
+
+## Migrating from OpenClaw
+
+If you're coming from OpenClaw, Hermes can automatically import your settings, memories, skills, and API keys.
+
+**During first-time setup:** The setup wizard (`hermes setup`) automatically detects `~/.openclaw` and offers to migrate before configuration begins.
+
+**Anytime after install:**
 
 ```bash
-# Python engine (core transformation)
-python3 .github/scripts/branding_engine.py --repo . --mode transform --fix
-
-# npm ecosystem
-node .github/scripts/validate-npm-branding.js --repo . --fix
-
-# Docker ecosystem
-bash .github/scripts/validate-docker-branding.sh . true
-
-# Configuration files
-python3 .github/scripts/validate-config-branding.py --repo . --fix
-
-# All 40+ ecosystems
-python3 .github/scripts/validate-ecosystem-branding.py --repo . --fix
+hermes claw migrate              # Interactive migration (full preset)
+hermes claw migrate --dry-run    # Preview what would be migrated
+hermes claw migrate --preset user-data   # Migrate without secrets
+hermes claw migrate --overwrite  # Overwrite existing conflicts
 ```
+
+What gets imported:
+
+- **SOUL.md** — persona file
+- **Memories** — MEMORY.md and USER.md entries
+- **Skills** — user-created skills → `~/.hermes/skills/openclaw-imports/`
+- **Command allowlist** — approval patterns
+- **Messaging settings** — platform configs, allowed users, working directory
+- **API keys** — allowlisted secrets (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
+- **TTS assets** — workspace audio files
+- **Workspace instructions** — AGENTS.md (with `--workspace-target`)
+
+See `hermes claw migrate --help` for all options, or use the `openclaw-migration` skill for an interactive agent-guided migration with dry-run previews.
 
 ---
 
-## 🔧 Branding Rules
+## Contributing
 
-All transformations follow these rules (applied in priority order):
+We welcome contributions! See the [Contributing Guide](https://hermes-agent.nousresearch.com/docs/developer-guide/contributing) for development setup, code style, and PR process.
 
-| Source | Target | Priority | Context |
-|--------|--------|----------|---------|
-| `github.com/nastechai/nastech-agent` | `github.com/nastechai/nastech-agent` | 100 | URLs |
-| `nastechairesearch/nastech` | `nastechairesearch/nastech` | 95 | Docker |
-| `NasTech Agent` | `NasTech Agent` | 90 | Product names |
-| `nastech-agent` | `nastech-agent` | 90 | Package names |
-| `@nastech-research` | `@nastech-research` | 85 | npm scopes |
-| `NasTech` | `NasTech` | 80 | Organization |
-| `nastechai` | `nastechai` | 80 | GitHub org |
-| `nastechairesearch` | `nastechairesearch` | 80 | Docker org |
-| `NASTECH_` | `NASTECH_` | 75 | Environment vars |
-| `/opt/nastech` | `/opt/nastech` | 75 | Paths |
-| `NasTech` | `NasTech` | 50 | Generic |
-| `nastech` | `nastech` | 50 | Generic |
-
-**Priority matters**: Longer, more-specific patterns are applied first to prevent partial replacements.
-
----
-
-## 📊 Features
-
-### ✨ Advanced Capabilities
-
-- **AST-based transformation**: Preserves code structure and formatting
-- **Safe replacements**: Escapes regex special characters; prevents injection
-- **Dependency tracking**: Renames files/dirs deepest-first to avoid broken paths
-- **Dry-run mode**: Preview all changes before committing
-- **Parallel execution**: Run multiple validators concurrently
-- **Detailed reporting**: Per-file, per-ecosystem statistics
-- **Git integration**: Automatic diff summary and change tracking
-- **Error handling**: Graceful fallbacks; continues on individual file failures
-- **Idempotent**: Safe to run multiple times; skips already-transformed content
-
-### 🎯 Quality Assurance
-
-- **Multi-stage validation**: Content → Files → Ecosystems → Final verification
-- **Comprehensive checks**: NasTech refs, Docker images, npm scopes, paths, env vars
-- **Context-aware**: Different rules for different file types
-- **Logging**: Full audit trail in timestamped log files
-- **Exit codes**: Proper status codes for CI/CD integration
-
----
-
-## 🔄 Workflow Integration
-
-### GitHub Actions (auto-sync-test-rebrand-pr.yml)
-
-Runs automatically:
-- **Daily** at 02:00 UTC
-- **On push** to main (when scripts change)
-- **On workflow_dispatch** (manual trigger)
-- **On repository_dispatch** (webhook from upstream monitor)
-
-```yaml
-# Triggers sync, rebrand, verify, and creates PR to nastech-agent
-jobs:
-  sync-test-rebrand-pr:
-    steps:
-      - Checkout Updates repo
-      - Fetch upstream (nastechai/nastech-agent)
-      - Apply branding transformations
-      - Verify compliance
-      - Create PR to nastechai/nastech-agent
-```
-
-### Issue Tracker (issue-tracker.yml)
-
-Maintains a single tracking issue with:
-- Latest sync status
-- Run history
-- Failure notifications
-
----
-
-## 🔐 Secrets & Configuration
-
-### Required Secrets
-
-Set these in your GitHub repository settings:
-
-```
-NAS_TOKEN          # GitHub token with repo access to nastechai/nastech-agent
-                   # Fallback: uses GITHUB_TOKEN if not set
-```
-
-### Optional Configuration
-
-Create `.github/branding.config` (JSON):
-
-```json
-{
-  "upstream_repo": "nastechai/nastech-agent",
-  "upstream_branch": "main",
-  "target_repo": "nastechai/nastech-agent",
-  "target_branch": "main",
-  "sync_schedule": "0 2 * * *",
-  "dry_run": false,
-  "parallel": true,
-  "ecosystems": ["python", "nodejs", "go", "rust", "docker"]
-}
-```
-
----
-
-## 📈 Metrics & Reporting
-
-### Generated Reports
-
-Each run produces:
-
-```
-/tmp/branding-orchestrator-YYYYMMDD-HHMMSS.log
-├── Phase 1: Content Transformation
-│   ├── Files scanned: N
-│   ├── Files modified: N
-│   └── Total replacements: N
-├── Phase 2: File/Directory Renaming
-│   └── Items renamed: N
-├── Phase 3: npm Validation
-│   ├── Violations: N
-│   └── Transformations: N
-├── Phase 4: Docker Validation
-│   ├── Violations: N
-│   └── Transformations: N
-├── Phase 5: Configuration Validation
-│   ├── Violations: N
-│   └── Transformations: N
-├── Phase 6: Ecosystem Validation (40+)
-│   ├── Violations: N
-│   └── Transformations: N
-└── Phase 7: Final Verification
-    └── Status: PASS/FAIL
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-| Issue | Solution |
-|-------|----------|
-| `Not a git repository` | Ensure `.git` directory exists; run from repo root |
-| `Permission denied` | Run `chmod +x .github/scripts/*.sh` |
-| `Python3 not found` | Install Python 3.7+; or skip Python-based validators |
-| `Node.js not found` | Install Node.js 12+; or skip npm validator |
-| `Merge conflict` | Workflow aborts; manual resolution required |
-| `Dry-run doesn't match actual` | Check file permissions; some files may be read-only |
-
-### Debug Mode
+Quick start for contributors — use the standard installer, then work from the
+full git checkout it creates at `$HERMES_HOME/hermes-agent` (usually
+`~/.hermes/hermes-agent`). This matches the layout used by `hermes update`, the
+managed venv, lazy dependencies, gateway, and docs tooling.
 
 ```bash
-# Enable verbose output
-bash -x .github/scripts/branding-orchestrator.sh --repo . --mode transform
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+cd "${HERMES_HOME:-$HOME/.hermes}/hermes-agent"
+uv pip install -e ".[all,dev]"
+scripts/run_tests.sh
+```
 
-# Check individual log file
-tail -f /tmp/branding-orchestrator-*.log
+Manual clone fallback (for throwaway clones/CI where you intentionally do not
+want the managed install layout):
+
+Create the venv outside the cloned source tree — a venv inside the directory
+the agent operates from can be wiped by a relative-path command the agent runs
+against its own checkout, destroying the running runtime mid-session.
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv venv ~/.hermes/venvs/hermes-dev --python 3.11
+source ~/.hermes/venvs/hermes-dev/bin/activate
+uv pip install -e ".[all,dev]"
+scripts/run_tests.sh
 ```
 
 ---
 
-## 📚 Documentation
+## Community
 
-- **[Branding Rules](./docs/BRANDING_RULES.md)** — Detailed rule definitions
-- **[Architecture](./docs/ARCHITECTURE.md)** — System design and components
-- **[API Reference](./docs/API.md)** — Script interfaces and options
-- **[Examples](./docs/EXAMPLES.md)** — Common use cases
-
----
-
-## 🤝 Contributing
-
-To improve the branding system:
-
-1. **Add new ecosystem**: Edit `validate-ecosystem-branding.py`
-2. **Add new rule**: Update `BRANDING_RULES` in any validator
-3. **Improve validation**: Enhance checks in individual validators
-4. **Report issues**: Create an issue with details and logs
+- 💬 [Discord](https://discord.gg/NousResearch)
+- 📚 [Skills Hub](https://agentskills.io)
+- 🐛 [Issues](https://github.com/NousResearch/hermes-agent/issues)
+- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — Linux desktop-control MCP server for Hermes and other MCP hosts, with AT-SPI accessibility trees, Wayland/X11 input, screenshots, and compositor window targeting.
+- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Community WeChat bridge: Run Hermes Agent and OpenClaw on the same WeChat account.
 
 ---
 
-## 📝 License
+## License
 
-This repository is part of the NasTech project. See LICENSE for details.
+MIT — see [LICENSE](LICENSE).
 
----
-
-## 🎓 Status
-
-| Component | Status | Coverage |
-|-----------|--------|----------|
-| Content Transformation | ✅ Production | All file types |
-| File Renaming | ✅ Production | Deepest-first ordering |
-| npm Ecosystem | ✅ Production | package.json, lock files, scopes |
-| Docker Ecosystem | ✅ Production | Dockerfile, compose, registries |
-| Configuration Files | ✅ Production | YAML, TOML, JSON, INI, .env |
-| 40+ Ecosystems | ✅ Production | Python, Go, Rust, Java, Ruby, PHP, .NET, etc. |
-| CI/CD Integration | ✅ Production | GitHub Actions, GitLab CI, CircleCI, etc. |
-| Verification | ✅ Production | Multi-stage validation |
-| Reporting | ✅ Production | Detailed metrics and logs |
-
----
-
-## 🚀 Ready for Production
-
-**Status**: ✅ Ready for deployment  
-**Last Updated**: 2026-08-10  
-**Version**: 3.0 (High-End)
-
----
-
-## 📞 Support
-
-For issues or questions:
-- Check the [troubleshooting guide](#-troubleshooting)
-- Review [examples](./docs/EXAMPLES.md)
-- Open an issue on GitHub
-- Contact: sync@nastechai.dev
+Built by [Nous Research](https://nousresearch.com).
