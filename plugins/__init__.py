@@ -1,1 +1,0 @@
-# NasTech plugins package
