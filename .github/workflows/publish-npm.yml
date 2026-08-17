@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Updates (main)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
@@ -42,7 +42,7 @@ jobs:
           fi
 
       - name: Checkout nastech-agent (package sources)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: nastechai/nastech-agent
           ref: main
