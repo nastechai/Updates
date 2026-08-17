@@ -188,7 +188,7 @@ jobs:
           token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Push main → nastechai/nastech-agent and open PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.NAS_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
